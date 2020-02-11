@@ -1,8 +1,14 @@
 # wiki-framework
-<h4> All work, including comments on tickets, comments in the code are in English. </h4>
-<h4> Spelling or grammar errors are "bugs" and must be "fixed." </h4>
-<h4> Data in the project can be in any languages. </h4>
-<h4> User interaction - through localization packages, default value = en US, but from the very beginning I would like to see ru RU available. <h4>
+
+## Rules
+
+All work, including comments on tickets, comments in the code are in English.
+
+Spelling or grammar errors are "bugs" and must be "fixed." 
+
+Data in the project can be in any languages. 
+
+User interaction - through localization packages, default value = en US, but from the very beginning I would like to see ru RU available.
   
   
   ## Process
