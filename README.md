@@ -22,3 +22,9 @@ Then we do a pull request and someone watches the performance.
 
 The current status of the project can be viewed in "Projects" > "Framework". There are todo columns, solved task column. Add tasks to these columns.
 Write current errors and problems in isseus.
+
+
+## Description of the project
+
+Fillable database in wiki format. The database fill interface is the telegram bot. The database populating interface is a telegram bot. Minimum functionality: add material, edit property, add photo, sound file, video clip. Display materials on the web site in the form of “MarkDown” or in another format. 
+Technologies: python3.7, telegram API, flask, nginx, wsgi, MongoDB.
