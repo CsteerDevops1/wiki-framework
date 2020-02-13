@@ -27,4 +27,7 @@ Write current errors and problems in isseus.
 ## Description of the project
 
 Fillable database in wiki format. The database fill interface is the telegram bot. The database populating interface is a telegram bot. Minimum functionality: add material, edit property, add photo, sound file, video clip. Display materials on the web site in the form of “MarkDown” or in another format. 
+
 Technologies: python3.7, telegram API, flask, nginx, wsgi, MongoDB.
+
+Simple scheme of project https://miro.com/app/board/o9J_kwo6HM0=/
