@@ -9,6 +9,8 @@ Spelling or grammar errors are "bugs" and must be "fixed."
 Data in the project can be in any languages. 
 
 User interaction - through localization packages, default value = en US, but from the very beginning I would like to see ru RU available.
+
+Use gitignore file.
   
   
   ## Process
