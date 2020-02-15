@@ -1,0 +1,20 @@
+{
+  "title": "DB content item",
+  "description": "A representation of each db element.",
+  "required": ["id", "content_type", "data"],
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "Object id."
+    },
+    "content_type": {
+      "type": "string",
+      "description": "Type of stored object."
+    },
+    "content": {
+      "type": "string",
+      "description": "Stored object itself, byte string."
+    }
+  }
+}
