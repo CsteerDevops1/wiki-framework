@@ -9,7 +9,7 @@ pip-log.txt
 *.mo
 
 #Mr Developer
-
+.vscode/
 *.pyc
 build
 .idea
