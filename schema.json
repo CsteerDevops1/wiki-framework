@@ -1,19 +1,19 @@
 {
   "title": "DB content item",
   "description": "A representation of each db element.",
-  "required": ["id", "content_type", "data"],
-  "type": "object",
+  "required": ["content_type", "content"],
+  "bsonType": "object",
   "properties": {
     "id": {
-      "type": "integer",
+      "bsonType": "int",
       "description": "Object id."
     },
     "content_type": {
-      "type": "string",
+      "bsonType": "string",
       "description": "Type of stored object."
     },
     "content": {
-      "type": "string",
+      "bsonType": "binData",
       "description": "Stored object itself, byte string."
     }
   }
