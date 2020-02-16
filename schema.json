@@ -1,20 +1,75 @@
 {
-  "title": "DB content item",
-  "description": "A representation of each db element.",
-  "required": ["content_type", "content"],
-  "bsonType": "object",
-  "properties": {
-    "id": {
-      "bsonType": "int",
-      "description": "Object id."
-    },
-    "content_type": {
-      "bsonType": "string",
-      "description": "Type of stored object."
-    },
-    "content": {
-      "bsonType": "binData",
-      "description": "Stored object itself, byte string."
+  "$jsonSchema" :
+  {
+    "title": "DB content item",
+    "description": "A representation of each db element.",
+    "required": ["_id", "name", "description", "synonyms", "tags", "text", "relations", "creation_date"],
+    "bsonType": "object",
+    "properties": {
+      "_id": {
+        "bsonType": "objectId",
+        "description": "Object id. Generated automatically by mongodb."
+      },
+      "name": {
+        "bsonType": "string",
+        "description": "Name of stored object."
+      },
+      "synonyms": {
+        "bsonType": "array",
+        "items": {
+            "bsonType": "string"
+        },
+        "description": "Array of synonyms."
+      },
+      "description": {
+        "bsonType": "string",
+        "description": "Description of stored object."
+      },
+      "relations": {
+        "bsonType": "array",
+        "items": {
+            "bsonType": "string"
+        },
+        "description": "Relations with other elements."
+      },
+      "tags": {
+        "bsonType": "array",
+        "items": {
+            "bsonType": "string"
+        },
+        "description": "Set of related tags."
+      },
+      "text": {
+        "bsonType": "string",
+        "description": "Text."
+      },
+      "creation_date":{
+        "bsonType": "date",
+        "description": "The date of creation object."
+      },
+      "attachments": {
+        "bsonType": "array",
+        "items": {
+          "bsonType": "object",
+          "required": ["content_type", "content"],
+          "properties": {
+            "content_type":{
+              "bsonType": "string",
+              "pattern" : "(image|audio|video)\/.+",
+              "description": "Content type in MIME-type format."
+            },
+            "content_data":{
+              "bsonType": "binData",
+              "description": "Content binary data."
+            },
+            "description":{
+              "bsonType": "string",
+              "description": "Content description."
+            }
+          }
+        },
+        "description": "Additional content associated with object."
+      }
     }
   }
 }
