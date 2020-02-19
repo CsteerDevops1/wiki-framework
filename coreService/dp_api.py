@@ -20,7 +20,7 @@ val_post = {
             "creation_date" : datetime.utcnow(),
             "synonyms" : [],
             "relations" : [],
-            "attachments" : [{"content_type" : "img/png", "content" : b"sdfsdf"}]
+            "attachments" : [{"content_type" : "image/png", "content" : b"sdfsdf"}]
             }
 
 
@@ -61,7 +61,7 @@ def set_modification(**changes) -> dict:
 
 def insert(collection, data : dict):
     ''' on success returns ObjecId of inserted object '''
-    result = collection.insert(data)
+    result = collection.insert_one(data)
     return result.inserted_id
 
 
@@ -71,10 +71,9 @@ def delete(collection, filter : dict) -> int:
     return result.deleted_count
 
 
-def update(collection, modification, *filters) -> int:
+def update(collection, modification, filter) -> int:
     ''' returns amount of modificated documents '''
-    assert len(filters) != 0
-    result = collection.update_many(update=modification, array_filters=filters)
+    result = collection.update_many(update=modification, filter=filter)
     return result.modified_count
 
 
