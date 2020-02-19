@@ -51,10 +51,10 @@ def client_availabe(client) -> bool:
 
 
 def set_modification(**changes) -> dict:
-    ''' 
-    changes : <key> : <values> 
-    changes - changes which should be applied on document 
-    returns modification dict for update function 
+    '''
+    changes : <key> : <values>
+    changes - changes which should be applied on document
+    returns modification dict for update function
     '''
     return {"$set" : changes}
 
@@ -102,4 +102,29 @@ if __name__ == "__main__":
 
     set_validation(db, "test_collection", "schema.json")
 
-    collection.insert(val_post)
+    print("Print whole collection")
+    print(find(collection))
+
+    print("Inserting")
+    print(insert(collection, val_post))
+
+    print("Find inserted obj")
+    print(find(collection, {"name" : "val_post1"}))
+
+    print("Update inserted obj")
+    print(update(collection, set_modification(name="updated_post1"), {"name" : "val_post1"}))
+
+    print("Find wrong obj")
+    print(find(collection, {"name" : "val_post1"}))
+
+    print("Find correct obj, get name")
+    print(find(collection, {"name" : "updated_post1"}, ["name"]))
+
+    print("Delete wrong obj")
+    print(delete(collection, {"name" : "wrong_name"}))
+
+    print("Delete correct obj")
+    print(delete(collection, {"name" : "updated_post1"}))
+
+    print("Print whole collection")
+    print(find(collection))
