@@ -3,7 +3,7 @@
   {
     "title": "DB content item",
     "description": "A representation of each db element.",
-    "required": ["name", "description", "synonyms", "tags", "text", "relations", "creation_date"],
+    "required": ["name", "description", "synonyms", "tags", "text", "relations"],
     "bsonType": "object",
     "properties": {
       "_id": {
@@ -11,50 +11,50 @@
         "description": "Object id. Generated automatically by mongodb."
       },
       "name": {
-        "bsonType": "string",
+        "type": "string",
         "description": "Name of stored object."
       },
       "synonyms": {
-        "bsonType": "array",
+        "type": "array",
         "items": {
-            "bsonType": "string"
+            "type": "string"
         },
         "description": "Array of synonyms."
       },
       "description": {
-        "bsonType": "string",
+        "type": "string",
         "description": "Description of stored object."
       },
       "relations": {
-        "bsonType": "array",
+        "type": "array",
         "items": {
-            "bsonType": "string"
+            "type": "string"
         },
         "description": "Relations with other elements."
       },
       "tags": {
-        "bsonType": "array",
+        "type": "array",
         "items": {
-            "bsonType": "string"
+            "type": "string"
         },
         "description": "Set of related tags."
       },
       "text": {
-        "bsonType": "string",
+        "type": "string",
         "description": "Text."
       },
       "creation_date":{
         "bsonType": "date",
-        "description": "The date of creation object."
+        "description": "The date of creation object in ISO format. Added automatically before inserting to database."
       },
       "attachments": {
-        "bsonType": "array",
+        "type": "array",
         "items": {
-          "bsonType": "object",
-          "required": ["content_type", "content"],
+          "type": "object",
+          "required": ["content_type", "content_data"],
           "properties": {
             "content_type":{
-              "bsonType": "string",
+              "type": "string",
               "pattern" : "(image|audio|video)\/.+",
               "description": "Content type in MIME-type format."
             },
@@ -63,7 +63,7 @@
               "description": "Content binary data."
             },
             "description":{
-              "bsonType": "string",
+              "type": "string",
               "description": "Content description."
             }
           }
