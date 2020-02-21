@@ -6,12 +6,23 @@ from datetime import datetime
 import os
 from dotenv import load_dotenv
 from bson.objectid import ObjectId
+import base64
 
 
 # doesn't override any env variables, just set them from .env file if they don't exist
 load_dotenv()
 MONGO_URI = os.getenv("MONGO_URI")
 SCHEMA_PATH = os.getenv('SCHEMA_PATH')
+
+
+def bytes_to_str(bstr):
+    '''convert any content to string representation'''
+    return base64.b64encode(bstr).decode('utf-8')
+
+
+def bytes_from_str(ustr):
+    '''convert content back to bytes from string representation'''
+    return base64.b64decode(ustr.encode('utf-8'))
 
 
 def init_db_client() -> MongoClient:
@@ -69,13 +80,16 @@ class WikiPageDAO:
 
         changes obj in place!
         '''
+        if obj is None: return
         if "_id" in obj:
             obj["_id"] = ObjectId(obj["_id"])
         if "attachments" in obj:
             for item in obj["attachments"]:
-                item["content_data"] = item["content_data"].encode()
+                if type(item["content_data"]) == type(""):
+                    item["content_data"] = bytes_from_str(item["content_data"])
         if "creation_date" in obj:
-            obj["creation_date"] = datetime.fromisoformat(obj["creation_date"])
+            if type(obj["creation_date"]) == type(""):
+                obj["creation_date"] = datetime.fromisoformat(obj["creation_date"])
 
 
     def _serialize(self, obj : dict):
@@ -85,13 +99,15 @@ class WikiPageDAO:
 
         changes obj in place!
         '''
+        if obj is None: return
         if "_id" in obj:
             obj["_id"] = str(obj["_id"])
         if "creation_date" in obj:
             obj["creation_date"] = str(obj["creation_date"])
         if "attachments" in obj:
             for item in obj["attachments"]:
-                item["content_data"] = item["content_data"].decode()
+                if type(item["content_data"]) == type(b""):
+                    item["content_data"] = bytes_to_str(item["content_data"])
 
 
     def get(self, filter : dict = None, projection : list = None) -> list:
