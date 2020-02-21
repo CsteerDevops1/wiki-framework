@@ -5,6 +5,7 @@ import json
 from datetime import datetime
 import os
 from dotenv import load_dotenv
+from bson.objectid import ObjectId
 
 
 # doesn't override any env variables, just set them from .env file if they don't exist
@@ -60,6 +61,38 @@ class WikiPageDAO:
         set_validation(self.database, "wikipage_collection", SCHEMA_PATH)
         assert client_availabe(self.db_client) # raise error if can't conenct to db
 
+    
+    def _deserialize(self, obj : dict):
+        '''
+        converts all the nessesary fields in given obj to
+        types, which can be understood by database
+
+        changes obj in place!
+        '''
+        if "_id" in obj:
+            obj["_id"] = ObjectId(obj["_id"])
+        if "attachments" in obj:
+            for item in obj["attachments"]:
+                item["content_data"] = item["content_data"].encode()
+        if "creation_date" in obj:
+            obj["creation_date"] = datetime.fromisoformat(obj["creation_date"])
+
+
+    def _serialize(self, obj : dict):
+        '''
+        converts all the nessesary fields in given obj to
+        types, which can be understood by json
+
+        changes obj in place!
+        '''
+        if "_id" in obj:
+            obj["_id"] = str(obj["_id"])
+        if "creation_date" in obj:
+            obj["creation_date"] = str(obj["creation_date"])
+        if "attachments" in obj:
+            for item in obj["attachments"]:
+                item["content_data"] = item["content_data"].decode()
+
 
     def get(self, filter : dict = None, projection : list = None) -> list:
         '''
@@ -69,19 +102,26 @@ class WikiPageDAO:
 
         returns a list of documents
         '''
+        self._deserialize(filter)
         result = list(self.collection.find(filter, projection=projection))
+        # serialize db results
+        for item in result:
+            self._serialize(item)
         return result
 
-    def create(self, data : dict):
+    def create(self, data : dict) -> dict:
         ''' 
-        on success returns ObjecId of inserted object,
-        if fails returns -1 
+        on success returns created object,
+        if fails returns None
         '''
         try:
+            data["creation_date"] = datetime.utcnow()
+            self._deserialize(data)
             result = self.collection.insert_one(data)
-            return result.inserted_id
+            self._serialize(data)
+            return data
         except WriteError:
-            return -1
+            return None
 
     def update(self, modification : dict, filter : dict) -> int:
         ''' returns amount of modificated documents '''
