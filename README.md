@@ -26,7 +26,7 @@ The current status of the project can be viewed in "Projects" > "Framework". The
 Write current errors and problems in isseus.
 
 
-## coreSerice
+## coreService
 
 The coreService/data/db folder must be created with correct (a+rw ?) mode bits set on it.
 Use docker-compose up --build to start core service on port 5000
