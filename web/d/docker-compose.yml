@@ -3,7 +3,7 @@ services:
   web:
     build: .
     volumes:
-      - ./content/:/usr/share/nginx/html/
+      - ./web/:/usr/share/nginx/html
     ports:
       - "8000:80"
     command: [nginx, '-g', 'daemon off;']
