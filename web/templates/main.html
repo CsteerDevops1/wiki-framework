@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		    <meta charset="UTF-8">
+		        <title>Wiki-Framework</title>
+	</head>
+	<body>
+		<h2>Add topic:</h2>
+		<form method="post" action="/add_message">
+			    <input type="text" name="text">
+			        <input type="text" name="tag">
+				    <button type="submit">Add message</button>
+		</form>
+
+		<h3>All topics</h3>
+		{% for message in messages %}
+		<div>{{ message.text }}&nbsp;<b>#{{ message.tag }}</b></div>
+		{% endfor %}
+
+	</body>
+</html>

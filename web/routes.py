@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from app import app
 from flask import render_template
 from app.config_provider import ConfigProvider
 from app import function
