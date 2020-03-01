@@ -1,5 +1,15 @@
 version: "3"
 services:
+  web:
+    image: "web"
+    build: ./web/
+    ports:
+      - "8000:8000"
+    container_name: "web"
+    volumes:
+      - ./web:/usr/src/app
+    depends_on:
+        - flask
   flask:
     restart: always
     image: "flask_api"
@@ -17,11 +27,4 @@ services:
       - ./data/db/:/data/db/
     ports:
       - "27017:27017"
-  web:
-    image: "web"
-    build: ./web/
-    ports:
-      - "8000:8000"
-    container_name: "web"
-    volumes:
-      - ./web:/usr/src/app
+
