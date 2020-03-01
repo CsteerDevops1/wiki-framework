@@ -3,19 +3,30 @@
 	<head>
 		    <meta charset="UTF-8">
 		        <title>Wiki-Framework</title>
+                <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='css/style.css') }} />
 	</head>
 	<body>
-		<h2>Add topic:</h2>
-		<form method="post" action="/add_message">
-			    <input type="text" name="text">
-			        <input type="text" name="tag">
-				    <button type="submit">Add message</button>
-		</form>
-
-		<h3>All topics</h3>
-		{% for message in messages %}
-		<div>{{ message.text }}&nbsp;<b>#{{ message.tag }}</b></div>
-		{% endfor %}
-
-	</body>
+        <div id="container">
+            <div id="header"><h1>Wiki-framework</h1></div>
+            <div id="content-wrap">
+                <div id="side-bar">
+                    <h3>All topics</h3>
+                    {{ sidebar|safe }}
+                </div>
+                <div id="main-content">
+                    <form method="post" action="/create_new_topic">
+                        <fieldset>
+                            <legend><h2>Add topic</h2></legend>
+                            <p><strong>Title: </strong>
+			                <input type="text" name="title" maxlength="255"></p>
+                            <p><b>Text: </b>
+                            <textarea name="tag"></textarea></p>
+				            <button type="submit">Add message</button>
+                        </fieldset>
+		            </form>
+                </div>
+            </div>
+            <div id="footer"><h4>All rights reserved</h4></div>
+        </div>
+    </body>
 </html>
