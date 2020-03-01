@@ -1,6 +1,8 @@
-#container { position: fixed; background: #999; margin: 0; top: 0; left: 0;  width: 100%; min-height: 100% }
-#header { position: relative; height: 160px; width: 100%; background: #080808 url(static/images/bg.jpg) no-repeat center top; color: #ccc; margin: 0 0 30px; }
-#content-wrap { position: relative; width: 100%}
-#main-content { position: relative; margin: 0 0 0 20%; width: 80%; }
-#side-bar { position: relative; float: left; width: 20%; color: #808080; background: #898; padding: 11px; margin: 0 }
-#footer { position: relative; height: 150px; width: 100%; padding: 20px 0; color: #888; border-top: 1px dotted #111; background: #898; margin-top: 10% }
+body { height: 100% }
+#container { position: absolute; background: #cfcfcf; margin: 0; top: 0; left: 0;  width: 100%; min-height: 100% }
+#header { position: relative; height: 160px; width: 100%; background: #080808 url(../images/bg.jpg) no-repeat center top; color: #ccc; margin-bottom: -160px }
+#content-wrap { position: relative; overflow: hidden; width: 100%; min-height: -webkit-fill-available; padding: 160px 0}
+#main-content { position: relative; margin: 0 0 0 25%; padding: 11px; width: 75%; }
+#side-bar { position: relative; float: left; width: 20%; color: #808080; background: #cfcfcf; padding: 11px; margin: 0 }
+#footer { position: relative; height: 160px; width: 100%; color: #ccc; background: #080808 url(../images/bg.jpg) no-repeat center top; margin-top: -160px }
+#header h1, #footer h4, #footer h4, #footer h4, #footer h4 { position: absolute; top: 50%; transform: translate(-50%, -100%); left: 50% }

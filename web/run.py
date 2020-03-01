@@ -18,10 +18,10 @@ def get_page(name):
 def index():
     return render_template(
                 "test.html",
-                title="Title",
+                title="Wiki - Framework",
                 sidebar="Side Bar",
                 content="Content",
-                footer="Footer"
+                footer="All rights reserved"
                 )
 
 
@@ -29,8 +29,8 @@ def index():
 def page(name):
     return render_template(
                 "test.html",
-                title="Title",
+                title="Wiki - Framework",
                 sidebar="Side Bar",
                 content=get_page(name),
-                footer="Footer"
+                footer="All rights reserved"
                 )

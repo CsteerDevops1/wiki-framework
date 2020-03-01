@@ -9,6 +9,8 @@ services:
     container_name: "flask_api"
     environment:
       MONGO_URI: "mongodb://mongo:27017"
+    depends_on:
+      - mongo
   mongo:
     image: "mongo"
     volumes:
@@ -16,8 +18,10 @@ services:
     ports:
       - "27017:27017"
   web:
-    image: "web:19"
+    image: "web"
     build: ./web/
     ports:
       - "8000:8000"
     container_name: "web"
+    volumes:
+      - ./web:/usr/src/app
