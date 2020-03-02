@@ -3,9 +3,21 @@ from flask import Flask, render_template, redirect, url_for, request
 import os.path
 import function
 import requests
+import base64
+
 
 app = Flask(__name__)
 
+
+def bytes_to_str(bstr):
+    '''convert any content to string representation'''
+    return base64.b64encode(bstr).decode('utf-8')
+
+    #отправляем строку сначала bytes_from_str потом bytes_to_str
+    #картинки только bytes_to_str
+def bytes_from_str(ustr):
+    '''convert content back to bytes from string representation'''
+    return base64.b64decode(ustr.encode('utf-8'))
 
 def get_page(name):
     page = os.path.join('./pages/', name + ".md")
@@ -59,6 +71,7 @@ def create_new_topic():
 # test method to send post request with data to api
 @app.route('/senddata')
 def testdata():
+    image_file = open("/usr/src/app/image.jpg", "rb").read()
     val_post = {
             "name" : "val_post1",
             "description" : "val_post1",
@@ -67,10 +80,11 @@ def testdata():
             "creation_date" : "2020-02-21",
             "synonyms" : [],
             "relations" : [],
-            "attachments" : [{"content_type" : "image/png", "content_data" : "sdfsdf"}]
+            "attachments" : [{"content_type" : "image/png", "content_data" : bytes_to_str(image_file)}]
             }
-
+    ##localhost:5000
     resp = requests.post("http://172.18.0.3:5000/api/wiki", json = val_post)
+
     
     return render_template(
                 "test.html",
