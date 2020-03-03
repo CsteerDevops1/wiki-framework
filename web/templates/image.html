@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		    <meta charset="UTF-8">
+		        <title>Greetings</title>
+	</head>
+	<body>
+		<h1>Hello, user!!!!!</h1>
+        <a href="{{ url_for('main') }}">Response!</a>
+        <img src="data:image/jpg;base64,{{ image | safe }}">
+        <div id="container">
+            <div id="header"><h1>{{ title }}</h1></div>
+            <div id="content-wrap">
+                <div id="side-bar">{{ sidebar|safe }}</div>
+                <div id="main-content">{{ content|safe }}</div>
+            </div>
+            <div id="footer"><h4>{{ footer }}<h4></div>
+        </div>
+	</body>
+</html>
