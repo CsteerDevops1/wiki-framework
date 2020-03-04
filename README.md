@@ -26,14 +26,6 @@ The current status of the project can be viewed in "Projects" > "Framework". The
 Write current errors and problems in isseus.
 
 
-## coreSerice
-
-The coreService/data/db folder must be created with correct (a+rw ?) mode bits set on it.
-Use docker-compose up --build to start core service on port 5000
-
-API documentation is on /api/wiki/doc
-
-
 ## Description of the project
 
 Fillable database in wiki format. The database fill interface is the telegram bot. The database populating interface is a telegram bot. Minimum functionality: add material, edit property, add photo, sound file, video clip. Display materials on the web site in the form of “MarkDown” or in another format. 
