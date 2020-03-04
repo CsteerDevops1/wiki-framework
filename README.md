@@ -26,6 +26,12 @@ The current status of the project can be viewed in "Projects" > "Framework". The
 Write current errors and problems in isseus.
 
 
+
+## coreService
+
+Description inside coreService folder
+
+
 ## Description of the project
 
 Fillable database in wiki format. The database fill interface is the telegram bot. The database populating interface is a telegram bot. Minimum functionality: add material, edit property, add photo, sound file, video clip. Display materials on the web site in the form of “MarkDown” or in another format. 
