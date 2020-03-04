@@ -13,6 +13,7 @@ pip-log.txt
 *.pyc
 build
 .idea
+coreService/data/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
