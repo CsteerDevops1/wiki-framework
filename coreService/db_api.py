@@ -82,7 +82,10 @@ class WikiPageDAO:
         '''
         if obj is None: return
         if "_id" in obj:
-            obj["_id"] = ObjectId(obj["_id"])
+            try:
+                obj["_id"] = ObjectId(obj["_id"])
+            except :
+                del obj["_id"]
         if "attachments" in obj:
             for item in obj["attachments"]:
                 if type(item["content_data"]) == type(""):
