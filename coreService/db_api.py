@@ -82,7 +82,10 @@ class WikiPageDAO:
         '''
         if obj is None: return
         if "_id" in obj:
-            obj["_id"] = ObjectId(obj["_id"])
+            try:
+                obj["_id"] = ObjectId(obj["_id"])
+            except :
+                del obj["_id"]
         if "attachments" in obj:
             for item in obj["attachments"]:
                 if type(item["content_data"]) == type(""):
@@ -141,11 +144,13 @@ class WikiPageDAO:
 
     def update(self, modification : dict, filter : dict) -> int:
         ''' returns amount of modificated documents '''
+        self._deserialize(filter)
         result = self.collection.update_many(update=modification, filter=filter)
         return result.modified_count
 
     def delete(self, filter : dict) -> int:
         ''' returns amount of deleted objects '''
+        self._deserialize(filter)
         result = self.collection.delete_many(filter)
         return result.deleted_count
 
