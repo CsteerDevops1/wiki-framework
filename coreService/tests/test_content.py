@@ -14,8 +14,9 @@ def check_content(content_type : str):
         loads everything from ./content/{conten_type}s and sends to db, 
         chacks if it recieves same back and delete after
     """
+    file_path = (os.path.dirname(__file__) or ".") + "/"
     contents = []
-    for fname in Path(f"{os.path.dirname(__file__)}/content/{content_type}s").iterdir():
+    for fname in Path(f"{file_path}content/{content_type}s").iterdir():
         name, ext = fname.name.split(".")[-2:]
         with open(fname.resolve(), "rb") as cont_file:
             contents.append([cont_file.read(), name, ext])
