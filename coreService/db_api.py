@@ -141,11 +141,13 @@ class WikiPageDAO:
 
     def update(self, modification : dict, filter : dict) -> int:
         ''' returns amount of modificated documents '''
+        self._deserialize(filter)
         result = self.collection.update_many(update=modification, filter=filter)
         return result.modified_count
 
     def delete(self, filter : dict) -> int:
         ''' returns amount of deleted objects '''
+        self._deserialize(filter)
         result = self.collection.delete_many(filter)
         return result.deleted_count
 
