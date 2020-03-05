@@ -1,8 +1,81 @@
-body { height: 100% }
-#container { position: absolute; background: #cfcfcf; margin: 0; top: 0; left: 0;  width: 100%; min-height: 100% }
-#header { position: relative; height: 160px; width: 100%; background: #080808 url(../images/bg.jpg) no-repeat center top; color: #ccc; margin-bottom: -160px }
-#content-wrap { position: relative; overflow: hidden; width: 100%; min-height: -webkit-fill-available; padding: 160px 0}
-#main-content { position: relative; margin: 0 0 0 25%; padding: 11px; width: 75%; }
-#side-bar { position: relative; float: left; width: 20%; color: #808080; background: #cfcfcf; padding: 11px; margin: 0 }
-#footer { position: relative; height: 160px; width: 100%; color: #ccc; background: #080808 url(../images/bg.jpg) no-repeat center top; margin-top: -160px }
-#header h1, #footer h4, #footer h4, #footer h4, #footer h4 { position: absolute; top: 50%; transform: translate(-50%, -100%); left: 50% }
+* {
+    margin: 0;
+    padding: 0;
+}
+
+:root{
+    --color-light: #f5eaea;
+    --color-dark: #4d4646;
+    --color-accent: #7fcd91;
+    --color-neutral: #ffffff;
+    --font: Ubuntu, serif;
+    --border-radius: 25px;
+}
+
+html, body {
+    height: 100%;
+    background: var(--color-light);
+    font-family: var(--font);
+}
+
+#header {
+    width: 100%;
+    background: var(--color-dark);
+    color: var(--color-light);
+    text-align: center;
+    padding: 25px 0;
+}
+
+
+#content-wrap {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 70vh;
+}
+
+#side-bar {
+    width: 20%;
+    background: var(--color-accent);
+    height: 100%;
+}
+
+#side-bar a{
+    text-decoration: none;
+    color: var(--color-neutral);
+    background: var(--color-dark);
+    cursor: pointer;
+    padding: 10px;
+    transition: 500ms;
+}
+
+#side-bar a:hover{
+    padding: 10px 40px;
+}
+
+#side-bar li {
+    margin: 25px 0;
+}
+
+#main-content {
+    width: 75%;
+    border-radius: var(--border-radius);
+    margin: 10px 2.5% 0 2.5%;
+    box-sizing: border-box;
+    padding: 30px;
+    background: var(--color-neutral);
+}
+
+
+
+#footer {
+    background: var(--color-dark);
+    color: var(--color-light);
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}

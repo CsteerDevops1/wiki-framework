@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		    <meta charset="UTF-8">
-		        <title>Wiki-Framework</title>
-	</head>
-	<body>
-		<a href="{{ url_for('getrequest') }}">GET all items from database</a>
-		<h1>In this menu you can create a new database item</h1>
-		<form action="{{ url_for('postrequest') }}" method="post">
-			Name: <input type="text" name="dbitemName"><br>
-			Description: <input type="text" name="dbitemDescription"><br>
-			Text: <input type="text" name="dbitemText"><br>
-			<input type="submit" value="Submit">
-		</form>
+<head>
+    <meta charset="UTF-8">
+    <title>Wiki-Framework</title>
+</head>
+<body>
 
-		<h3>All topics</h3>
-		{% for message in messages %}
-		<div>{{ message.text }}&nbsp;<b>#{{ message.tag }}</b></div>
-		{% endfor %}
+<a href="{{ url_for('getrequest') }}">GET all items from database</a>
 
-	</body>
+<h1>In this menu you can create a new database item</h1>
+
+<form action="{{ url_for('postrequest') }}" method="post">
+    Name: <input type="text" name="dbitemName"><br>
+    Description: <input type="text" name="dbitemDescription"><br>
+    Text: <input type="text" name="dbitemText"><br>
+    <input type="submit" value="Submit">
+</form>
+
+<h3>All topics</h3>
+{% for message in messages %}
+    <div>{{ message.text }}&nbsp;<b>#{{ message.tag }}</b></div>
+{% endfor %}
+
+</body>
 </html>
