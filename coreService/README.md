@@ -1,7 +1,7 @@
 
 ## coreSerice
 
-The coreService/data/db folder will be created with correct (a+rwx ?) mode bits set on it, mongodb uses it for backups and etc.
+Mongodb uses ./data/db folder for it's backups and etc.
 Database and API validation are automatically set from schema.json file.
 
 API documentation is on /api/wiki/doc, auto-generated with SwaggerUI.
