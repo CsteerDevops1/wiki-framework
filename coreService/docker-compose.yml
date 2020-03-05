@@ -13,6 +13,7 @@ services:
       MONGO_URI: "mongodb://mongo:27017"
   mongo:
     image: "mongo"
+    user: "${UID}:${GID}"
     volumes:
       - ./data/db/:/data/db/
     ports:
