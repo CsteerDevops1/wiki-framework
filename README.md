@@ -26,12 +26,10 @@ The current status of the project can be viewed in "Projects" > "Framework". The
 Write current errors and problems in isseus.
 
 
+
 ## coreService
 
-The coreService/data/db folder must be created with correct (a+rw ?) mode bits set on it.
-Use docker-compose up --build to start core service on port 5000
-
-API documentation is on /api/wiki/doc
+Description inside coreService folder
 
 
 ## Description of the project
