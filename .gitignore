@@ -14,6 +14,7 @@ pip-log.txt
 build
 .idea
 coreService/data/
+*.info
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
