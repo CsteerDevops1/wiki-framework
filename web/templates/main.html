@@ -5,11 +5,13 @@
 		        <title>Wiki-Framework</title>
 	</head>
 	<body>
-		<h2>Add topic:</h2>
-		<form method="post" action="/add_message">
-			    <input type="text" name="text">
-			        <input type="text" name="tag">
-				    <button type="submit">Add message</button>
+		<a href="{{ url_for('getrequest') }}">GET all items from database</a>
+		<h1>In this menu you can create a new database item</h1>
+		<form action="{{ url_for('postrequest') }}" method="post">
+			Name: <input type="text" name="dbitemName"><br>
+			Description: <input type="text" name="dbitemDescription"><br>
+			Text: <input type="text" name="dbitemText"><br>
+			<input type="submit" value="Submit">
 		</form>
 
 		<h3>All topics</h3>

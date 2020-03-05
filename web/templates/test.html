@@ -16,3 +16,12 @@
 	</div>
 </body>
 </html>
+
+
+<a href="{{ url_for('postrequest') }}">POST an item to database</a>
+<h2>Add topic:</h2>
+<form method="post" action="/add_message">
+		<input type="text" name="text">
+			<input type="text" name="tag">
+			<button type="submit">Add message</button>
+</form>

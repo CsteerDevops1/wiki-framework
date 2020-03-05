@@ -6,7 +6,6 @@ import requests
 import base64
 import json
 
-
 app = Flask(__name__)
 
 
@@ -70,14 +69,16 @@ def create_new_topic():
 
 app.jinja_env.filters['b64d'] = lambda u: b64encode(u).decode()
 # test method to send post request with data to api
-@app.route('/senddata')
-def senddata():
+
+@app.route('/postrequest', methods=['POST'])
+def postrequest():
     image_file = open("/usr/src/app/image.jpg", "rb").read()
+
     val_post = {
-            "name" : "val_post1",
-            "description" : "val_post1",
+            "name" : request.form['dbitemName'],
+            "description" : request.form['dbitemDescription'],
             "tags" : [],
-            "text" : "text",
+            "text" : request.form['dbitemText'],
             "creation_date" : "2020-02-21",
             "synonyms" : [],
             "relations" : [],
@@ -85,26 +86,19 @@ def senddata():
             }
     ##localhost:5000
     resp = requests.post("http://172.18.0.3:5000/api/wiki", json = val_post)
-    json_data = json.loads(resp.text)
-    #кидаем в темплейт картинку в виде строки и она рендерится
-    return render_template(
-                "image.html",
-                title="Wiki - Framework",
-                sidebar="Side Bar",
-                image=json_data["attachments"][0]["content_data"], 
-                content=json_data["attachments"][0]["content_type"],
-                footer="All rights reserved"
-                )    
 
-@app.route('/getdata')
-def getdata():
+    #кидаем в темплейт картинку в виде строки и она рендерится
+    return render_template("postrequest.html", sidebar='Side Bar')   
+
+@app.route('/getrequest')
+def getrequest():
     resp = requests.get("http://flask:5000/api/wiki")
-    
+    json_data = json.loads(resp.text)
     return render_template(
-                "test.html",
+                "getrequest.html",
                 title="Wiki - Framework",
                 sidebar="Side Bar",
-                content=resp.content,
+                json=json_data, 
                 footer="All rights reserved"
                 )    
 
@@ -121,4 +115,4 @@ if __name__ == "__main__":
             }
     json = json.loads(val_post)
     print(json["attachments"][0]["content_data"])
-    j
+    

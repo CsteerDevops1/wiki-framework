@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		    <meta charset="UTF-8">
+		        <title>Get request</title>
+	</head>
+	<body>
+		<h1>All items in database!</h1>
+        <a href="{{ url_for('main') }}">To main</a>
+
+        {% for content in json%}
+        <div>Item name: {{ content['name'] }}&nbsp;</div>
+        <div>Item description: {{ content['description'] }}&nbsp;</div>
+        <div>Item text: {{ content['text'] }}&nbsp;</div>
+        <img src="data:image/jpg;base64,{{ content['attachments'][0]['content_data'] | safe }}"  height="450" width="800">
+        {% endfor %}
+        
+
+        <div id="container">
+            <div id="header"><h1>{{ title }}</h1></div>
+            <div id="content-wrap">
+                <div id="side-bar">{{ sidebar|safe }}</div>
+                <div id="main-content">{{ content|safe }}</div>
+            </div>
+            <div id="footer"><h4>{{ footer }}<h4></div>
+        </div>
+	</body>
+</html>
