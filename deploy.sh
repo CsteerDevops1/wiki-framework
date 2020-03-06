@@ -24,9 +24,15 @@ if ! [ -x "$(command -v docker)" ]; then
    stable"
   sudo apt-get update
   sudo apt-get install docker-ce docker-ce-cli containerd.io -y
-  sudo groupadd docker
-  sudo usermod -aG docker $USER
-  newgrp docker
+
+  if ! getent group docker > /dev/null 2>&1; then
+    sudo groupadd docker
+  fi
+  if ! groups | grep docker &> /dev/null; then 
+    sudo usermod -aG docker $USER
+    # newgrp docker # logins in new console => BAD
+  fi
+
 fi
 
 if ! [ -x "$(command -v docker-compose)" ]; then
@@ -66,7 +72,7 @@ fi
 echo "Launching docker-compose"
 export UID=${UID}
 export GID=${GID}
-docker-compose -f coreService/docker-compose.yml up --build -d
+sudo docker-compose -f coreService/docker-compose.yml up --build -d
 
 #---------------------------- STARTING WEB SERVICE ----------------------------
 
