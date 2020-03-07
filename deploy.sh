@@ -70,9 +70,17 @@ else
 fi
 
 echo "Launching docker-compose"
+
+# used to config user for mongodb
 export UID=${UID}
 export GID=${GID}
-sudo docker-compose -f coreService/docker-compose.yml up --build -d
+
+# don't use sudo if it's unnecessary
+if ! groups | grep docker &> /dev/null; then 
+  sudo docker-compose -f coreService/docker-compose.yml up --build -d
+else
+  docker-compose -f coreService/docker-compose.yml up --build -d
+fi 
 
 #---------------------------- STARTING WEB SERVICE ----------------------------
 
