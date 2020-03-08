@@ -35,8 +35,8 @@ if ! [ -x "$(command -v docker)" ]; then
 
 fi
 
-if ! [ -x "$(command -v docker-compose)" ]; then
-  echo 'Error: docker-compose is not installed.' >&2
+if ! [ -f "docker-compose" ]; then
+  echo 'Error: docker-compose doesnt exists' >&2
   wget "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m)" \
     -O ./docker-compose
   chmod +x ./docker-compose
