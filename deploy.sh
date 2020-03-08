@@ -37,9 +37,9 @@ fi
 
 if ! [ -x "$(command -v docker-compose)" ]; then
   echo 'Error: docker-compose is not installed.' >&2
-  sudo curl -L "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m)" \
-    -o /usr/local/bin/docker-compose
-  sudo chmod +x /usr/local/bin/docker-compose
+  wget "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m)" \
+    -O ./docker-compose
+  chmod +x ./docker-compose
 fi
 
 if [ "$1" != "" ]; then
@@ -59,14 +59,15 @@ fi
 git clone https://github.com/CsteerDevops1/wiki-framework "$PROJECT_DIR"
 cd "$PROJECT_DIR"
 git checkout develop
+cd ../
 
 #---------------------------- STARTING CORE SERVICE ----------------------------
-if [ -d "coreService/data/db" ]; then
+if [ -d "$PROJECT_DIR/coreService/data/db" ]; then
     :
 else 
-    echo "Creating coreService/data/db folder"
-    mkdir coreService/data
-    mkdir coreService/data/db
+    echo "Creating $PROJECT_DIR/coreService/data/db folder"
+    mkdir $PROJECT_DIR/coreService/data
+    mkdir $PROJECT_DIR/coreService/data/db
 fi
 
 echo "Launching docker-compose"
@@ -75,11 +76,12 @@ echo "Launching docker-compose"
 export UID=${UID}
 export GID=${GID}
 
+# ./docker-compose -f $PROJECT_DIR/coreService/docker-compose.yml up --build -d
 # don't use sudo if it's unnecessary
 if ! groups | grep docker &> /dev/null; then 
-  sudo docker-compose -f coreService/docker-compose.yml up --build -d
+ sudo ./docker-compose -f coreService/docker-compose.yml up --build -d
 else
-  docker-compose -f coreService/docker-compose.yml up --build -d
+ ./docker-compose -f coreService/docker-compose.yml up --build -d
 fi 
 
 #---------------------------- STARTING WEB SERVICE ----------------------------
