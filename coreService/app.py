@@ -30,7 +30,7 @@ schema_model = api.schema_model('model', schema['$jsonSchema']) # used for valid
 # parametres which you should use in filters
 query_params = {'_id' : "Object id",
                 'name': "Name of stored object.",
-                'russian_names': "Russian translations for name property. Select the one you need, not all together.",
+                'russian_name': "Russian translation for name property.",
                 'creation_date': 'The date of creation object in ISO format.',}
 
 # ---------------------------- SETUP SECTION ------------------------------------------------------------------------
