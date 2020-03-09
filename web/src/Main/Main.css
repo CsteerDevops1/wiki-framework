@@ -1,0 +1,14 @@
+main {
+    width: 94%;
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 10px auto;
+    background: var(--color-3);
+    border-radius: 7px;
+    min-height: 80vh;
+}
+
+main ul li {
+    list-style: none;
+    margin-left: 20px;
+}
