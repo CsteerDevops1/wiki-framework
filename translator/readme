@@ -11,4 +11,4 @@ Run it in background
 python3 app.py &
 
 Requirements:
-requests
+requests=2.23.0

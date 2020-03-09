@@ -49,6 +49,7 @@ if __name__=="__main__":
             if data:
                 data = translate_json_data(data)
                 put(data)
+                print("Translated %d words" % len(data))
         except Exception:
             print("Can't connect to DB")
         time.sleep(10)
