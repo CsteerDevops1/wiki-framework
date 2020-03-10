@@ -1,11 +1,6 @@
 import logging
-import json
-from telegram import Update
 from telegram import Bot, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
-from telegram.ext import CommandHandler
-from telegram.ext import MessageHandler
-from telegram.ext import Filters
+from telegram.ext import Updater, CallbackQueryHandler, CommandHandler, MessageHandler, Filters
 from telegramBots.media.fileManager import *
 from telegramBots.initBot.config import TG_TOKEN
 from telegramBots.initBot.config import TG_API_URL
@@ -20,27 +15,58 @@ document_info = ""
 def start(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
 
+
 def help(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text="Command /help - show bot commands\n"
                                   "Command /search - 'name of object to search in database' ")
 
+
 def search(update, context):
-    # print(update.message.text)
+    """ world search in all fields of the database """
     caption = update.message.text[8:]
-    # id = search_file(caption)
-    print(id)
     context.bot.send_message(
         chat_id=update.effective_chat.id,
         text=f"Searching:\n"
-             f"{str(caption)}"
-    )
-    # f = open(f"photos/rowing.jpg", "wb")
-    # context.bot.send_photo(
-    #     chat_id=update.effective_chat.id,
-    #     photo=f
-    # )
-    # f.close()
+             f"{str(caption)}")
+    found_dict_list = search_all_by_word(str(caption))
+    for file_dict in found_dict_list:
+        if file_dict["attachments"][0]["content_type"].split('/')[0] == 'image':
+            send_photo_from_dict(file_dict, context, update)
+        elif file_dict["attachments"][0]["content_type"].split('/')[0] == 'audio':
+            send_audio_from_dict(file_dict, context, update)
+        elif file_dict["attachments"][0]["content_type"].split('/')[0] == 'video':
+            send_video_from_dict(file_dict, context, update)
+
+
+def send_photo_from_dict(photo_dict, context, update):
+    try:
+        with open(f"../../coreService/tests/content/images/{photo_dict['name']}", "rb") as file:
+            context.bot.send_photo(
+                chat_id=update.effective_chat.id,
+                photo=file)
+    except FileNotFoundError:
+        print("No such file or directory")
+
+
+def send_audio_from_dict(photo_dict, context, update):
+    try:
+        with open(f"../../coreService/tests/content/audios/{photo_dict['name']}", "rb") as file:
+            context.bot.send_audio(
+                chat_id=update.effective_chat.id,
+                audio=file)
+    except FileNotFoundError:
+        print("No such file or directory")
+
+
+def send_video_from_dict(photo_dict, context, update):
+    try:
+        with open(f"../../coreService/tests/content/videos/{photo_dict['name']}", "rb") as file:
+            context.bot.send_video(
+                chat_id=update.effective_chat.id,
+                video=file)
+    except FileNotFoundError:
+        print("No such file or directory")
 
 
 def echo(update, context):
@@ -60,7 +86,7 @@ def button_save_files(update, context):
     query.edit_message_text(text="Selected option: {}".format(query.data))
     if query.data == "SavePhoto":
         print("Saving photo")
-        save_pthoto(photo_info)
+        save_photo(photo_info)
         context.bot.send_message(
             chat_id=update.effective_chat.id,
             text=f"Photo saved"
@@ -104,7 +130,6 @@ def get_photo(update, context):
                  InlineKeyboardButton("Cancel", callback_data='Cancel')]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text(f'{show_photo_info(str(update.message))}', reply_markup=reply_markup)
-
 
 
 def get_video(update, context):
@@ -171,6 +196,7 @@ def main():
 
     updater.start_polling()
     updater.idle()
+
 
 if __name__ == '__main__':
     main()
