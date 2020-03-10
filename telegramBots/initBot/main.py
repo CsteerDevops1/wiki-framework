@@ -20,11 +20,30 @@ document_info = ""
 def start(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
 
+def help(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             text="Command /help - show bot commands\n"
+                                  "Command /search - 'name of object to search in database' ")
+
+def search(update, context):
+    # print(update.message.text)
+    caption = update.message.text[8:]
+    # id = search_file(caption)
+    print(id)
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=f"Searching:\n"
+             f"{str(caption)}"
+    )
+    # f = open(f"photos/rowing.jpg", "wb")
+    # context.bot.send_photo(
+    #     chat_id=update.effective_chat.id,
+    #     photo=f
+    # )
+    # f.close()
+
 
 def echo(update, context):
-    global photo_info
-    photo_info = str(update.message)
-    # print(photo_info)
     context.bot.send_message(
         chat_id=update.effective_chat.id,
         text=f"Your message is:\n"
@@ -126,6 +145,12 @@ def main():
 
     start_handler = CommandHandler('start', start)
     dispatcher.add_handler(start_handler)
+
+    help_handler = CommandHandler('help', help)
+    dispatcher.add_handler(help_handler)
+
+    search_handler = CommandHandler('search', search)
+    dispatcher.add_handler(search_handler)
 
     echo_handler = MessageHandler(Filters.text, echo)
     dispatcher.add_handler(echo_handler)

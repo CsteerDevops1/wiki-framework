@@ -2,11 +2,37 @@ import json
 import requests
 
 from telegramBots.initBot.config import TG_TOKEN
+from telegramBots.media.config import *
+
+
+def check_the_file_size():
+    pass
+
+
+# def search_file(description):
+#     res = requests.get(ADDRESS, params={"description": description})
+#     my_dict = eval((res.content))
+#     attachments = my_dict[0]["attachments"][0]["content_data"]
+#     content_data = bytes_from_str(attachments)
+#     id = my_dict[0]["_id"]
+#     # with open(f"photos/{id}", "wb") as file:
+#     #     file.write(content_data)
+#
+#     return id
+
+
+def send_file_through_api(json_file):
+    res = requests.post(ADDRESS, data=json.dumps(json_file),
+                        headers={'Content-Type': 'application/json', "accept": "application/json", })
+    created_id = json.loads(res.text).get("_id", None)
+    code = res.status_code
+    print("POST : ", f" Code : {code}" " _id : ", created_id)
 
 
 def show_photo_info(response):
     largest = {}
     dct_info = eval(response)
+    print("Photo info ", dct_info)
     if "photo" in dct_info:
         largest = dct_info["photo"][-1:]
     else:
@@ -16,7 +42,8 @@ def show_photo_info(response):
     ans = f"I received photo \n" \
           f"Width: {largest[0]['width']}\n" \
           f"Height: {largest[0]['height']}\n" \
-          f"Size: {(largest[0]['file_size'] / 1024):.{2}f} Kb\n"
+          f"Size: {(largest[0]['file_size'] / 1024):.{2}f} Kb\n" \
+          f"Caption: {dct_info['caption']}"
     return ans
 
 
@@ -36,9 +63,15 @@ def save_pthoto(response):
         file_path = dict["result"]["file_path"]
         _name = str(file_path).split("/")[1]
         answ = requests.get(f"https://api.telegram.org/file/bot{TG_TOKEN}/{file_path}")
-        with open(f"photos/{_name}", "wb") as out:
-            out.write(answ.content)
-        print(f"File {_name} is saved")
+        EXAMPLE_DOC["name"] = _name
+        EXAMPLE_DOC["description"] = dct_info["caption"]
+        image_bytes = answ.content
+        EXAMPLE_DOC["attachments"] = [{"content_type": "image/jpg", "content_data": bytes_to_str(image_bytes)}]
+        # save photo in mongodb through API
+        send_file_through_api(EXAMPLE_DOC)
+    # with open(f"photos/{_name}", "wb") as out:
+    #     out.write(answ.content)
+    # print(f"File {_name} is saved")
     except:
         print("ERROR: Can not connect to the server, use a VPN to resolve problem. Can't save the photo")
 
@@ -78,11 +111,16 @@ def save_video(response):
         file_path = dict["result"]["file_path"]
         _name = str(file_path).split("/")[1]
         answ = requests.get(f"https://api.telegram.org/file/bot{TG_TOKEN}/{file_path}")
-        with open(f"videos/{_name}", "wb") as out:
-            out.write(answ.content)
-        print(f"File {_name} is saved")
+        EXAMPLE_DOC["name"] = _name
+        video_bytes = answ.content
+        EXAMPLE_DOC["attachments"] = [{"content_type": "video/mp4", "content_data": bytes_to_str(video_bytes)}]
+        send_file_through_api(EXAMPLE_DOC)
+        # with open(f"videos/{_name}", "wb") as out:
+        #     out.write(answ.content)
+        # print(f"File {_name} is saved")
     except:
         print("ERROR: Can not connect to the server, use a VPN to resolve problem. Can't save the video")
+
 
 def show_audio_info(response):
     largest = {}
@@ -116,11 +154,13 @@ def save_audio(response):
         file_path = dict["result"]["file_path"]
         _name = str(file_path).split("/")[1]
         answ = requests.get(f"https://api.telegram.org/file/bot{TG_TOKEN}/{file_path}")
-        with open(f"music/{_name}", "wb") as out:
-            out.write(answ.content)
-        print(f"File {_name} is saved")
+        EXAMPLE_DOC["name"] = _name
+        audio_bytes = answ.content
+        EXAMPLE_DOC["attachments"] = [{"content_type": "audio/mp3", "content_data": bytes_to_str(audio_bytes)}]
+        send_file_through_api(EXAMPLE_DOC)
     except:
         print("ERROR: Can not connect to the server, use a VPN to resolve problem. Can't save the document")
+
 
 def show_document_info(response):
     largest = {}
@@ -153,9 +193,9 @@ def save_document(response):
         file_path = dict["result"]["file_path"]
         _name = str(file_path).split("/")[1]
         answ = requests.get(f"https://api.telegram.org/file/bot{TG_TOKEN}/{file_path}")
-        with open(f"document/{_name}", "wb") as out:
-            out.write(answ.content)
-        print(f"File {_name} is saved")
+        # EXAMPLE_DOC["name"] = _name
+        # audio_bytes = answ.content
+        # EXAMPLE_DOC["attachments"] = [{"content_type": "doc/doc", "content_data": bytes_to_str(audio_bytes)}]
+        # send_file_through_api(EXAMPLE_DOC)
     except:
         print("ERROR: Can not connect to the server, use a VPN to resolve problem. Can't save the document")
-
