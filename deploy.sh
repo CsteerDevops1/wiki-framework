@@ -99,7 +99,12 @@ cd ../
 #---------------------------- STARTING TELEGRAM-BOT SERVICE ----------------------------
 
 
-if ! [ -x "$(command python /telegramBots/initBot/main.py)"]; then
-  echo 'Error: empty TOKEN in file /telegramBots/initBot/config.py'
+if ! [ -x "$(command - v python3 /telegramBots/initBot/main.py)"]; then
+  echo 'Error: python is not found '
+  apt update
+  apt install python3.7
 fi
-python /telegramBots/initBot/main.py
+pip install --upgrade pip
+pip install -r requirements.txt
+
+python3 /telegramBots/initBot/main.py
