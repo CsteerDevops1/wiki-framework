@@ -28,7 +28,7 @@ if ! [ -x "$(command -v docker)" ]; then
   if ! getent group docker > /dev/null 2>&1; then
     sudo groupadd docker
   fi
-  if ! groups | grep docker &> /dev/null; then 
+  if ! groups | grep docker &> /dev/null; then
     sudo usermod -aG docker $USER
     # newgrp docker # logins in new console => BAD
   fi
@@ -64,7 +64,7 @@ cd ../
 #---------------------------- STARTING CORE SERVICE ----------------------------
 if [ -d "$PROJECT_DIR/coreService/data/db" ]; then
     :
-else 
+else
     echo "Creating $PROJECT_DIR/coreService/data/db folder"
     mkdir $PROJECT_DIR/coreService/data
     mkdir $PROJECT_DIR/coreService/data/db
@@ -78,13 +78,23 @@ export GID=${GID}
 
 # ./docker-compose -f $PROJECT_DIR/coreService/docker-compose.yml up --build -d
 # don't use sudo if it's unnecessary
-if ! groups | grep docker &> /dev/null; then 
- sudo ./docker-compose -f coreService/docker-compose.yml up --build -d
+if ! groups | grep docker &> /dev/null; then
+ sudo ./docker-compose -f ./docker-compose.yml up --build -d
 else
- ./docker-compose -f coreService/docker-compose.yml up --build -d
-fi 
+ docker-compose -f ./docker-compose.yml up --build -d
+fi
 
 #---------------------------- STARTING WEB SERVICE ----------------------------
+if ! [ -x "$(command -v npm)" ]; then
+  echo 'Error: npm is not installed.' >&2
+  echo 'Installing npm'
+  sudo apt install npm -y
+fi
+
+cd ./web
+npm install
+sudo npm run build
+cd ../
 
 #---------------------------- STARTING TELEGRAM-BOT SERVICE ----------------------------
 
