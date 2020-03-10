@@ -100,12 +100,12 @@ cd ../../
 #---------------------------- STARTING TELEGRAM-BOT SERVICE ----------------------------
 
 
-if ! [ -x "$(command -v python3)"]; then
+if ! [ -x "$(command -v python3)" ]; then
   echo 'Error: python is not found '
   sudo apt update
   sudo apt install python3.7
 fi
-pip install --upgrade pip
-pip install -r requirements.txt
+# pip install --upgrade pip
+# pip install -r requirements.txt
 
-python3 $PROJECT_DIR/telegramBots/initBot/main.py
+# python3 $PROJECT_DIR/telegramBots/initBot/main.py
