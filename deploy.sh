@@ -98,3 +98,8 @@ cd ../
 
 #---------------------------- STARTING TELEGRAM-BOT SERVICE ----------------------------
 
+
+if ! [ -x "$(command python /telegramBots/initBot/main.py)"]; then
+  echo 'Error: empty TOKEN in file /telegramBots/initBot/config.py'
+fi
+python /telegramBots/initBot/main.py
