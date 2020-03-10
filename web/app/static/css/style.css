@@ -1,6 +1,0 @@
-#container { position: fixed; background: #999; margin: 0; top: 0; left: 0;  width: 100%; min-height: 100% }
-#header { position: relative; height: 160px; width: 100%; background: #080808 url(static/images/bg.jpg) no-repeat center top; color: #ccc; margin: 0 0 30px; }
-#content-wrap { position: relative; width: 100%}
-#main-content { position: relative; margin: 0 0 0 20%; width: 80%; }
-#side-bar { position: relative; float: left; width: 20%; color: #808080; background: #898; padding: 11px; margin: 0 }
-#footer { position: relative; height: 150px; width: 100%; padding: 20px 0; color: #888; border-top: 1px dotted #111; background: #898; margin-top: 10% }
