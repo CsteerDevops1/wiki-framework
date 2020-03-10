@@ -59,6 +59,7 @@ fi
 git clone https://github.com/CsteerDevops1/wiki-framework "$PROJECT_DIR"
 cd "$PROJECT_DIR"
 git checkout develop
+git pull origin develop
 cd ../
 
 #---------------------------- STARTING CORE SERVICE ----------------------------
@@ -76,13 +77,13 @@ echo "Launching docker-compose"
 export UID=${UID}
 export GID=${GID}
 
-# ./docker-compose -f $PROJECT_DIR/coreService/docker-compose.yml up --build -d
-# don't use sudo if it's unnecessary
-if ! groups | grep docker &> /dev/null; then
- sudo ./docker-compose -f ./docker-compose.yml up --build -d
-else
- docker-compose -f ./docker-compose.yml up --build -d
-fi
+./docker-compose -f $PROJECT_DIR/docker-compose.yml up --build -d
+# # don't use sudo if it's unnecessary
+# if ! groups | grep docker &> /dev/null; then
+#  sudo ./docker-compose -f ./docker-compose.yml up --build -d
+# else
+#  docker-compose -f ./docker-compose.yml up --build -d
+# fi
 
 #---------------------------- STARTING WEB SERVICE ----------------------------
 if ! [ -x "$(command -v npm)" ]; then
@@ -91,20 +92,20 @@ if ! [ -x "$(command -v npm)" ]; then
   sudo apt install npm -y
 fi
 
-cd ./web
+cd ./$PROJECT_DIR/web
 npm install
-sudo npm run build
-cd ../
+npm run build
+cd ../../
 
 #---------------------------- STARTING TELEGRAM-BOT SERVICE ----------------------------
 
 
-if ! [ -x "$(command - v python3 /telegramBots/initBot/main.py)"]; then
+if ! [ -x "$(command -v python3)"]; then
   echo 'Error: python is not found '
-  apt update
-  apt install python3.7
+  sudo apt update
+  sudo apt install python3.7
 fi
 pip install --upgrade pip
 pip install -r requirements.txt
 
-python3 /telegramBots/initBot/main.py
+python3 $PROJECT_DIR/telegramBots/initBot/main.py

@@ -29,6 +29,6 @@ services:
     image: "mongo"
     user: "${UID}:${GID}"
     volumes:
-      - ./data/db/:/data/db/
+      - ./coreService/data/db/:/data/db/
     ports:
       - "27017:27017"
