@@ -28,6 +28,7 @@ services:
   mongo:
     image: "mongo"
     user: "${UID}:${GID}"
+    container_name: "mongodb_container"
     volumes:
       - ./coreService/data/db/:/data/db/
     ports:
