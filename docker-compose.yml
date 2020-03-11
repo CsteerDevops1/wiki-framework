@@ -3,15 +3,23 @@ services:
   web:
     image: nginx
     volumes:
-      - ./web/build:/var/www
-      - ./web/build:/usr/share/nginx/html
+      - ./web:/var/www
       - ./web/default.conf:/etc/nginx/conf.d/default.conf
     ports:
       - "8080:80"
     environment:
       - NGINX_HOST=localhost
       - NGINX_PORT=80
-    command: /bin/bash -c "rm -rf /usr/share/nginx/html/* && exec nginx -g 'daemon off;'"
+    command: >
+      /bin/bash -c "rm -rf /usr/share/nginx/html/* && 
+      apt-get update &&
+      apt-get install npm -y &&
+      cd /var/www &&
+      npm install &&
+      npm install react-scripts &&
+      npm run build &&
+      cp -R /var/www/build/* /usr/share/nginx/html &&
+      exec nginx -g 'daemon off;'"
     depends_on:
       - flask
   flask:
@@ -33,3 +41,8 @@ services:
       - ./coreService/data/db/:/data/db/
     ports:
       - "27017:27017"
+  TG_userBot:
+    restart: always
+    image: "userBot"
+    build: ./telegramBots/userBot/
+    container_name: "userBot"
