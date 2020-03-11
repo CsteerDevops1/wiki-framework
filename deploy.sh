@@ -84,28 +84,3 @@ export GID=${GID}
 # else
 #  docker-compose -f ./docker-compose.yml up --build -d
 # fi
-
-#---------------------------- STARTING WEB SERVICE ----------------------------
-if ! [ -x "$(command -v npm)" ]; then
-  echo 'Error: npm is not installed.' >&2
-  echo 'Installing npm'
-  sudo apt install npm -y
-fi
-
-cd ./$PROJECT_DIR/web
-npm install
-npm run build
-cd ../../
-
-#---------------------------- STARTING TELEGRAM-BOT SERVICE ----------------------------
-
-
-if ! [ -x "$(command -v python3)" ]; then
-  echo 'Error: python is not found '
-  sudo apt update
-  sudo apt install python3.7
-fi
-# pip install --upgrade pip
-# pip install -r requirements.txt
-
-# python3 $PROJECT_DIR/telegramBots/initBot/main.py
