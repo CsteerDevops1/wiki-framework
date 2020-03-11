@@ -148,13 +148,18 @@ def save_file(file_id, dict_info, type):
         EXAMPLE_DOC["description"] = dict_info["caption"]
     video_bytes = answer.content
     EXAMPLE_DOC["attachments"] = [{"content_type": type + "/mp4", "content_data": bytes_to_str(video_bytes)}]
-    with open(f"../../coreService/tests/content/{type}s/{_name}", "wb") as out:
-        out.write(answer.content)
-    print(f"File {_name} is saved")
     if not send_file_through_api(EXAMPLE_DOC):
-        os.remove(f"../../coreService/tests/content/{type}s/{_name}")
         return False
-    return True
+    try:
+        with open(f"../../coreService/tests/content/{type}s/{_name}", "wb") as out:
+            out.write(answer.content)
+            print(f"File {_name} is saved")
+            return True
+    except:
+        print("No such file or directory")
+
+
+
 
 
 
