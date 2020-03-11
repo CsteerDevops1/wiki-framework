@@ -63,7 +63,7 @@
           "properties": {
             "content_type":{
               "type": "string",
-              "pattern" : "(image|audio|video)\/.+",
+              "pattern" : "(image|audio|video|application)\/.+",
               "description": "Content type in MIME-type format."
             },
             "content_data":{
