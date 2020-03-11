@@ -1,5 +1,6 @@
 import json
 import requests
+from urllib3.exceptions import MaxRetryError, NewConnectionError
 
 from telegramBots.initBot.config import TG_TOKEN
 from telegramBots.media.config import *
@@ -65,8 +66,10 @@ def save_photo(response):
     file_id = largest_photo[0]["file_id"]
     try:
         save_file(file_id, dict_info, 'image')
+        return True
     except Exception as exception:
-        print("ERROR: ", exception, ". Can't save the photo")
+        print("ERROR: ", exception, ". Can't save the video")
+        return False
 
 
 def show_video_info(response):
@@ -94,8 +97,10 @@ def save_video(response):
     file_id = largest_video["file_id"]
     try:
         save_file(file_id, dict_info, 'video')
+        return True
     except Exception as exception:
         print("ERROR: ", exception, ". Can't save the video")
+        return False
 
 
 def show_audio_info(response):
@@ -121,8 +126,10 @@ def save_audio(response):
     file_id = largest_audio["file_id"]
     try:
         save_file(file_id, dict_info, 'audio')
+        return True
     except Exception as exception:
         print("ERROR: ", exception, ". Can't save the audio")
+        return False
 
 
 def save_file(file_id, dict_info, type):

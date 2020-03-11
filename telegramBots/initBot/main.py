@@ -86,35 +86,56 @@ def button_save_files(update, context):
     query.edit_message_text(text="Selected option: {}".format(query.data))
     if query.data == "SavePhoto":
         print("Saving photo")
-        save_photo(photo_info)
-        context.bot.send_message(
-            chat_id=update.effective_chat.id,
-            text=f"Photo saved"
-        )
+        if save_photo(photo_info):
+            context.bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=f"Photo saved"
+            )
+        else:
+            context.bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=f"Photo didn't save"
+            )
         photo_info = ""
     if query.data == "SaveVideo":
         print("Saving video")
-        save_video(video_info)
-        context.bot.send_message(
-            chat_id=update.effective_chat.id,
-            text=f"Video saved"
-        )
+        if save_video(video_info):
+            context.bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=f"Video saved"
+            )
+        else:
+            context.bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=f"Video didn't save"
+            )
         video_info = ""
     if query.data == "SaveAudio":
         print("Saving audio")
-        save_audio(audio_info)
-        context.bot.send_message(
-            chat_id=update.effective_chat.id,
-            text=f"Audio saved"
-        )
+        if save_audio(audio_info):
+            context.bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=f"Audio saved"
+            )
+        else:
+            context.bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=f"Audio didn't save"
+            )
+
         audio_info = ""
     if query.data == "SaveDocument":
         print("Saving document")
-        save_document(document_info)
-        context.bot.send_message(
-            chat_id=update.effective_chat.id,
-            text=f"Document saved"
-        )
+        if save_document(document_info):
+            context.bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=f"Document saved"
+            )
+        else:
+            context.bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=f"Document didn't save"
+            )
         document_info = ""
     if query.data == "Cancel":
         context.bot.send_message(
