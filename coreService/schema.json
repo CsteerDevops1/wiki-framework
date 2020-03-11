@@ -14,12 +14,9 @@
         "type": "string",
         "description": "Name of stored object."
       },
-      "russian_names": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        },
-        "description": "Russian translations for name property."
+      "russian_name": {
+        "type": "string",
+        "description": "Russian translation for name field. Translator fill it automatically."
       },
       "synonyms": {
         "type": "array",
@@ -31,6 +28,10 @@
       "description": {
         "type": "string",
         "description": "Description of stored object."
+      },
+      "russian_description": {
+        "type": "string",
+        "description": "Russian translation for description field. Translator fill it automatically."
       },
       "relations": {
         "type": "array",

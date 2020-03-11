@@ -33,3 +33,9 @@ services:
       - ./coreService/data/db/:/data/db/
     ports:
       - "27017:27017"
+  translator:
+    image: "translator"
+    build: ./translator
+    container_name: "translator"
+    depends_on:
+      - flask
