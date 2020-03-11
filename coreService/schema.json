@@ -3,7 +3,7 @@
   {
     "title": "DB content item",
     "description": "A representation of each db element.",
-    "required": ["name", "description", "synonyms", "tags", "text", "relations"],
+    "required": ["name", "russian_name", "description", "russian_description", "synonyms", "tags", "text", "relations"],
     "bsonType": "object",
     "properties": {
       "_id": {
