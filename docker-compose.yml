@@ -48,8 +48,8 @@ services:
     container_name: "translator"
     depends_on:
       - flask
-  TG_userBot:
+  tg_userbot:
     restart: always
-    image: "userBot"
+    image: "userbot"
     build: ./telegramBots/userBot/
-    container_name: "userBot"
+    container_name: "user_bot"
