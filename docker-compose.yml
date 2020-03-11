@@ -2,7 +2,7 @@ version: "3"
 services:
   web:
     image: nginx
-    user: "${UID}:${GID}"
+    # user: "${UID}:${GID}"
     volumes:
       - ./web:/var/www
       - ./web/default.conf:/etc/nginx/conf.d/default.conf
