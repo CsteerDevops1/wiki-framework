@@ -1,5 +1,6 @@
 import json
 import requests
+from urllib3.exceptions import MaxRetryError, NewConnectionError
 
 from telegramBots.initBot.config import TG_TOKEN
 from telegramBots.media.config import *
@@ -22,6 +23,12 @@ def search_all_by_word(word):
             found_dict_list.append(file_dict)
     return found_dict_list
 
+def delete_by_id(id):
+    res = requests.get(ADDRESS, params={'_id': id})
+    result_list = eval(res.content)
+    print(result_list)
+    #ToDo
+    return True
 
 def if_word_in_dict(word, file_dict):
     for value in file_dict.values():
@@ -37,6 +44,7 @@ def send_file_through_api(json_file):
     created_id = json.loads(res.text).get("_id", None)
     code = res.status_code
     print("POST : ", f" Code : {code}" " _id : ", created_id)
+    return res.__bool__()
 
 
 def show_photo_info(response):
@@ -64,9 +72,10 @@ def save_photo(response):
         largest_photo = dict_info["photos"][-1:]
     file_id = largest_photo[0]["file_id"]
     try:
-        save_file(file_id, dict_info, 'image')
+        return save_file(file_id, dict_info, 'image')
     except Exception as exception:
-        print("ERROR: ", exception, ". Can't save the photo")
+        print("ERROR: ", exception, ". Can't save the video")
+        return False
 
 
 def show_video_info(response):
@@ -93,9 +102,10 @@ def save_video(response):
         largest_video = dict_info["videos"]
     file_id = largest_video["file_id"]
     try:
-        save_file(file_id, dict_info, 'video')
+        return save_file(file_id, dict_info, 'video')
     except Exception as exception:
         print("ERROR: ", exception, ". Can't save the video")
+        return False
 
 
 def show_audio_info(response):
@@ -120,9 +130,10 @@ def save_audio(response):
         largest_audio = dict_info["audios"]
     file_id = largest_audio["file_id"]
     try:
-        save_file(file_id, dict_info, 'audio')
+        return save_file(file_id, dict_info, 'audio')
     except Exception as exception:
         print("ERROR: ", exception, ". Can't save the audio")
+        return False
 
 
 def save_file(file_id, dict_info, type):
@@ -137,10 +148,19 @@ def save_file(file_id, dict_info, type):
         EXAMPLE_DOC["description"] = dict_info["caption"]
     video_bytes = answer.content
     EXAMPLE_DOC["attachments"] = [{"content_type": type + "/mp4", "content_data": bytes_to_str(video_bytes)}]
-    send_file_through_api(EXAMPLE_DOC)
-    with open(f"../../coreService/tests/content/{type}s/{_name}", "wb") as out:
-        out.write(answer.content)
-    print(f"File {_name} is saved")
+    if not send_file_through_api(EXAMPLE_DOC):
+        return False
+    try:
+        with open(f"../../coreService/tests/content/{type}s/{_name}", "wb") as out:
+            out.write(answer.content)
+            print(f"File {_name} is saved")
+            return True
+    except:
+        print("No such file or directory")
+
+
+
+
 
 
 def show_document_info(response):
