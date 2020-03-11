@@ -1,6 +1,5 @@
 import json
 import requests
-from urllib3.exceptions import MaxRetryError, NewConnectionError
 
 from telegramBots.initBot.config import TG_TOKEN
 from telegramBots.media.config import *
@@ -13,6 +12,8 @@ def check_the_file_size():
 def search_all_by_word(word):
     res = requests.get(ADDRESS, params={})
     result_list = eval(res.content)
+    if word == "*":
+        return result_list
     found_dict_list = []
     if word == '':
         return []
@@ -23,12 +24,19 @@ def search_all_by_word(word):
             found_dict_list.append(file_dict)
     return found_dict_list
 
+
 def delete_by_id(id):
-    res = requests.get(ADDRESS, params={'_id': id})
-    result_list = eval(res.content)
-    print(result_list)
-    #ToDo
-    return True
+    try:
+        res = requests.get(ADDRESS, params={'_id': id})
+        result_name = eval(res.content)[0]['name']
+        result_type = eval(res.content)[0]["attachments"][0]["content_type"].split('/')[0]
+        requests.delete(ADDRESS, params={'_id': id})
+        os.remove(f"../../coreService/tests/content/{result_type}s/{result_name}")
+        print("Delete successfully")
+        return True
+    except:
+        return False
+
 
 def if_word_in_dict(word, file_dict):
     for value in file_dict.values():
@@ -157,10 +165,6 @@ def save_file(file_id, dict_info, type):
             return True
     except:
         print("No such file or directory")
-
-
-
-
 
 
 def show_document_info(response):
