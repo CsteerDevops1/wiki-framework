@@ -1,0 +1,22 @@
+:root{
+  --color-1: #07689f;
+  --color-2: #a2d5f2;
+  --color-3: #fafafa;
+  --color-4: #ff7e67;
+  --font-1: 'Open Sans', sans-serif;
+  --font-2: 'Russo One', sans-serif;
+}
+
+* {margin: 0; padding: 0}
+
+body {
+  font-family: var(--font-1);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--color-1);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
