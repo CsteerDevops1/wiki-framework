@@ -1,0 +1,4 @@
+requests==2.23.0
+aiogram==2.6.1
+aiohttp==3.6.2
+python-dotenv==0.12.0
