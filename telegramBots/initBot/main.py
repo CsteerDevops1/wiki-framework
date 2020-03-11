@@ -31,6 +31,11 @@ def search(update, context):
              f"{str(caption)}")
     found_dict_list = search_all_by_word(str(caption))
     for file_dict in found_dict_list:
+        context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=f"Title: {file_dict['name']}\n"
+                 f"Description: {file_dict['description']}\n"
+                 f"Id: {file_dict['_id']}\n")
         if file_dict["attachments"][0]["content_type"].split('/')[0] == 'image':
             send_photo_from_dict(file_dict, context, update)
         elif file_dict["attachments"][0]["content_type"].split('/')[0] == 'audio':
@@ -38,6 +43,15 @@ def search(update, context):
         elif file_dict["attachments"][0]["content_type"].split('/')[0] == 'video':
             send_video_from_dict(file_dict, context, update)
 
+
+def delete_id(update, context):
+    caption = update.message.text[10:]
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=f"Deleting:\n"
+             f"{str(caption)}")
+    result = delete_by_id(caption)
+    #ToDo
 
 def send_photo_from_dict(photo_dict, context, update):
     try:
@@ -94,7 +108,7 @@ def button_save_files(update, context):
         else:
             context.bot.send_message(
                 chat_id=update.effective_chat.id,
-                text=f"Photo didn't save"
+                text=f"Photo wasn't saved"
             )
         photo_info = ""
     if query.data == "SaveVideo":
@@ -107,7 +121,7 @@ def button_save_files(update, context):
         else:
             context.bot.send_message(
                 chat_id=update.effective_chat.id,
-                text=f"Video didn't save"
+                text=f"Video wasn't saved"
             )
         video_info = ""
     if query.data == "SaveAudio":
@@ -120,7 +134,7 @@ def button_save_files(update, context):
         else:
             context.bot.send_message(
                 chat_id=update.effective_chat.id,
-                text=f"Audio didn't save"
+                text=f"Audio wasn't saved"
             )
 
         audio_info = ""
@@ -134,13 +148,13 @@ def button_save_files(update, context):
         else:
             context.bot.send_message(
                 chat_id=update.effective_chat.id,
-                text=f"Document didn't save"
+                text=f"Document wasn't saved"
             )
         document_info = ""
     if query.data == "Cancel":
         context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text=f"File isn't saved"
+            text=f"File wasn't saved"
         )
 
 
@@ -197,6 +211,9 @@ def main():
 
     search_handler = CommandHandler('search', search)
     dispatcher.add_handler(search_handler)
+
+    delete_by_id_handler = CommandHandler('delete_id', delete_id)
+    dispatcher.add_handler(delete_by_id_handler)
 
     echo_handler = MessageHandler(Filters.text, echo)
     dispatcher.add_handler(echo_handler)
