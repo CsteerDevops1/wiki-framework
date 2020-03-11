@@ -2,9 +2,12 @@ import requests
 import json
 import time
 from itertools import cycle
+import os
 
-API_KEY = 'trnsl.1.1.20200309T121046Z.10fd25429d4264e1.1b1d8883b0e564975a110cb11b558d5d1e1aa68b'
-API_ADDRESS = 'http://192.168.0.111:5000/api/wiki'
+
+API_KEY = os.getenv('API_KEY')
+API_ADDRESS = os.getenv('API_ADDRESS')
+
 
 def translate(word, lang="en-ru"):
     """Return a translation the word given as argument"""
