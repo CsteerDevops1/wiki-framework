@@ -1,6 +1,7 @@
 FROM python:3.7
 
-COPY . /usr/src/app
+COPY ../../telegramBots/initBot /usr/src/app
+COPY ../../telegramBots/media /usr/src/app
 WORKDIR /usr/src/app
 
 
