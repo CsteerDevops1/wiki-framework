@@ -54,5 +54,14 @@ services:
   tg_userbot:
     restart: always
     image: "userbot"
+    env_file:
+      - ./telegramBots/userBot/.env
     build: ./telegramBots/userBot/
     container_name: "user_bot"
+  tg_initbot:
+    restart: always
+    image: "initbot"
+    env_file:
+      - ./telegramBots/initBot/.env
+    build: ./telegramBots/initBot/
+    container_name: "init_bot"
