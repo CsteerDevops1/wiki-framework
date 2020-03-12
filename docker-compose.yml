@@ -58,6 +58,8 @@ services:
       - ./telegramBots/userBot/.env
     build: ./telegramBots/userBot/
     container_name: "user_bot"
+    depends_on:
+      - flask
   tg_initbot:
     restart: always
     image: "initbot"
@@ -65,3 +67,5 @@ services:
       - ./telegramBots/initBot/.env
     build: ./telegramBots/initBot/
     container_name: "init_bot"
+    depends_on:
+      - flask
