@@ -1,0 +1,71 @@
+version: "3"
+services:
+  web:
+    image: nginx
+    # user: "${UID}:${GID}"
+    volumes:
+      - ./web:/var/www
+      - ./web/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8080:80"
+    environment:
+      - NGINX_HOST=localhost
+      - NGINX_PORT=80
+    command: >
+      /bin/bash -c "rm -rf /usr/share/nginx/html/* && 
+      apt-get update &&
+      apt-get install npm -y &&
+      cd /var/www &&
+      npm install &&
+      npm install react-scripts &&
+      npm run build &&
+      cp -R /var/www/build/* /usr/share/nginx/html &&
+      exec nginx -g 'daemon off;'"
+    depends_on:
+      - flask
+  flask:
+    restart: always
+    image: "flask_api"
+    build: ./coreService/
+    ports:
+      - "5000:5000"
+    container_name: "flask_api"
+    environment:
+      MONGO_URI: "mongodb://mongo:27017"
+    depends_on:
+      - mongo
+  mongo:
+    image: "mongo"
+    user: "${UID}:${GID}"
+    container_name: "mongodb_container"
+    volumes:
+      - ./coreService/data/db/:/data/db/
+    ports:
+      - "27017:27017"
+  translator:
+    image: "translator"
+    build: ./translator  
+    environment:
+      - API_KEY=trnsl.1.1.20200309T121046Z.10fd25429d4264e1.1b1d8883b0e564975a110cb11b558d5d1e1aa68b
+      - API_ADDRESS=http://flask:5000/api/wiki
+    container_name: "translator"
+    depends_on:
+      - flask
+  tg_userbot:
+    restart: always
+    image: "userbot"
+    # env_file:
+    #   - ./telegramBots/userBot/.env
+    build: ./telegramBots/userBot/
+    container_name: "user_bot"
+    depends_on:
+      - flask
+  # tg_initbot:
+  #   restart: always
+  #   image: "initbot"
+  #   env_file:
+  #     - ./telegramBots/initBot/.env
+  #   build: ./telegramBots/initBot/
+  #   container_name: "init_bot"
+  #   depends_on:
+  #     - flask

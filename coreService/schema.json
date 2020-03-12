@@ -3,7 +3,7 @@
   {
     "title": "DB content item",
     "description": "A representation of each db element.",
-    "required": ["name", "description", "synonyms", "tags", "text", "relations"],
+    "required": ["name", "russian_name", "description", "russian_description", "synonyms", "tags", "text", "relations"],
     "bsonType": "object",
     "properties": {
       "_id": {
@@ -14,12 +14,9 @@
         "type": "string",
         "description": "Name of stored object."
       },
-      "russian_names": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        },
-        "description": "Russian translations for name property."
+      "russian_name": {
+        "type": "string",
+        "description": "Russian translation for name field. Translator fill it automatically."
       },
       "synonyms": {
         "type": "array",
@@ -31,6 +28,10 @@
       "description": {
         "type": "string",
         "description": "Description of stored object."
+      },
+      "russian_description": {
+        "type": "string",
+        "description": "Russian translation for description field. Translator fill it automatically."
       },
       "relations": {
         "type": "array",
@@ -62,7 +63,7 @@
           "properties": {
             "content_type":{
               "type": "string",
-              "pattern" : "(image|audio|video)\/.+",
+              "pattern" : "(image|audio|video|application)\/.+",
               "description": "Content type in MIME-type format."
             },
             "content_data":{

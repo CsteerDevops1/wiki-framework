@@ -10,7 +10,9 @@ ADDRESS = f"http://{HOST}:{PORT}{PATH}"
 
 EXAMPLE_DOC = {
             "name" : "123",
+            "russian_name" : "",
             "description" : "val_post1",
+            "russian_description" : "",
             "tags" : ["fds", "123"],
             "text" : "text",
             # "creation_date" : str(datetime.utcnow()),

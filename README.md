@@ -26,6 +26,12 @@ The current status of the project can be viewed in "Projects" > "Framework". The
 Write current errors and problems in isseus.
 
 
+## Deployment
+
+Run deploy.sh \<project folder> to deploy on new machine
+
+deploy.sh clones project into \<project folder> , install git/docker/docker-compose and then run development version 
+
 
 ## coreService
 
@@ -38,4 +44,8 @@ Fillable database in wiki format. The database fill interface is the telegram bo
 
 Technologies: python3.7, telegram API, flask, nginx, wsgi, MongoDB.
 
-Simple scheme of project https://miro.com/app/board/o9J_kwo6HM0=/
+Simple scheme of project https://miro.com/app/board/o9J_kvRTGog=/
+
+## Deployment
+
+Use «docker-compose up --build» for run the application
