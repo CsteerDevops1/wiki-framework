@@ -3,6 +3,7 @@ services:
   web:
     image: nginx
     # user: "${UID}:${GID}"
+    container_name: "web_ui"
     volumes:
       - ./web:/var/www
       - ./web/default.conf:/etc/nginx/conf.d/default.conf
