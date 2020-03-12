@@ -65,7 +65,7 @@ services:
     image: "initbot"
     env_file:
       - ./telegramBots/initBot/.env
-    build: ./telegramBots/initBot/
+    build: ./
     container_name: "init_bot"
     depends_on:
       - flask
