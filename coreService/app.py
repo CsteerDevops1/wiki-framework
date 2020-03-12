@@ -31,7 +31,10 @@ schema_model = api.schema_model('model', schema['$jsonSchema']) # used for valid
 query_params = {'_id' : "Object id",
                 'name': "Name of stored object.",
                 'russian_name': "Russian translation for name property.",
-                'creation_date': 'The date of creation object in ISO format.',}
+                'creation_date': 'The date of creation object in ISO format.',
+                'description': 'English description of word, better use it with regex on.',
+                'regex': 'Boolean, determines whether to use regular expressions in search query,\
+                        can be True or False, default False. Search is case insensitive. Wrong patterns are ignored.'}
 
 # ---------------------------- SETUP SECTION ------------------------------------------------------------------------
 
@@ -43,11 +46,20 @@ class WikiPage(Resource):
     @api.param('X-Fields', _in="header", description="Header to specify returning fields in csv.")
     @api.response(200, 'Success')
     def get(self):
+        # extract all the given params in request
         if request.headers.get('X-Fields') is not None:
             projection = [x.strip() for x in request.headers.get('X-Fields').split(",")]
         else:
             projection = None
-        resp = DAO.get(dict(request.args), projection)
+        filter = dict(request.args)
+
+        # set regex search flag
+        regex_flag = filter.get("regex", False)
+        if regex_flag is not False: # cast string representation to bool type
+            regex_flag = regex_flag.lower() in ["true", "1", "yes", "y"]
+            del filter["regex"]
+
+        resp = DAO.get(filter, projection, regex_flag)
         return resp
 
 
