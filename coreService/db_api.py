@@ -7,6 +7,7 @@ import os
 from dotenv import load_dotenv
 from bson.objectid import ObjectId
 import base64
+import re
 
 
 # doesn't override any env variables, just set them from .env file if they don't exist
@@ -113,15 +114,26 @@ class WikiPageDAO:
                     item["content_data"] = bytes_to_str(item["content_data"])
 
 
-    def get(self, filter : dict = None, projection : list = None) -> list:
+    def get(self, filter : dict = None, projection : list = None, regex : bool = False) -> list:
         '''
         filter : an object specifying elements which must be present for a document
         to be included in the result set, if None - returns whole collection
+
         projection (optional) : a list of field names that should be returned in the result set
+
+        regex (optional, default is False) : flag which determines whether to use regular
+        expressions in search query, search is case insensitive. Wrong patterns are ignored.
 
         returns a list of documents
         '''
         self._deserialize(filter)
+        if regex:
+            for key in list(filter.keys()):
+                try: # use try in case of invalid regex pattern
+                    filter[key] = re.compile(filter[key], re.IGNORECASE)
+                except:
+                    print(f"Regex error with '{filter[key]}', can't compile")
+                    del filter[key]
         result = list(self.collection.find(filter, projection=projection))
         # serialize db results
         for item in result:
