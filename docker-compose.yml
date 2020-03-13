@@ -53,7 +53,7 @@ services:
     depends_on:
       - flask
   tg_userbot:
-    restart: always
+    # restart: always
     image: "userbot"
     env_file:
       - ./telegramBots/userBot/.env
@@ -62,7 +62,7 @@ services:
     depends_on:
       - flask
   tg_initbot:
-    restart: always
+    # restart: always
     image: "initbot"
     env_file:
       - ./telegramBots/initBot/.env
