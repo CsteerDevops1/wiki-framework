@@ -19,7 +19,9 @@ def start(update, context):
 def help(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text="Command /help - show bot commands\n"
-                                  "Command /search - 'name of object to search in database' ")
+                                  "Command /search - 'name of object to search in database (\"*\" to show all)' \n"
+                                  "Command /delete_id - 'id to delete file by id' \n"
+                             )
 
 
 def search(update, context):
@@ -45,13 +47,22 @@ def search(update, context):
 
 
 def delete_id(update, context):
-    caption = update.message.text[10:]
+    caption = update.message.text[11:]
     context.bot.send_message(
         chat_id=update.effective_chat.id,
         text=f"Deleting:\n"
              f"{str(caption)}")
-    result = delete_by_id(caption)
-    #ToDo
+    if delete_by_id(caption):
+        context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=f"Deleting:\n"
+                 f"Delete successfully")
+    else:
+        context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=f"Deleting:\n"
+                 f"Delete failed")
+
 
 def send_photo_from_dict(photo_dict, context, update):
     try:
