@@ -61,12 +61,11 @@ services:
     container_name: "user_bot"
     depends_on:
       - flask
-  # tg_initbot:
-  #   restart: always
-  #   image: "initbot"
-  #   env_file:
-  #     - ./telegramBots/initBot/.env
-  #   build: ./telegramBots/initBot/
-  #   container_name: "init_bot"
-  #   depends_on:
-  #     - flask
+  tg_initbot:
+     restart: always
+     image: "initbot"
+     build: .
+     container_name: "init_bot"
+     depends_on:
+       - flask
+

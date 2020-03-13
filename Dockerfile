@@ -6,4 +6,4 @@ WORKDIR /usr/src/app
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
-RUN python telegramBots/initBot/main.py
+CMD python telegramBots/initBot/main.py
