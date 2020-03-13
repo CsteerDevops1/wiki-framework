@@ -9,6 +9,7 @@ import {
   Route
 } from "react-router-dom";
 import GetPage from "./Main/GET/GetPage";
+import PostPage from "./Main/POST/PostPage";
 
 function App() {
     return (
@@ -21,6 +22,9 @@ function App() {
                     </Route>
                     <Route path="/get">
                         <GetPage/>
+                    </Route>
+                    <Route path="/post">
+                        <PostPage/>
                     </Route>
                 </Switch>
             </Router>

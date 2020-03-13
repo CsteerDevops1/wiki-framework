@@ -1,25 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import '../Main.css';
 
-
-function GetPage() {
+function PostPage() {
     const [models, setModels] = useState(null);
     useEffect(() => {
-        let globName = window.location.hostname;
-        let apiUrl = "/api/wiki";
-
-        fetch(globName+":8080"+apiUrl)
+        fetch('http://localhost:8080/api/wiki')
             .then(response => response.json())
-            .then(data => setModels(data))
-            .catch((error) => {
-
-              });
+            .then(data => setModels(data));
     });
-
 
     return (
         <main>
-            <h1>Get all objects</h1>
+            <h1>Post an object</h1>
             <ul>
                 {(models != null) ? models.map((item, key) =>
                     <li>
@@ -33,4 +25,4 @@ function GetPage() {
     );
 }
 
-export default GetPage;
+export default PostPage;
