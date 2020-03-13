@@ -40,7 +40,7 @@ services:
     user: "${UID}:${GID}"
     container_name: "mongodb_container"
     volumes:
-      - ./coreService/data/db/:/data/db/
+      - ~/.volumes/mongo/data/db/:/data/db/
     ports:
       - "27017:27017"
   translator:
