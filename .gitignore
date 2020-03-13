@@ -13,7 +13,6 @@ pip-log.txt
 *.pyc
 build
 .idea
-coreService/data/
 *.info
 
 # Byte-compiled / optimized / DLL files
