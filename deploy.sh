@@ -63,12 +63,11 @@ git pull origin develop
 cd ../
 
 #---------------------------- STARTING CORE SERVICE ----------------------------
-if [ -d "$PROJECT_DIR/coreService/data/db" ]; then
+if [ -d "~/.volumes/mongo/data/db" ]; then
     :
 else
-    echo "Creating $PROJECT_DIR/coreService/data/db folder"
-    mkdir $PROJECT_DIR/coreService/data
-    mkdir $PROJECT_DIR/coreService/data/db
+    echo "Creating ~/.volumes/mongo/data/db folder"
+    mkdir -p ~/.volumes/mongo/data/db
 fi
 
 echo "Launching docker-compose"
