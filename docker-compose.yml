@@ -57,6 +57,9 @@ services:
     image: "userbot"
     env_file:
       - ./telegramBots/userBot/.env
+    environment:
+      - API_HOST=flask
+      - API_PORT=5000
     build: ./telegramBots/userBot/
     container_name: "user_bot"
     depends_on:
