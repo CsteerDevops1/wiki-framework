@@ -1,11 +1,10 @@
 import logging
 from telegram import Bot, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CallbackQueryHandler, CommandHandler, MessageHandler, Filters
-import os, sys
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir)), os.pardir)))
-from telegramBots.media.fileManager import *
-from telegramBots.initBot.config import TG_TOKEN
-from telegramBots.initBot.config import TG_API_URL
+from fileManager import *
+from config import TG_TOKEN
+from config import TG_API_URL
+
 
 # global variables keeps string information about telegram message
 photo_info = ""

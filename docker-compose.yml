@@ -40,7 +40,7 @@ services:
     user: "${UID}:${GID}"
     container_name: "mongodb_container"
     volumes:
-      - ./coreService/data/db/:/data/db/
+      - ~/.volumes/mongo/data/db/:/data/db/
     ports:
       - "27017:27017"
   translator:
@@ -62,11 +62,11 @@ services:
     depends_on:
       - flask
   tg_initbot:
-    # restart: always
-    image: "initbot"
-    env_file:
-      - ./telegramBots/initBot/.env
-    build: ./
-    container_name: "init_bot"
-    depends_on:
-      - flask
+     restart: always
+     image: "initbot"
+     build: ./telegramBots/initBot/
+     environment:
+       - ADDRESS=http://flask:5000/api/wiki
+     container_name: "init_bot"
+     depends_on:
+       - flask
