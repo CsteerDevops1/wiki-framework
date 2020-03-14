@@ -62,11 +62,13 @@ services:
     depends_on:
       - flask
   tg_initbot:
-     restart: always
-     image: "initbot"
-     build: ./telegramBots/initBot/
-     environment:
-       - ADDRESS=http://flask:5000/api/wiki
-     container_name: "init_bot"
-     depends_on:
-       - flask
+    restart: always
+    image: "initbot"
+    build: ./telegramBots/initBot/
+    env_file:
+      - ./telegramBots/initBot/.env
+    environment:
+      - ADDRESS=http://flask:5000/api/wiki
+    container_name: "init_bot"
+    depends_on:
+      - flask
