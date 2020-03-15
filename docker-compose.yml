@@ -1,27 +1,11 @@
 version: "3"
 services:
   web:
-    image: nginx
-    # user: "${UID}:${GID}"
+    image: web_ui
+    build: ./web/
     container_name: "web_ui"
-    volumes:
-      - ./web:/var/www
-      - ./web/default.conf:/etc/nginx/conf.d/default.conf
     ports:
       - "8080:80"
-    environment:
-      - NGINX_HOST=localhost
-      - NGINX_PORT=80
-    command: >
-      /bin/bash -c "rm -rf /usr/share/nginx/html/* && 
-      apt-get update &&
-      apt-get install npm -y &&
-      cd /var/www &&
-      npm install &&
-      npm install react-scripts &&
-      npm run build &&
-      cp -R /var/www/build/* /usr/share/nginx/html &&
-      exec nginx -g 'daemon off;'"
     depends_on:
       - flask
   flask:
