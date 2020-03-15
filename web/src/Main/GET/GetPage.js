@@ -19,7 +19,7 @@ function GetPage() {
         let globName = window.location.hostname;
         let apiUrl = "/api/wiki";
 
-        fetch("http://" + globName + ":5000" + apiUrl)
+        fetch("http://" + globName + ":5000" + apiUrl, {mode: 'no-cors'})
             .then(response => response.json())
             .then(data => formatAttachments(data))
             .then(data => setModels(data))
