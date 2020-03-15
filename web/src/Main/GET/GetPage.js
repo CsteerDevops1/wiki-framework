@@ -2,14 +2,26 @@ import React, {useEffect, useState} from 'react';
 import '../Main.css';
 
 
+function formatAttachments(data){
+    // doesn't work? to long content_data
+    data.map((item) => {
+        if (! typeof item.attachments === 'undefined'){
+            item.attachments.map((content) => {
+                content.content_data = "data:${content.content_type};base64," + content.content_data;
+        })}
+    })
+    return data;
+}
+
 function GetPage() {
     const [models, setModels] = useState(null);
     useEffect(() => {
         let globName = window.location.hostname;
         let apiUrl = "/api/wiki";
 
-        fetch(globName+":8080"+apiUrl)
+        fetch("http://" + globName + ":8080" + apiUrl)
             .then(response => response.json())
+            .then(data => formatAttachments(data))
             .then(data => setModels(data))
             .catch((error) => {
 
@@ -25,6 +37,12 @@ function GetPage() {
                     <li>
                         Название: <b>{item.name}</b><br/>
                         Описание: <b>{item.description}</b><br/>
+                        {
+                            (typeof item.attachments === 'undefined') ? "" :
+                                item.attachments.map((content, key) =>
+                                    <object data={content.content_data}></object>
+                                
+                        )}
                         <hr/>
                     </li>
                 ): ""}
