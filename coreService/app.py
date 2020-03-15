@@ -27,6 +27,14 @@ with open(SCHEMA_PATH, 'r') as schema_file:
 schema_model = api.schema_model('model', schema['$jsonSchema']) # used for validation
 
 
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+    return response
+
+
 # parametres which you should use in filters
 query_params = {'_id' : "Object id",
                 'name': "Name of stored object.",
