@@ -6,6 +6,6 @@
 .modelElement .tag{
     background: var(--color-1);
     color: var(--color-3);
-    padding: 5px;
+    padding: 0 5px;
     margin: 5px;
 }
