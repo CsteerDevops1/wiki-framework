@@ -1,31 +1,34 @@
 import React, {useEffect, useState} from 'react';
 import '../Main.css';
+import DatabaseModel from "../scheme/DatabaseModel";
+import ModelElement from "../items/ModelElement";
 
 
-function formatAttachments(data){
-    // doesn't work? to long content_data
-    data.map((item) => {
-        if (! typeof item.attachments === 'undefined'){
-            item.attachments.map((content) => {
-                content.content_data = "data:${content.content_type};base64," + content.content_data;
-        })}
-    })
-    return data;
+function getObjects(response) {
+    if (Number(response.length) !== 0){
+        let dbObjects = [];
+        response.forEach((element) => {
+            dbObjects.push(DatabaseModel.parseObject(element))
+        });
+        return dbObjects;
+    } else {
+        return [];
+    }
 }
 
 function GetPage() {
     const [models, setModels] = useState(null);
     useEffect(() => {
-        let globName = window.location.hostname;
+        // let globName = window.location.hostname;
+        let globName = "188.124.37.185";
         let apiUrl = "/api/wiki";
-
-        fetch("http://" + globName + ":5000" + apiUrl, {mode: 'no-cors'})
+        fetch("http://" + globName + ":5000" + apiUrl)
             .then(response => response.json())
-            .then(data => formatAttachments(data))
+            .then(response => getObjects(response))
             .then(data => setModels(data))
             .catch((error) => {
 
-              });
+            });
     });
 
 
@@ -33,20 +36,13 @@ function GetPage() {
         <main>
             <h1>Get all objects</h1>
             <ul>
-                {(models != null) ? models.map((item, key) =>
-                    <li>
-                        Название: <b>{item.name}</b><br/>
-                        Описание: <b>{item.description}</b><br/>
-                        {
-                            (typeof item.attachments === 'undefined') ? "" :
-                                item.attachments.map((content, key) =>
-                                    <object data={content.content_data}></object>
-                                
-                        )}
-                        <hr/>
+                {(models != null) ? models.map((item, key) => <li key={item._id}>
+                        <ModelElement model={item}/>
                     </li>
-                ): ""}
+                ) : "Ничего не найдено!"}
             </ul>
+
+
         </main>
     );
 }
