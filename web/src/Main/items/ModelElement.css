@@ -1,0 +1,11 @@
+.modelElement{
+    padding: 10px 0;
+    border-bottom: 2px dashed var(--color-1);
+}
+
+.modelElement .tag{
+    background: var(--color-1);
+    color: var(--color-3);
+    padding: 0 5px;
+    margin: 5px;
+}
