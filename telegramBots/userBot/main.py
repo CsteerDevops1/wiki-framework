@@ -105,6 +105,24 @@ async def find(message: types.Message):
             await reply_attachments(message, attachments)
 
 
+@dp.message_handler(commands=['find_id'])
+async def find_id(message: types.Message):
+    name = re.match(r'/find_id\s(\w+).*', message.text, flags=re.IGNORECASE).group(1)
+    ret = get(API_ADDRESS, params={'_id': name})
+    answer = json.loads(ret.text.encode("utf8"))
+    
+    if len(answer) == 0:
+        await message.answer('Nothing was found')
+    else:
+        answer, attachments = filter_attachments(answer[0])
+        prettified = json.dumps(answer, indent=2, ensure_ascii=False).encode('utf8').decode()
+        msg = f"*{answer['name'].capitalize()}*:\n"
+        msg += f"{answer['description']}"
+        await message.answer(f"{msg}", parse_mode='Markdown')
+        if attachments != None:
+            await reply_attachments(message, attachments)
+
+
 @dp.message_handler(commands=['list_all'])
 async def list_all(message: types.Message):
     ret = get(API_ADDRESS, headers={'X-Fields': '_id, name'})
