@@ -34,11 +34,11 @@ function ModelElement(props) {
                     <div>
                         {props.model.attachments.map((item, key) => {
                             if (item.content_type === "image/jpg") {
-                                return <img key={key} src={"data:image/png;base64," + item.content_data}/>
+                                return <img key={key} src={"data:image/png;base64," + item.content_data} alt={"Graphic!"}/>
                             } else if (item.content_type === "audio/mp4") {
-                                return <audio key={key} controls src={"data:audio/mp4;base64," + item.content_data} />
+                                return <audio width={"100%"} key={key} controls src={"data:audio/mp4;base64," + item.content_data} />
                             } else if (item.content_type === "video/mp4") {
-                                return <video key={key} controls>
+                                return <video width={"100%"} key={key} controls>
                                 	<source type={"video/mp4"} src={"data:video/mp4;base64," + item.content_data} />
                                 </video>
                             } else {
@@ -48,6 +48,11 @@ function ModelElement(props) {
                     </div>
                 ) :
                 (<p>Нет прикрепленных файлов</p>)}
+
+                <p>
+                    <i className={"material-icons icon-btn icon-btn__color-4"}>delete</i>
+                    <a href={"/put/" + props.model._id}><i className={"material-icons icon-btn icon-btn__color-1"}>edit</i></a>
+                </p>
 
         </div>
     );

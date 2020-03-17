@@ -12,3 +12,37 @@ main ul li {
     list-style: none;
     margin-left: 20px;
 }
+
+.link-btn{
+    text-decoration: none;
+    background: var(--color-4);
+    color: var(--color-3);
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    display: block;
+    text-align: center;
+    font-family: var(--font-2);
+}
+
+.icon-btn{
+    padding: 10px;
+    margin: 5px;
+    display: inline-flex;
+    border-radius: 50px;
+    color: var(--color-3);
+    cursor: pointer;
+    transition: 500ms;
+}
+
+.icon-btn:hover{
+    padding: 8px;
+}
+
+.icon-btn__color-1{
+    background: var(--color-1);
+}
+
+.icon-btn__color-4{
+    background: var(--color-4);
+}

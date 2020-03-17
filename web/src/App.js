@@ -4,12 +4,13 @@ import Footer from "./Footer/Footer";
 import Header from "./Header/Header";
 import Index from "./Main/Index";
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route
+    BrowserRouter as Router,
+    Switch,
+    Route
 } from "react-router-dom";
 import GetPage from "./Main/GET/GetPage";
 import PostPage from "./Main/POST/PostPage";
+import PutPage from "./Main/PUT/PutPage";
 
 function App() {
     return (
@@ -25,6 +26,12 @@ function App() {
                     </Route>
                     <Route path="/post">
                         <PostPage/>
+                    </Route>
+                    <Route path="/put/:id">
+                        <PutPage/>
+                    </Route>
+                     <Route path="/put">
+                        <PutPage/>
                     </Route>
                 </Switch>
             </Router>

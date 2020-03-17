@@ -1,17 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import '../Main.css';
 import './PostPage.css';
 import useForm from './useForm';
 
 
 function PostPage() {
-    const {inputs, handleInputChange, handleSubmit} = useForm();
-    // const [models, setModels] = useState(null);
-    // useEffect(() => {
-    //     fetch('http://localhost:8080/api/wiki')
-    //         .then(response => response.json())
-    //         .then(data => setModels(data));
-    // });
+    const {handleInputChange, handleSubmit} = useForm();
 
     return (
         <main>
