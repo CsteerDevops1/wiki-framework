@@ -1,9 +1,11 @@
 import logging
-from telegram import Bot, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import Bot, InlineKeyboardButton, InlineKeyboardMarkup, File
 from telegram.ext import Updater, CallbackQueryHandler, CommandHandler, MessageHandler, Filters
 from fileManager import *
+from apiConfig import bytes_from_str
 from config import TG_TOKEN
 from config import TG_API_URL
+from io import BytesIO
 
 
 # global variables keeps string information about telegram message
@@ -13,8 +15,13 @@ audio_info = ""
 document_info = ""
 
 
+def send_file_in_memory():
+    pass
+
+
 def start(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
+    context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!\n"
+                                                                    "Use command /help to know usability")
 
 
 def help(update, context):
@@ -66,33 +73,33 @@ def delete_id(update, context):
 
 
 def send_photo_from_dict(photo_dict, context, update):
-    try:
-        with open(f"../../coreService/tests/content/images/{photo_dict['name']}", "rb") as file:
-            context.bot.send_photo(
-                chat_id=update.effective_chat.id,
-                photo=file)
-    except FileNotFoundError:
-        print("No such file or directory")
+
+    photo_bytes_data = bytes_from_str(photo_dict["attachments"][0]["content_data"])
+    file = BytesIO()
+    file.write(photo_bytes_data)
+    file.seek(0)
+    context.bot.send_photo(
+        chat_id=update.effective_chat.id,
+        photo=file)
 
 
-def send_audio_from_dict(photo_dict, context, update):
-    try:
-        with open(f"../../coreService/tests/content/audios/{photo_dict['name']}", "rb") as file:
-            context.bot.send_audio(
-                chat_id=update.effective_chat.id,
-                audio=file)
-    except FileNotFoundError:
-        print("No such file or directory")
+def send_audio_from_dict(audio_dict, context, update):
+    audio_bytes_data = bytes_from_str(audio_dict["attachments"][0]["content_data"])
+    file = BytesIO()
+    file.write(audio_bytes_data)
+    file.seek(0)
+    context.bot.send_photo(
+        chat_id=update.effective_chat.id,
+        photo=file)
 
-
-def send_video_from_dict(photo_dict, context, update):
-    try:
-        with open(f"../../coreService/tests/content/videos/{photo_dict['name']}", "rb") as file:
-            context.bot.send_video(
-                chat_id=update.effective_chat.id,
-                video=file)
-    except FileNotFoundError:
-        print("No such file or directory")
+def send_video_from_dict(video_dict, context, update):
+    video_bytes_data = bytes_from_str(video_dict["attachments"][0]["content_data"])
+    file = BytesIO()
+    file.write(video_bytes_data)
+    file.seek(0)
+    context.bot.send_photo(
+        chat_id=update.effective_chat.id,
+        photo=file)
 
 
 def echo(update, context):
@@ -209,6 +216,7 @@ def get_document(update, context):
 
 
 def main():
+
     bot = Bot(token=TG_TOKEN, base_url=TG_API_URL)
     updater = Updater(token=TG_TOKEN, base_url=TG_API_URL, use_context=True)
     dispatcher = updater.dispatcher
