@@ -105,6 +105,14 @@ async def find(message: types.Message):
             await reply_attachments(message, attachments)
 
 
+@dp.message_handler(commands=['list_all'])
+async def list_all(message: types.Message):
+    ret = get(API_ADDRESS, headers={'X-Fields': '_id, name'})
+    answer: List[Dict] = json.loads(ret.text)
+    msg = '\n'.join([f"*{x['name']}*: `{x['_id']}`" for x in answer])
+    await message.answer(msg, parse_mode='Markdown')
+
+
 async def reply_attachments(message: types.Message, attachments: List[Dict]):
     for item in attachments:
         if re.match(r'image\/.*', item['content_type'], flags=re.IGNORECASE):
