@@ -97,7 +97,22 @@ async def find(message: types.Message):
     if len(answer) == 0:
         await message.answer('Nothing was found')
     else:
-        #TODO: rework to handle all answers in list
+        answer, attachments = filter_attachments(answer[0])
+        msg =  f"*{answer['name'].capitalize()}*:\n"
+        msg += f"{answer['description']}"
+        await message.answer(f"{msg}", parse_mode='Markdown')
+        if attachments != None:
+            await reply_attachments(message, attachments)
+
+
+@dp.message_handler(commands=['get_json'])
+async def get_json(message: types.Message):
+    name = re.match(r'/get_json\s(\w+).*', message.text, flags=re.IGNORECASE).group(1)
+    ret = get(API_ADDRESS, params={'name': name})
+    answer = json.loads(ret.text.encode("utf8"))
+    if len(answer) == 0:
+        await message.answer('Nothing was found')
+    else:
         answer, attachments = filter_attachments(answer[0])
         prettified = json.dumps(answer, indent=2, ensure_ascii=False).encode('utf8').decode()
         await message.answer(f"```\n{prettified}\n```", parse_mode='Markdown')
