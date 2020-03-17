@@ -116,18 +116,10 @@ async def reply_attachments(message: types.Message, attachments: List[Dict]):
 @dp.message_handler(content_types=types.ContentType.TEXT)
 async def text_msg(message: types.Message):
     await message.answer('I\'m not talking yet')
-    # if re.match(r'^debug', message.text, flags=re.IGNORECASE):
-    #     name = re.match(r'debug\s(\w+).*[\n]?', message.text, flags=re.IGNORECASE).group(1)
-    #     ret = get(API_ADDRESS, params={'name': name})
-    #     answer = json.loads(ret.text)
-    #     if len(answer) == 0:
-    #         await message.answer('Nothing was found')
-    #     else:
-    #         prettified = json.dumps(json.loads(ret.text), indent=1).encode('utf8').decode()
-    #         await message.answer(f"```\n{prettified}\n```", parse_mode='Markdown')
+
 
 def main():
-    executor.start_polling(dp, skip_updates=False)    
+    executor.start_polling(dp, skip_updates=True)    
 
 
 if __name__ == "__main__":
