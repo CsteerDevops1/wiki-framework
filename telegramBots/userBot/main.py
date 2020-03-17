@@ -92,9 +92,9 @@ async def help_msg(message: types.Message):
             list_all - Get list of all records
             get_json - Debug
     """
-    text = "Usage: /find \\[ _word_ ]" \
-           "/find_id \\[ _id ] if you want to search by id" \
-           "/list_all to get all records"
+    text = "Usage: /find \\[ _word_ ]\n" \
+           "/find\\_id \\[ \\_id ] if you want to search by id\n" \
+           "/list\\_all to get all records"
     await message.answer(text, parse_mode='Markdown')
 
 
