@@ -84,7 +84,17 @@ async def welcome_msg(message: types.Message):
 
 @dp.message_handler(commands=['help'])
 async def help_msg(message: types.Message):
-    text = "Usage: /find \\[ _word_ ]"
+    """
+        List of commands:
+            help - Description
+            find - Search something
+            find_id - Search by id
+            list_all - Get list of all records
+            get_json - Debug
+    """
+    text = "Usage: /find \\[ _word_ ]" \
+           "/find_id \\[ _id ] if you want to search by id" \
+           "/list_all to get all records"
     await message.answer(text, parse_mode='Markdown')
 
 
@@ -97,7 +107,22 @@ async def find(message: types.Message):
     if len(answer) == 0:
         await message.answer('Nothing was found')
     else:
-        #TODO: rework to handle all answers in list
+        answer, attachments = filter_attachments(answer[0])
+        msg =  f"*{answer['name'].capitalize()}*:\n"
+        msg += f"{answer['description']}"
+        await message.answer(f"{msg}", parse_mode='Markdown')
+        if attachments != None:
+            await reply_attachments(message, attachments)
+
+
+@dp.message_handler(commands=['get_json'])
+async def get_json(message: types.Message):
+    name = re.match(r'/get_json\s(\w+).*', message.text, flags=re.IGNORECASE).group(1)
+    ret = get(API_ADDRESS, params={'name': name})
+    answer = json.loads(ret.text.encode("utf8"))
+    if len(answer) == 0:
+        await message.answer('Nothing was found')
+    else:
         answer, attachments = filter_attachments(answer[0])
         prettified = json.dumps(answer, indent=2, ensure_ascii=False).encode('utf8').decode()
         await message.answer(f"```\n{prettified}\n```", parse_mode='Markdown')
@@ -105,29 +130,55 @@ async def find(message: types.Message):
             await reply_attachments(message, attachments)
 
 
+@dp.message_handler(commands=['find_id'])
+async def find_id(message: types.Message):
+    name = re.match(r'/find_id\s(\w+).*', message.text, flags=re.IGNORECASE).group(1)
+    ret = get(API_ADDRESS, params={'_id': name})
+    answer = json.loads(ret.text.encode("utf8"))
+    
+    if len(answer) == 0:
+        await message.answer('Nothing was found')
+    else:
+        answer, attachments = filter_attachments(answer[0])
+        prettified = json.dumps(answer, indent=2, ensure_ascii=False).encode('utf8').decode()
+        msg = f"*{answer['name'].capitalize()}*:\n"
+        msg += f"{answer['description']}"
+        await message.answer(f"{msg}", parse_mode='Markdown')
+        if attachments != None:
+            await reply_attachments(message, attachments)
+
+
+@dp.message_handler(commands=['list_all'])
+async def list_all(message: types.Message):
+    ret = get(API_ADDRESS, headers={'X-Fields': '_id, name'})
+    answer: List[Dict] = json.loads(ret.text)
+    msg = '\n'.join([f"*{x['name']}*: `{x['_id']}`" for x in answer])
+    await message.answer(msg, parse_mode='Markdown')
+
+
 async def reply_attachments(message: types.Message, attachments: List[Dict]):
     for item in attachments:
-        # if item['content_type'] == 'image/jpg':
         if re.match(r'image\/.*', item['content_type'], flags=re.IGNORECASE):
-            photo = form_input_file(item['content_data'])
-            await message.answer_photo(photo)
+            photo_d = form_input_file(item['content_data'])
+            await message.answer_photo(photo_d)
+        if re.match(r'audio\/.*', item['content_type'], flags=re.IGNORECASE):
+            video_d = form_input_file(item['content_data'])
+            await message.answer_audio(video_d)
+        if re.match(r'video\/.*', item['content_type'], flags=re.IGNORECASE):
+            video_d = form_input_file(item['content_data'])
+            await message.answer_video(video_d)
+        if re.match(r'application\/.*', item['content_type'], flags=re.IGNORECASE):
+            file_d = form_input_file(item['content_data'])
+            await message.answer_document(file_d)
 
 
 @dp.message_handler(content_types=types.ContentType.TEXT)
 async def text_msg(message: types.Message):
     await message.answer('I\'m not talking yet')
-    # if re.match(r'^debug', message.text, flags=re.IGNORECASE):
-    #     name = re.match(r'debug\s(\w+).*[\n]?', message.text, flags=re.IGNORECASE).group(1)
-    #     ret = get(API_ADDRESS, params={'name': name})
-    #     answer = json.loads(ret.text)
-    #     if len(answer) == 0:
-    #         await message.answer('Nothing was found')
-    #     else:
-    #         prettified = json.dumps(json.loads(ret.text), indent=1).encode('utf8').decode()
-    #         await message.answer(f"```\n{prettified}\n```", parse_mode='Markdown')
+
 
 def main():
-    executor.start_polling(dp, skip_updates=False)    
+    executor.start_polling(dp, skip_updates=True)    
 
 
 if __name__ == "__main__":
