@@ -107,10 +107,18 @@ async def find(message: types.Message):
 
 async def reply_attachments(message: types.Message, attachments: List[Dict]):
     for item in attachments:
-        # if item['content_type'] == 'image/jpg':
         if re.match(r'image\/.*', item['content_type'], flags=re.IGNORECASE):
-            photo = form_input_file(item['content_data'])
-            await message.answer_photo(photo)
+            photo_d = form_input_file(item['content_data'])
+            await message.answer_photo(photo_d)
+        if re.match(r'audio\/.*', item['content_type'], flags=re.IGNORECASE):
+            video_d = form_input_file(item['content_data'])
+            await message.answer_audio(video_d)
+        if re.match(r'video\/.*', item['content_type'], flags=re.IGNORECASE):
+            video_d = form_input_file(item['content_data'])
+            await message.answer_video(video_d)
+        if re.match(r'application\/.*', item['content_type'], flags=re.IGNORECASE):
+            file_d = form_input_file(item['content_data'])
+            await message.answer_document(file_d)
 
 
 @dp.message_handler(content_types=types.ContentType.TEXT)
