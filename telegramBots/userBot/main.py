@@ -84,7 +84,17 @@ async def welcome_msg(message: types.Message):
 
 @dp.message_handler(commands=['help'])
 async def help_msg(message: types.Message):
-    text = "Usage: /find \\[ _word_ ]"
+    """
+        List of commands:
+            help - Description
+            find - Search something
+            find_id - Search by id
+            list_all - Get list of all records
+            get_json - Debug
+    """
+    text = "Usage: /find \\[ _word_ ]" \
+           "/find_id \\[ _id ] if you want to search by id" \
+           "/list_all to get all records"
     await message.answer(text, parse_mode='Markdown')
 
 
