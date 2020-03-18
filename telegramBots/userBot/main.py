@@ -101,18 +101,19 @@ async def help_msg(message: types.Message):
 @dp.message_handler(commands=['find'])
 async def find(message: types.Message):
     name = re.match(r'/find\s(\w+).*', message.text, flags=re.IGNORECASE).group(1)
-    ret = get(API_ADDRESS, params={'name': name})
+    ret = get(API_ADDRESS, params={'name': f'^{name}', 'regex' : 'True'})
     answer = json.loads(ret.text.encode("utf8"))
     
     if len(answer) == 0:
         await message.answer('Nothing was found')
     else:
-        answer, attachments = filter_attachments(answer[0])
-        msg =  f"*{answer['name'].capitalize()}*:\n"
-        msg += f"{answer['description']}"
-        await message.answer(f"{msg}", parse_mode='Markdown')
-        if attachments != None:
-            await reply_attachments(message, attachments)
+        for word in answer:
+            word_info, attachments = filter_attachments(word)
+            msg =  f"*{word_info['name'].capitalize()}*:\n"
+            msg += f"{word_info['description']}"
+            await message.answer(f"{msg}", parse_mode='Markdown')
+            if attachments != None:
+                await reply_attachments(message, attachments)
 
 
 @dp.message_handler(commands=['get_json'])
