@@ -33,7 +33,7 @@ function ModelElement(props) {
             {(props.model.attachments.length > 0) ? (
                     <div>
                         {props.model.attachments.map((item, key) => {
-                            if (item.content_type === "image/jpg") {
+                            if (item.content_type === "image/jpg" || item.content_type === "image/jpeg" || item.content_type === "image/png") {
                                 return <img key={key} src={"data:image/png;base64," + item.content_data} alt={"Graphic!"}/>
                             } else if (item.content_type === "audio/mp4") {
                                 return <audio width={"100%"} key={key} controls src={"data:audio/mp4;base64," + item.content_data} />

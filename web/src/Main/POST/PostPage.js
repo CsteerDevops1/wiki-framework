@@ -5,7 +5,7 @@ import useForm from './useForm';
 
 
 function PostPage() {
-    const {handleInputChange, handleSubmit} = useForm();
+    const {handleInputChange, handleSubmit, fileSelectedHandler} = useForm();
 
     return (
         <main>
@@ -30,6 +30,10 @@ function PostPage() {
 
                 <label htmlFor={"text"}>Текст: <br/>
                     <input onInput={handleInputChange} name={"text"} type={"text"} className={"form-input"}/>
+                </label>
+
+                <label >Файл: <br/>
+                    <input onChange={fileSelectedHandler} type="file" className={"form-input"}/>
                 </label>
 
                 <input value={"Отправить"} type={"submit"} />
