@@ -8,6 +8,7 @@ from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import InlineQuery, \
     InputTextMessageContent, InlineQueryResultArticle 
 from config import form_input_file
+from typos import get_possible_typos
 
 load_dotenv()
 TOKEN    = os.getenv('USER_BOT_TOKEN')
@@ -101,7 +102,7 @@ async def help_msg(message: types.Message):
 @dp.message_handler(commands=['find'])
 async def find(message: types.Message):
     name = re.match(r'/find\s(\w+).*', message.text, flags=re.IGNORECASE).group(1)
-    ret = get(API_ADDRESS, params={'name': f'^{name}', 'regex' : 'True'})
+    ret = get(API_ADDRESS, params={'name': rf'^{get_possible_typos(name)}\b', 'regex' : 'True'})
     answer = json.loads(ret.text.encode("utf8"))
     
     if len(answer) == 0:
