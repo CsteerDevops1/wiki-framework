@@ -102,20 +102,33 @@ async def help_msg(message: types.Message):
 
 @dp.message_handler(commands=['find'])
 async def find(message: types.Message):
-    name = re.match(r'/find\s(\w+).*', message.text, flags=re.IGNORECASE).group(1)
-    ret = get(API_ADDRESS, params={'name': rf'^{get_possible_typos(name)}\b', 'regex' : 'True'})
+    try:
+        name = re.match(r'/find\s(\w+).*', message.text, flags=re.IGNORECASE).group(1)
+    except:
+        return
+    ret = get(API_ADDRESS, params={'name': rf'^{name}$', 'regex': 'True'})
     answer = json.loads(ret.text.encode("utf8"))
-    
+
     if len(answer) == 0:
         await message.answer('Nothing was found')
+        ret = get(API_ADDRESS, params={'name': rf'^{get_possible_typos(name)}', 'regex' : 'True'})
+        answer = json.loads(ret.text)
+        if len(answer) == 0:
+            return
+        else:
+            text, kb = form_message_list(answer)
+            text = 'Maybe you meant:\n' + text
+            await message.answer(text, reply_markup=kb)
+    elif len(answer) == 1:
+        answer, attachments = filter_attachments(answer[0])
+        text = f"*{answer['name']}*\n"
+        text += f"{answer['description']}"
+        await message.answer(text, parse_mode='Markdown')
+        if attachments != None:
+            await reply_attachments(message, attachments)
     else:
-        for word in answer:
-            word_info, attachments = filter_attachments(word)
-            msg =  f"*{word_info['name'].capitalize()}*:\n"
-            msg += f"{word_info['description']}"
-            await message.answer(f"{msg}", parse_mode='Markdown')
-            if attachments != None:
-                await reply_attachments(message, attachments)
+        text, kb = form_message_list(answer)
+        await message.answer(text, reply_markup=kb)
 
 
 @dp.message_handler(commands=['get_json'])
