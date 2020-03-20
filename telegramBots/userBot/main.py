@@ -105,7 +105,7 @@ async def help_msg(message: types.Message):
 @dp.message_handler(commands=['find'])
 async def find(message: types.Message):
     try:
-        name = re.match(r'/find\s(\w+).*', message.text, flags=re.IGNORECASE).group(1)
+        name = re.match(r'/find\s([\w -]+).*', message.text, flags=re.IGNORECASE).group(1)
     except:
         return
     ret = get(API_ADDRESS, params={'name': rf'^{name}$', 'regex': 'True'})
@@ -135,7 +135,10 @@ async def find(message: types.Message):
 
 @dp.message_handler(commands=['get_json'])
 async def get_json(message: types.Message):
-    name = re.match(r'/get_json\s(\w+).*', message.text, flags=re.IGNORECASE).group(1)
+    try:
+        name = re.match(r'/get_json\s([\w -]+).*', message.text, flags=re.IGNORECASE).group(1)
+    except:
+        return
     ret = get(API_ADDRESS, params={'name': name})
     answer = json.loads(ret.text.encode("utf8"))
     if len(answer) == 0:
@@ -150,7 +153,10 @@ async def get_json(message: types.Message):
 
 @dp.message_handler(commands=['find_id'])
 async def find_id(message: types.Message):
-    name = re.match(r'/find_id\s(\w+).*', message.text, flags=re.IGNORECASE).group(1)
+    try:
+        name = re.match(r'/find_id\s([\w -]+).*', message.text, flags=re.IGNORECASE).group(1)
+    except:
+        return
     ret = get(API_ADDRESS, params={'_id': name})
     answer = json.loads(ret.text.encode("utf8"))
     
