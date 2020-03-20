@@ -199,8 +199,27 @@ async def text_msg(message: types.Message):
         await message.answer(text, reply_markup=kb)
 
 
+@dp.callback_query_handler(lambda c: re.match(r'id:', c.data))
+async def test(callback_query: types.CallbackQuery):
+    await bot.answer_callback_query(callback_query.id)
+    _id = re.findall(r'id:(.*)', callback_query.data)
+    if len(_id) == 1:
+        _id = _id[0]
+        ret = get(API_ADDRESS, params={'_id': f'{_id}'})
+        answer = json.loads(ret.text)
+        answer, attachments = filter_attachments(answer[0])
+        text = f"*{answer['name']}*\n"
+        text += f"{answer['description']}"
+        await bot.send_message(callback_query.from_user.id, text, parse_mode='Markdown')
+        await reply_attachments(callback_query.message, attachments)
+    else:
+        await bot.send_message('Error occured')
+
+
 def main():
+    print('---- started ----', flush=True)
     executor.start_polling(dp, skip_updates=True)    
+    print('---- exited ----', flush=True)
 
 
 if __name__ == "__main__":
