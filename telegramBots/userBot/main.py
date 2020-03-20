@@ -7,6 +7,7 @@ import aiohttp
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import InlineQuery, \
     InputTextMessageContent, InlineQueryResultArticle 
+from aiogram.utils.exceptions import BadRequest
 from config import form_input_file
 from typos import get_possible_typos
 
@@ -159,24 +160,43 @@ async def list_all(message: types.Message):
 
 
 async def reply_attachments(message: types.Message, attachments: List[Dict]):
+    if attachments is None:
+        return
     for item in attachments:
-        if re.match(r'image\/.*', item['content_type'], flags=re.IGNORECASE):
-            photo_d = form_input_file(item['content_data'])
-            await message.answer_photo(photo_d)
-        if re.match(r'audio\/.*', item['content_type'], flags=re.IGNORECASE):
-            video_d = form_input_file(item['content_data'])
-            await message.answer_audio(video_d)
-        if re.match(r'video\/.*', item['content_type'], flags=re.IGNORECASE):
-            video_d = form_input_file(item['content_data'])
-            await message.answer_video(video_d)
-        if re.match(r'application\/.*', item['content_type'], flags=re.IGNORECASE):
-            file_d = form_input_file(item['content_data'])
-            await message.answer_document(file_d)
+        try:
+            if re.match(r'image\/.*', item['content_type'], flags=re.IGNORECASE):
+                photo_d = form_input_file(item['content_data'])
+                await message.answer_photo(photo_d)
+            if re.match(r'audio\/.*', item['content_type'], flags=re.IGNORECASE):
+                video_d = form_input_file(item['content_data'])
+                await message.answer_audio(video_d)
+            if re.match(r'video\/.*', item['content_type'], flags=re.IGNORECASE):
+                video_d = form_input_file(item['content_data'])
+                await message.answer_video(video_d)
+            if re.match(r'application\/.*', item['content_type'], flags=re.IGNORECASE):
+                #TODO: need name of file
+                file_d = form_input_file(item['content_data'])
+                await message.answer_document(file_d)
+        except BadRequest as e:
+            print('Error uploading file:', e, flush=True)
 
 
 @dp.message_handler(content_types=types.ContentType.TEXT)
 async def text_msg(message: types.Message):
-    await message.answer('I\'m not talking yet')
+    name = message.text.strip().split('\n')[0]
+    #TODO: set correct limit of search querry length
+    if len(name) > 50:
+        return
+    ret = get(API_ADDRESS, params={'name': rf'^{get_possible_typos(name)}', 'regex' : 'True'})
+    answer: List[Dict] = json.loads(ret.text)
+    if len(answer) == 0:
+        await message.answer('Sorry, nothing found')
+    else:
+        kb = types.InlineKeyboardMarkup(row_width=5)
+        tmp = [types.InlineKeyboardButton(str(i+1), callback_data=f"id:{item['_id']}") for i, item in enumerate(answer)]
+        kb.add(*tmp)
+        text = '\n'.join( [f"{i+1}. {item['name']}" for i, item in enumerate(answer)] )
+        await message.answer(text, reply_markup=kb)
 
 
 def main():
