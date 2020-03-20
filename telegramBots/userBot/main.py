@@ -10,7 +10,6 @@ from aiogram.types import InlineQuery, \
 from aiogram.utils.exceptions import BadRequest
 from config import form_input_file, form_message_list, \
     reply_attachments, filter_attachments
-from typos import get_possible_typos
 
 load_dotenv()
 TOKEN    = os.getenv('USER_BOT_TOKEN')
@@ -18,6 +17,7 @@ API_HOST = os.getenv('API_HOST')
 API_PORT = os.getenv('API_PORT')
 API_PATH = "/api/wiki"
 API_ADDRESS = f"http://{API_HOST}:{API_PORT}{API_PATH}"
+AUTOSUGGEST_ADDERSS = f"http://{API_HOST}:{API_PORT}{API_PATH}/autosuggest"
 
 # optional 
 PROXY_URL       = os.getenv('PROXY_URL')
@@ -41,8 +41,8 @@ async def inline_search(inline_query: InlineQuery):
     #TODO: don't forget to set cache_time=1 for testing (default is 300s or 5m)
     ct = 1 
     user_typing = inline_query.query or 'none'
-    ret = get(API_ADDRESS, params={'name': rf'^{get_possible_typos(user_typing)}', 'regex' : 'True'})
-    answer = json.loads(ret.text.encode("utf8"))
+    ret = get(AUTOSUGGEST_ADDERSS, params={'data': user_typing, 'complete' : 'True'})
+    answer = json.loads(ret.text.encode("utf8"))['completed']
     if len(answer) == 0:
         result_id: str = hashlib.md5(user_typing.encode()).hexdigest()
         title = 'Nothing found'
@@ -108,13 +108,13 @@ async def find(message: types.Message):
         name = re.match(r'/find\s([\w -]+).*', message.text, flags=re.IGNORECASE).group(1)
     except:
         return
-    ret = get(API_ADDRESS, params={'name': rf'^{name}$', 'regex': 'True'})
-    answer = json.loads(ret.text.encode("utf8"))
+    ret = get(AUTOSUGGEST_ADDERSS, params={'data': name, 'correct' : 'True'})
+    answer = json.loads(ret.text.encode("utf8"))['corrected']
 
     if len(answer) == 0:
         await message.answer('Nothing was found')
-        ret = get(API_ADDRESS, params={'name': rf'^{get_possible_typos(name)}', 'regex' : 'True'})
-        answer = json.loads(ret.text)
+        ret = get(AUTOSUGGEST_ADDERSS, params={'data': name, 'complete' : 'True'})
+        answer = json.loads(ret.text)['completed']
         if len(answer) == 0:
             return
         else:
@@ -186,8 +186,8 @@ async def text_msg(message: types.Message):
     #TODO: set correct limit of search querry length
     if len(name) > 50:
         return
-    ret = get(API_ADDRESS, params={'name': rf'^{get_possible_typos(name)}', 'regex' : 'True'})
-    answer: List[Dict] = json.loads(ret.text)
+    ret = get(AUTOSUGGEST_ADDERSS, params={'data': name, 'complete' : 'True'})
+    answer: List[Dict] = json.loads(ret.text)['completed']
     if len(answer) == 0:
         await message.answer('Sorry, nothing found')
     else:
