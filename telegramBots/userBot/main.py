@@ -7,7 +7,10 @@ import aiohttp
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import InlineQuery, \
     InputTextMessageContent, InlineQueryResultArticle 
-from config import form_input_file
+from aiogram.utils.exceptions import BadRequest
+from config import form_input_file, form_message_list, \
+    reply_attachments, filter_attachments
+from typos import get_possible_typos
 
 load_dotenv()
 TOKEN    = os.getenv('USER_BOT_TOKEN')
@@ -31,45 +34,46 @@ else:
 
 dp = Dispatcher(bot)
 
-def filter_attachments(obj: Union[Dict, None]) -> Tuple:
-    if 'attachments' in obj.keys():
-        attachments = obj['attachments']
-        obj.pop('attachments')
-        return (obj, attachments)
-    else:
-        return (obj, None)
 
 
 @dp.inline_handler()
 async def inline_search(inline_query: InlineQuery):
-    # id affects both preview and content,
-    # so it has to be unique for each result
-    # (Unique identifier for this result, 1-64 Bytes)
-    # you can set your unique id's
-    # but for example I'll generate it based on text because I know, that
-    # only text will be passed in this example
-    user_typing = inline_query.query or 'none'
-    ret = get(API_ADDRESS, params={'name': user_typing})
-    answer = json.loads(ret.text.encode("utf8"))
-    text = f'Search query:  *{user_typing}* \n'
-    if len(answer) == 0:
-        text = text + 'Nothing found'
-        title = 'Nothing found'
-    else:
-        title = user_typing.capitalize()
-        answer, attachments = filter_attachments(answer[0])
-        prettified = json.dumps(answer, indent=2, ensure_ascii=False).encode('utf8').decode()
-        text = text + f"```\n{prettified}\n```"
-    input_content = InputTextMessageContent(text, parse_mode='Markdown')
-    result_id: str = hashlib.md5(text.encode()).hexdigest()
-    item = InlineQueryResultArticle(
-        id=result_id,
-        title=title,
-        input_message_content=input_content,
-        description=text
-    )
     #TODO: don't forget to set cache_time=1 for testing (default is 300s or 5m)
-    await bot.answer_inline_query(inline_query.id, results=[item], cache_time=1)
+    ct = 1 
+    user_typing = inline_query.query or 'none'
+    ret = get(API_ADDRESS, params={'name': rf'^{get_possible_typos(user_typing)}', 'regex' : 'True'})
+    answer = json.loads(ret.text.encode("utf8"))
+    if len(answer) == 0:
+        result_id: str = hashlib.md5(user_typing.encode()).hexdigest()
+        title = 'Nothing found'
+        content = InputTextMessageContent(
+            f"Not found: {user_typing}"
+        )
+        item = InlineQueryResultArticle(
+            id=result_id,
+            title=title,
+            # description=description,
+            input_message_content=content
+        )
+        await bot.answer_inline_query(inline_query.id, results=[item], cache_time=ct)
+    else:
+        results = []
+        result_id: str = hashlib.md5(user_typing.encode()).hexdigest()
+        for i, item in enumerate(answer):
+            title = item['name']
+            description = item['description']
+            content = InputTextMessageContent(
+                f"*{item['name']}*\n" \
+                f"{item['description']}",
+                parse_mode='Markdown'
+            )
+            results.append(InlineQueryResultArticle(
+                id=result_id+item['_id'],
+                title=title,
+                description=description,
+                input_message_content=content
+            ))
+        await bot.answer_inline_query(inline_query.id, results=results, cache_time=ct)
 
 
 @dp.message_handler(commands=['start'])
@@ -100,25 +104,41 @@ async def help_msg(message: types.Message):
 
 @dp.message_handler(commands=['find'])
 async def find(message: types.Message):
-    name = re.match(r'/find\s(\w+).*', message.text, flags=re.IGNORECASE).group(1)
-    ret = get(API_ADDRESS, params={'name': f'^{name}', 'regex' : 'True'})
+    try:
+        name = re.match(r'/find\s([\w -]+).*', message.text, flags=re.IGNORECASE).group(1)
+    except:
+        return
+    ret = get(API_ADDRESS, params={'name': rf'^{name}$', 'regex': 'True'})
     answer = json.loads(ret.text.encode("utf8"))
-    
+
     if len(answer) == 0:
         await message.answer('Nothing was found')
+        ret = get(API_ADDRESS, params={'name': rf'^{get_possible_typos(name)}', 'regex' : 'True'})
+        answer = json.loads(ret.text)
+        if len(answer) == 0:
+            return
+        else:
+            text, kb = form_message_list(answer)
+            text = 'Maybe you meant:\n' + text
+            await message.answer(text, reply_markup=kb)
+    elif len(answer) == 1:
+        answer, attachments = filter_attachments(answer[0])
+        text = f"*{answer['name']}*\n"
+        text += f"{answer['description']}"
+        await message.answer(text, parse_mode='Markdown')
+        if attachments != None:
+            await reply_attachments(message, attachments)
     else:
-        for word in answer:
-            word_info, attachments = filter_attachments(word)
-            msg =  f"*{word_info['name'].capitalize()}*:\n"
-            msg += f"{word_info['description']}"
-            await message.answer(f"{msg}", parse_mode='Markdown')
-            if attachments != None:
-                await reply_attachments(message, attachments)
+        text, kb = form_message_list(answer)
+        await message.answer(text, reply_markup=kb)
 
 
 @dp.message_handler(commands=['get_json'])
 async def get_json(message: types.Message):
-    name = re.match(r'/get_json\s(\w+).*', message.text, flags=re.IGNORECASE).group(1)
+    try:
+        name = re.match(r'/get_json\s([\w -]+).*', message.text, flags=re.IGNORECASE).group(1)
+    except:
+        return
     ret = get(API_ADDRESS, params={'name': name})
     answer = json.loads(ret.text.encode("utf8"))
     if len(answer) == 0:
@@ -133,7 +153,10 @@ async def get_json(message: types.Message):
 
 @dp.message_handler(commands=['find_id'])
 async def find_id(message: types.Message):
-    name = re.match(r'/find_id\s(\w+).*', message.text, flags=re.IGNORECASE).group(1)
+    try:
+        name = re.match(r'/find_id\s([\w -]+).*', message.text, flags=re.IGNORECASE).group(1)
+    except:
+        return
     ret = get(API_ADDRESS, params={'_id': name})
     answer = json.loads(ret.text.encode("utf8"))
     
@@ -157,29 +180,42 @@ async def list_all(message: types.Message):
     await message.answer(msg, parse_mode='Markdown')
 
 
-async def reply_attachments(message: types.Message, attachments: List[Dict]):
-    for item in attachments:
-        if re.match(r'image\/.*', item['content_type'], flags=re.IGNORECASE):
-            photo_d = form_input_file(item['content_data'])
-            await message.answer_photo(photo_d)
-        if re.match(r'audio\/.*', item['content_type'], flags=re.IGNORECASE):
-            video_d = form_input_file(item['content_data'])
-            await message.answer_audio(video_d)
-        if re.match(r'video\/.*', item['content_type'], flags=re.IGNORECASE):
-            video_d = form_input_file(item['content_data'])
-            await message.answer_video(video_d)
-        if re.match(r'application\/.*', item['content_type'], flags=re.IGNORECASE):
-            file_d = form_input_file(item['content_data'])
-            await message.answer_document(file_d)
-
-
 @dp.message_handler(content_types=types.ContentType.TEXT)
 async def text_msg(message: types.Message):
-    await message.answer('I\'m not talking yet')
+    name = message.text.strip().split('\n')[0]
+    #TODO: set correct limit of search querry length
+    if len(name) > 50:
+        return
+    ret = get(API_ADDRESS, params={'name': rf'^{get_possible_typos(name)}', 'regex' : 'True'})
+    answer: List[Dict] = json.loads(ret.text)
+    if len(answer) == 0:
+        await message.answer('Sorry, nothing found')
+    else:
+        text, kb = form_message_list(answer)
+        await message.answer(text, reply_markup=kb)
+
+
+@dp.callback_query_handler(lambda c: re.match(r'id:', c.data))
+async def test(callback_query: types.CallbackQuery):
+    await bot.answer_callback_query(callback_query.id)
+    _id = re.findall(r'id:(.*)', callback_query.data)
+    if len(_id) == 1:
+        _id = _id[0]
+        ret = get(API_ADDRESS, params={'_id': f'{_id}'})
+        answer = json.loads(ret.text)
+        answer, attachments = filter_attachments(answer[0])
+        text = f"*{answer['name']}*\n"
+        text += f"{answer['description']}"
+        await bot.send_message(callback_query.from_user.id, text, parse_mode='Markdown')
+        await reply_attachments(callback_query.message, attachments)
+    else:
+        await bot.send_message('Error occured')
 
 
 def main():
+    print('---- started ----', flush=True)
     executor.start_polling(dp, skip_updates=True)    
+    print('---- exited ----', flush=True)
 
 
 if __name__ == "__main__":
