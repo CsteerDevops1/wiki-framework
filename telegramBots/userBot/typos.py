@@ -23,9 +23,6 @@ def get_possible_typos(word : str) -> str:
                 tmp[i] = ".?"
                 tmp[j] = ".?"
                 pattern += "|" + "".join(tmp)
-    if len(word) > 4:
-        for i in range(len(word)-1):
-            pattern += f"|{word[:i]}..{word[i+2:]}" # 2 wrong symbols in a row at any position
     if len(word) > 5:
         for i in range(len(word)-2):
             pattern += f"|{word[:i]}...{word[i+3:]}" # 3 wrong symbols in a row at any position
