@@ -46,12 +46,13 @@ def search(update, context):
             text=f"Title: {file_dict['name']}\n"
                  f"Description: {file_dict['description']}\n"
                  f"Id: {file_dict['_id']}\n")
-        if file_dict["attachments"][0]["content_type"].split('/')[0] == 'image':
-            send_photo_from_dict(file_dict, context, update)
-        elif file_dict["attachments"][0]["content_type"].split('/')[0] == 'audio':
-            send_audio_from_dict(file_dict, context, update)
-        elif file_dict["attachments"][0]["content_type"].split('/')[0] == 'video':
-            send_video_from_dict(file_dict, context, update)
+        for attach in file_dict.get("attachments", []):
+            if attach["content_type"].split('/')[0] == 'image':
+                send_photo_from_dict(file_dict, context, update)
+            elif attach["content_type"].split('/')[0] == 'audio':
+                send_audio_from_dict(file_dict, context, update)
+            elif attach["content_type"].split('/')[0] == 'video':
+                send_video_from_dict(file_dict, context, update)
 
 
 def delete_id(update, context):
@@ -88,18 +89,18 @@ def send_audio_from_dict(audio_dict, context, update):
     file = BytesIO()
     file.write(audio_bytes_data)
     file.seek(0)
-    context.bot.send_photo(
+    context.bot.send_audio(
         chat_id=update.effective_chat.id,
-        photo=file)
+        audio=file)
 
 def send_video_from_dict(video_dict, context, update):
     video_bytes_data = bytes_from_str(video_dict["attachments"][0]["content_data"])
     file = BytesIO()
     file.write(video_bytes_data)
     file.seek(0)
-    context.bot.send_photo(
+    context.bot.send_video(
         chat_id=update.effective_chat.id,
-        photo=file)
+        video=file)
 
 
 def echo(update, context):
