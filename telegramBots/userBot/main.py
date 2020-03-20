@@ -8,7 +8,7 @@ from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import InlineQuery, \
     InputTextMessageContent, InlineQueryResultArticle 
 from aiogram.utils.exceptions import BadRequest
-from config import form_input_file
+from config import form_input_file, form_message_list
 from typos import get_possible_typos
 
 load_dotenv()
@@ -192,10 +192,7 @@ async def text_msg(message: types.Message):
     if len(answer) == 0:
         await message.answer('Sorry, nothing found')
     else:
-        kb = types.InlineKeyboardMarkup(row_width=5)
-        tmp = [types.InlineKeyboardButton(str(i+1), callback_data=f"id:{item['_id']}") for i, item in enumerate(answer)]
-        kb.add(*tmp)
-        text = '\n'.join( [f"{i+1}. {item['name']}" for i, item in enumerate(answer)] )
+        text, kb = form_message_list(answer)
         await message.answer(text, reply_markup=kb)
 
 
