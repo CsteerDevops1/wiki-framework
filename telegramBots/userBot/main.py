@@ -38,34 +38,42 @@ dp = Dispatcher(bot)
 
 @dp.inline_handler()
 async def inline_search(inline_query: InlineQuery):
-    # id affects both preview and content,
-    # so it has to be unique for each result
-    # (Unique identifier for this result, 1-64 Bytes)
-    # you can set your unique id's
-    # but for example I'll generate it based on text because I know, that
-    # only text will be passed in this example
-    user_typing = inline_query.query or 'none'
-    ret = get(API_ADDRESS, params={'name': user_typing})
-    answer = json.loads(ret.text.encode("utf8"))
-    text = f'Search query:  *{user_typing}* \n'
-    if len(answer) == 0:
-        text = text + 'Nothing found'
-        title = 'Nothing found'
-    else:
-        title = user_typing.capitalize()
-        answer, attachments = filter_attachments(answer[0])
-        prettified = json.dumps(answer, indent=2, ensure_ascii=False).encode('utf8').decode()
-        text = text + f"```\n{prettified}\n```"
-    input_content = InputTextMessageContent(text, parse_mode='Markdown')
-    result_id: str = hashlib.md5(text.encode()).hexdigest()
-    item = InlineQueryResultArticle(
-        id=result_id,
-        title=title,
-        input_message_content=input_content,
-        description=text
-    )
     #TODO: don't forget to set cache_time=1 for testing (default is 300s or 5m)
-    await bot.answer_inline_query(inline_query.id, results=[item], cache_time=1)
+    ct = 1 
+    user_typing = inline_query.query or 'none'
+    ret = get(API_ADDRESS, params={'name': rf'^{get_possible_typos(user_typing)}', 'regex' : 'True'})
+    answer = json.loads(ret.text.encode("utf8"))
+    if len(answer) == 0:
+        result_id: str = hashlib.md5(user_typing.encode()).hexdigest()
+        title = 'Nothing found'
+        content = InputTextMessageContent(
+            f"Not found: {user_typing}"
+        )
+        item = InlineQueryResultArticle(
+            id=result_id,
+            title=title,
+            # description=description,
+            input_message_content=content
+        )
+        await bot.answer_inline_query(inline_query.id, results=[item], cache_time=ct)
+    else:
+        results = []
+        result_id: str = hashlib.md5(user_typing.encode()).hexdigest()
+        for i, item in enumerate(answer):
+            title = item['name']
+            description = item['description']
+            content = InputTextMessageContent(
+                f"*{item['name']}*\n" \
+                f"{item['description']}",
+                parse_mode='Markdown'
+            )
+            results.append(InlineQueryResultArticle(
+                id=result_id+item['_id'],
+                title=title,
+                description=description,
+                input_message_content=content
+            ))
+        await bot.answer_inline_query(inline_query.id, results=results, cache_time=ct)
 
 
 @dp.message_handler(commands=['start'])
