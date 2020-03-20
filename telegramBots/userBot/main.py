@@ -8,7 +8,8 @@ from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import InlineQuery, \
     InputTextMessageContent, InlineQueryResultArticle 
 from aiogram.utils.exceptions import BadRequest
-from config import form_input_file, form_message_list
+from config import form_input_file, form_message_list, \
+    reply_attachments, filter_attachments
 from typos import get_possible_typos
 
 load_dotenv()
@@ -33,13 +34,6 @@ else:
 
 dp = Dispatcher(bot)
 
-def filter_attachments(obj: Union[Dict, None]) -> Tuple:
-    if 'attachments' in obj.keys():
-        attachments = obj['attachments']
-        obj.pop('attachments')
-        return (obj, attachments)
-    else:
-        return (obj, None)
 
 
 @dp.inline_handler()
@@ -170,28 +164,6 @@ async def list_all(message: types.Message):
     answer: List[Dict] = json.loads(ret.text)
     msg = '\n'.join([f"*{x['name']}*: `{x['_id']}`" for x in answer])
     await message.answer(msg, parse_mode='Markdown')
-
-
-async def reply_attachments(message: types.Message, attachments: List[Dict]):
-    if attachments is None:
-        return
-    for item in attachments:
-        try:
-            if re.match(r'image\/.*', item['content_type'], flags=re.IGNORECASE):
-                photo_d = form_input_file(item['content_data'])
-                await message.answer_photo(photo_d)
-            if re.match(r'audio\/.*', item['content_type'], flags=re.IGNORECASE):
-                video_d = form_input_file(item['content_data'])
-                await message.answer_audio(video_d)
-            if re.match(r'video\/.*', item['content_type'], flags=re.IGNORECASE):
-                video_d = form_input_file(item['content_data'])
-                await message.answer_video(video_d)
-            if re.match(r'application\/.*', item['content_type'], flags=re.IGNORECASE):
-                #TODO: need name of file
-                file_d = form_input_file(item['content_data'])
-                await message.answer_document(file_d)
-        except BadRequest as e:
-            print('Error uploading file:', e, flush=True)
 
 
 @dp.message_handler(content_types=types.ContentType.TEXT)
