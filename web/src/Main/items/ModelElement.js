@@ -6,29 +6,29 @@ function ModelElement(props) {
         <div className={"modelElement"}>
 
             {props.model.name !== undefined && props.model.name !== "" &&
-            <p>Название: <b>{props.model.name}</b></p>
+            <p>Name: <b>{props.model.name}</b></p>
             }
             {props.model.description !== undefined && props.model.description !== "" &&
-            <p>Описание: <b>{props.model.description}</b></p>
+            <p>Description: <b>{props.model.description}</b></p>
             }
             {props.model.russian_description !== undefined && props.model.russian_description !== "" &&
-            <p>Описание на русском: <b>{props.model.russian_description}</b></p>
+            <p>Description in russian: <b>{props.model.russian_description}</b></p>
             }
             {props.model.relations.length > 0 &&
-            <p>Связи: <b>{props.model.relations}</b></p>
+            <p>Relations to other items: <b>{props.model.relations}</b></p>
             }
             {props.model.relations.length > 0 &&
-            <p>Тэги: <b>
+            <p>Tags: <b>
                 {props.model.tags.map((item, key) =>
                     <span key={item + key} className={"tag"}>{item}</span>)
                 }
             </b></p>
             }
             {props.model.text !== undefined && props.model.text !== "" &&
-            <p>Текст: <b>{props.model.text}</b></p>
+            <p>Text: <b>{props.model.text}</b></p>
             }
             {props.model.creation_date !== undefined && props.model.creation_date !== "" &&
-            <p>Дата создания: <b>{props.model.creation_date}</b></p>
+            <p>Creation date: <b>{props.model.creation_date}</b></p>
             }
             {(props.model.attachments.length > 0) ? (
                     <div>
@@ -47,7 +47,7 @@ function ModelElement(props) {
                         })}
                     </div>
                 ) :
-                (<p>Нет прикрепленных файлов</p>)}
+                (<p>No files attached</p>)}
 
                 <p>
                     <i className={"material-icons icon-btn icon-btn__color-4"}>delete</i>

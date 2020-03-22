@@ -7,10 +7,10 @@ function Navigation() {
 
         <nav>
             <ul>
-                <li><Link to="/get">GET</Link></li>
-                <li><Link to="/post">POST</Link></li>
-                <li><Link to="/put">PUT</Link></li>
-                <li><Link to="/delete">DELETE</Link></li>
+                <li><Link to="/get">View all</Link></li>
+                <li><Link to="/post">Add</Link></li>
+                <li><Link to="/put">Edit</Link></li>
+                <li><Link to="/delete">Delete</Link></li>
             </ul>
         </nav>
     );

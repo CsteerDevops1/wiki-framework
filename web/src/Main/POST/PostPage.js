@@ -3,7 +3,6 @@ import '../Main.css';
 import './PostPage.css';
 import useForm from './useForm';
 
-
 function PostPage() {
     const {handleInputChange, handleSubmit, fileSelectedHandler} = useForm();
 
@@ -12,31 +11,31 @@ function PostPage() {
             <h1>Upload your object to database</h1>
             <form onSubmit={handleSubmit}>
 
-                <label htmlFor={"name"}>Название: <br/>
+                <label htmlFor={"name"}>Name: <br/>
                     <input onInput={handleInputChange} name={"name"} type={"text"} className={"form-input"}/>
                 </label>
 
-                <label htmlFor={"russian_name"}>Название на русском: <br/>
+                <label htmlFor={"russian_name"}>Name in russian: <br/>
                     <input onInput={handleInputChange} name={"russian_name"} type={"text"} className={"form-input"}/>
                 </label>
 
-                <label htmlFor={"description"}>Описание: <br/>
+                <label htmlFor={"description"}>Description: <br/>
                     <input onInput={handleInputChange} name={"description"} type={"text"} className={"form-input"}/>
                 </label>
 
-                <label htmlFor={"russian_description"}>Описание на русском: <br/>
+                <label htmlFor={"russian_description"}>Description in russian: <br/>
                     <input onInput={handleInputChange} name={"russian_description"} type={"text"} className={"form-input"}/>
                 </label>
 
-                <label htmlFor={"text"}>Текст: <br/>
+                <label htmlFor={"text"}>Text: <br/>
                     <input onInput={handleInputChange} name={"text"} type={"text"} className={"form-input"}/>
                 </label>
 
-                <label >Файл: <br/>
+                <label >File: <br/>
                     <input onChange={fileSelectedHandler} type="file" className={"form-input"}/>
                 </label>
 
-                <input value={"Отправить"} type={"submit"} />
+                <input value={"Send"} type={"submit"} />
             </form>
         </main>
     );

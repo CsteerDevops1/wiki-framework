@@ -39,7 +39,7 @@ function GetPage() {
                 {(models != null) ? models.map((item, key) => <li key={item._id}>
                         <ModelElement model={item}/>
                     </li>
-                ) : "Ничего не найдено!"}
+                ) : "Nothing found!"}
             </ul>
 
 
