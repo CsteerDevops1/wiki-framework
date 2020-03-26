@@ -24,18 +24,27 @@ else:
     PROXY_AUTH = None
 
 
-def get_from_wiki(id=None, name=None):
+def get_from_wiki(id=None, name=None, ret_fields : list = None):
+    '''if ret_fields is None returns all the fields'''
+    if ret_fields:
+        headers = {'X-Fields' : ",".join(ret_fields)}
+    else:
+        headers = None
     if id:
         _id = requests.get(WIKI_API, params={"_id" : id},
-                                headers={'X-Fields' : 'name'})
+                                headers=headers)
         logging.info(f"Searching in WIKI db for id {id}")
     if name:
         _name = requests.get(WIKI_API_AUTOSUGGET, 
                                 params={"data" : name, 'correct' : "True"},
-                                headers={'X-Fields' : 'name'})
+                                headers=headers)
         logging.info(f"Searching in WIKI db for name {name}")
     return {
         "_id" : _id.json()[0] if id is not None and len(_id.json()) == 1 else None,
         "name" : _name.json()["corrected"] if name is not None else None
     }
 
+
+def update_in_wiki(id, data):
+    res = requests.put(WIKI_API, params={"_id" : id}, json=data)
+    return res.json()
