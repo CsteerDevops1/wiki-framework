@@ -157,6 +157,7 @@ class WikiPageDAO:
     def update(self, modification : dict, filter : dict) -> int:
         ''' returns amount of modificated documents '''
         self._deserialize(filter)
+        self._deserialize(modification["$set"])
         result = self.collection.update_many(update=modification, filter=filter)
         return result.modified_count
 
@@ -171,7 +172,9 @@ if __name__ == "__main__":
     # wiki page example for testing
     val_post = {
             "name" : "val_post1",
+            "russian_name" : "",
             "description" : "val_post1",
+            "russian_description" : "",
             "tags" : [],
             "text" : "text",
             "creation_date" : datetime.utcnow(),
@@ -197,8 +200,19 @@ if __name__ == "__main__":
     print("Find wrong obj")
     print(DAO_obj.get({"name" : "val_post1"}))
 
-    print("Find correct obj, get name")
-    print(DAO_obj.get({"name" : "updated_post1"}, ["name"]))
+    print("Find correct obj, get name, attachments")
+    print(DAO_obj.get({"name" : "updated_post1"}, ["name", "attachments"]))
+
+    print("Updating attachments")
+    new_item = {
+        "content_type" : "image/jpeg",
+        "content_data" : "AAAAAAAA",
+        "description" : "title"
+    }
+    print(DAO_obj.update(set_modification({"attachments" : [new_item]}), {"name" : "updated_post1"}))
+
+    print("Find correct obj, get name, attachments")
+    print(DAO_obj.get({"name" : "updated_post1"}, ["name", "attachments"]))
 
     print("Delete wrong obj")
     print(DAO_obj.delete({"name" : "wrong_name"}))
