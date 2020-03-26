@@ -171,16 +171,16 @@ async def get_new_field_value(message: types.Message, state: FSMContext):
         await state.finish()
         return
     new_val = []
-    for photo in message.photo:
-        photo_info = json.loads(photo.as_json())
-        photo_data = io.BytesIO()
-        await photo.download(photo_data)
-        photo_item = {
-            "content_type" : "image/jpeg",#photo_info["mime_type"],
-            "content_data" : bytes_to_str(photo_data.read()),
-            # "descritpion" : photo_info["title"]
-        }
-        new_val.append(photo_item)
+    photo = message.photo[-1]
+    photo_info = json.loads(photo.as_json())
+    photo_data = io.BytesIO()
+    await photo.download(photo_data)
+    photo_item = {
+        "content_type" : "image/jpeg",#photo_info["mime_type"],
+        "content_data" : bytes_to_str(photo_data.read()),
+        # "descritpion" : photo_info["title"]
+    }
+    new_val.append(photo_item)
     res = update_in_wiki(_id, {old_field : new_val})
     await state.finish()
     if res == 1:
