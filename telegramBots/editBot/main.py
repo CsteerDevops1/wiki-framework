@@ -10,6 +10,7 @@ import logging
 from itertools import islice
 import io
 import json
+import filetype
 
 
 # Initialize bot and dispatcher
@@ -43,6 +44,12 @@ def get_replymarkup_fields(word):
     markup.add("Cancel")
     return markup
 
+def get_replymarkup_finish():
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
+    markup.add("Finish")
+    markup.add("Cancel")
+    return markup
+
 def split_every(n, iterable):
     i = iter(iterable)
     piece = list(islice(i, n))
@@ -55,8 +62,8 @@ class EditProcess(StatesGroup):
     _id = State() # user have chosen the id
     name = State() # user entered name, must ensure to set correct id
     old_field = State() # user have chosen field to edit
-    new_field = State() # user entered new data for field
-
+    new_field_text = State() # user entered new text data for field
+    new_field_media = State() # user is entering new media data for field
 
 @dp.message_handler(state='*', commands='cancel')
 @dp.message_handler(Text(equals='cancel', ignore_case=True), state='*')
@@ -76,7 +83,7 @@ async def cancel_handler(message: types.Message, state: FSMContext):
 
 @dp.message_handler(commands=["start", "info"])
 async def start(message: types.Message):
-    await message.answer('Enter id or name of object you want to edit')
+    await message.answer('Enter id or name of object you want to edit. Format : "[name | id] object"')
 
 
 @dp.message_handler(state='*', regexp='^[i|I][d|D]\s*:?\s*([0-9a-z]{24})')
@@ -132,64 +139,123 @@ async def process_id(message: types.Message, state: FSMContext):
 async def process_field(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data["old_field"] = message.text
-    await EditProcess.new_field.set()
-    await message.answer(f"You have chosen to edit field '{message.text}'. Send new value for this.", reply_markup=types.ReplyKeyboardRemove())
+    if message.text == "attachments":
+        await EditProcess.new_field_media.set()
+        async with state.proxy() as data:
+            data["new_field_media"] = []
+    else:
+        await EditProcess.new_field_text.est()
+    await message.answer(f"You have chosen to edit field '{message.text}'. Send new value for this.", reply_markup=get_replymarkup_finish())
 
 
-@dp.message_handler(state=EditProcess.new_field, content_types=["audio"])
+@dp.message_handler(state=EditProcess.new_field_media, content_types=["audio"])
 async def get_new_field_value(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         _id = data["_id"]
         old_field = data["old_field"]
-    if old_field != "attachments":
-        await message.answer(f"You can't add media to this field. Canceled.")
-        await state.finish()
-        return
     audio_info = json.loads(message.audio.as_json())
     audio_data = io.BytesIO()
     await message.audio.download(audio_data)
+    mime_type = filetype.guess(audio_data).mime
+    audio_data.seek(0)
     audio_item = {
-        "content_type" : audio_info["mime_type"],
+        "content_type" : mime_type,
         "content_data" : bytes_to_str(audio_data.read()),
         "descritpion" : audio_info["title"]
     }
-    res = update_in_wiki(_id, {old_field : [audio_item]})
-    await state.finish()
-    if res == 1:
-        await message.answer(f"You have succesfully updated field '{old_field}'.")
-    else:
-        await message.answer(f"Something went wrong, field is not updated.")
+    async with state.proxy() as data:
+        data["new_field_media"].append(audio_item)
+    await message.answer(f"Audio added to list. Type 'Finish' to update field.")
 
 
-@dp.message_handler(state=EditProcess.new_field, content_types=["photo"])
+@dp.message_handler(state=EditProcess.new_field_media, content_types=["voice"])
 async def get_new_field_value(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         _id = data["_id"]
         old_field = data["old_field"]
-    if old_field != "attachments":
-        await message.answer(f"You can't add media to this field. Canceled.")
-        await state.finish()
-        return
-    new_val = []
+    audio_data = io.BytesIO()
+    await message.voice.download(audio_data)
+    mime_type = filetype.guess(audio_data).mime
+    audio_data.seek(0)
+    audio_item = {
+        "content_type" : mime_type,
+        "content_data" : bytes_to_str(audio_data.read())
+    }
+    async with state.proxy() as data:
+        data["new_field_media"].append(audio_item)
+    await message.answer(f"Audio added to list. Type 'Finish' to update field.")
+
+
+@dp.message_handler(state=EditProcess.new_field_media, content_types=["video"])
+async def get_new_field_value(message: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        _id = data["_id"]
+        old_field = data["old_field"]
+    video_data = io.BytesIO()
+    await message.video.download(video_data)
+    mime_type = filetype.guess(video_data).mime
+    video_data.seek(0)
+    video_item = {
+        "content_type" : mime_type,
+        "content_data" : bytes_to_str(video_data.read())
+    }
+    async with state.proxy() as data:
+        data["new_field_media"].append(video_item)
+    await message.answer(f"Video added to list. Type 'Finish' to update field.")
+
+
+@dp.message_handler(state=EditProcess.new_field_media, content_types=["document"])
+async def get_new_field_value(message: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        _id = data["_id"]
+        old_field = data["old_field"]
+    document_data = io.BytesIO()
+    await message.document.download(document_data)
+    mime_type = filetype.guess(document_data).mime
+    document_data.seek(0)
+    document_item = {
+        "content_type" : mime_type,
+        "content_data" : bytes_to_str(document_data.read())
+    }
+    async with state.proxy() as data:
+        data["new_field_media"].append(document_item)
+    await message.answer(f"Document added to list. Type 'Finish' to update field.")
+
+
+@dp.message_handler(state=EditProcess.new_field_media, content_types=["photo"])
+async def get_new_field_value(message: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        _id = data["_id"]
+        old_field = data["old_field"]
     photo = message.photo[-1]
-    photo_info = json.loads(photo.as_json())
     photo_data = io.BytesIO()
     await photo.download(photo_data)
+    mime_type = filetype.guess(photo_data).mime
+    photo_data.seek(0)
     photo_item = {
-        "content_type" : "image/jpeg",#photo_info["mime_type"],
-        "content_data" : bytes_to_str(photo_data.read()),
-        # "descritpion" : photo_info["title"]
+        "content_type" : mime_type,
+        "content_data" : bytes_to_str(photo_data.read())
     }
-    new_val.append(photo_item)
-    res = update_in_wiki(_id, {old_field : new_val})
+    async with state.proxy() as data:
+        data["new_field_media"].append(photo_item)
+    await message.answer(f"Photo added to list. Type 'Finish' to update field.")
+
+
+@dp.message_handler(Text(equals='finish', ignore_case=True), state=EditProcess.new_field_media)
+async def finish_adding_media(message: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        _id = data["_id"]
+        new_attachments = data.get("new_field_media", [])
+    res = update_in_wiki(_id, {"attachments" : new_attachments})
     await state.finish()
+    await message.answer(f"Send to API {len(new_attachments)} items.", reply_markup=types.ReplyKeyboardRemove())
     if res == 1:
-        await message.answer(f"You have succesfully updated field '{old_field}'.")
+        await message.answer(f"You have succesfully updated field 'attachments'.")
     else:
         await message.answer(f"Something went wrong, field is not updated.")
 
 
-@dp.message_handler(state=EditProcess.new_field, content_types=["text"])
+@dp.message_handler(state=EditProcess.new_field_text, content_types=["text"])
 async def get_new_field_value(message: types.Message, state: FSMContext):
     global ARRAY_FIELDS
     async with state.proxy() as data:
