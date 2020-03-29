@@ -86,6 +86,17 @@ async def start(message: types.Message):
     await message.answer('Enter id or name of object you want to edit. Format : "[name | id] object"')
 
 
+# TODO: edit to hanndle inline bot, not the html_text
+@dp.message_handler(lambda message: re.match('^<b>(.+)</b>', message.html_text), state='*')
+async def find_from_search_bot(message: types.Message, state: FSMContext):
+    name = re.match('^<b>(.+)</b>', message.html_text).group(1)
+    res = get_from_wiki(name=name, ret_fields=["name"])["name"]
+    await EditProcess.name.set()
+    async with state.proxy() as data:
+        data['names'] = {word['name'] : word['_id'] for word in res}
+    await message.answer("Which word you want to change?", reply_markup=get_replymarkup_names(res))
+
+
 @dp.message_handler(state='*', regexp='^[i|I][d|D]\s*:?\s*([0-9a-z]{24})')
 async def find_by_id(message: types.Message, state: FSMContext):
     _id = re.match("^[i|I][d|D]\s*:?\s*([0-9a-z]{24})", message.text).group(1)
@@ -111,6 +122,7 @@ async def find_by_name(message: types.Message, state: FSMContext):
     await message.answer("Which word you want to change?", reply_markup=get_replymarkup_names(res))
 
 
+# TODO: keep ids in data['names'], to fix error with same names
 @dp.message_handler(state=EditProcess.name)
 async def process_name(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
@@ -139,13 +151,15 @@ async def process_id(message: types.Message, state: FSMContext):
 async def process_field(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data["old_field"] = message.text
+    repl = types.ReplyKeyboardRemove()
     if message.text == "attachments":
         await EditProcess.new_field_media.set()
         async with state.proxy() as data:
             data["new_field_media"] = []
+        repl = get_replymarkup_finish()
     else:
-        await EditProcess.new_field_text.est()
-    await message.answer(f"You have chosen to edit field '{message.text}'. Send new value for this.", reply_markup=get_replymarkup_finish())
+        await EditProcess.new_field_text.set()
+    await message.answer(f"You have chosen to edit field '{message.text}'. Send new value for this.", reply_markup=repl)
 
 
 @dp.message_handler(state=EditProcess.new_field_media, content_types=["audio"])
