@@ -74,6 +74,7 @@ echo "Launching docker-compose"
 
 touch ./telegramBots/userBot/.env
 touch ./telegramBots/initBot/.env
+touch ./telegramBots/editBot/.env
 
 # used to config user for mongodb
 export UID=${UID}
