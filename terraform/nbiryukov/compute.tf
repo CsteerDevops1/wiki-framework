@@ -20,11 +20,29 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "aws_test_instance" {
-  ami           = "${data.aws_ami.ubuntu.id}"
+  ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
-  key_name = "${aws_key_pair.default.id}"
+  availability_zone = var.az 
+  key_name = aws_key_pair.default.id
+
+  tags = {
+    Name = "HelloWorld"
+    Owner = "Nikolay Biryukov"
+    Project = "TestProject"
+  }
+}
+
+resource "aws_ebs_volume" "testEbs" {
+  availability_zone = var.az
+  size              = 10
 
   tags = {
     Name = "HelloWorld"
   }
+}
+
+resource "aws_volume_attachment" "ebs_att" {
+  device_name = "/dev/sdh"
+  volume_id   = aws_ebs_volume.testEbs.id
+  instance_id = aws_instance.aws_test_instance.id
 }
