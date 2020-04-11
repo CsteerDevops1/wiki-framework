@@ -11,31 +11,31 @@ function PostPage() {
             <h1>Upload your object to database</h1>
             <form onSubmit={handleSubmit}>
 
-                <label htmlFor={"name"}>Name: <br/>
-                    <input onInput={handleInputChange} name={"name"} type={"text"} className={"form-input"}/>
+                <label>Name: <br/>
+                    <input name={"name"} type={"text"} className={"form-input"}/>
                 </label>
 
-                <label htmlFor={"russian_name"}>Name in russian: <br/>
-                    <input onInput={handleInputChange} name={"russian_name"} type={"text"} className={"form-input"}/>
+                <label>Name in russian: <br/>
+                    <input name={"russian_name"} type={"text"} className={"form-input"}/>
                 </label>
 
-                <label htmlFor={"description"}>Description: <br/>
-                    <input onInput={handleInputChange} name={"description"} type={"text"} className={"form-input"}/>
+                <label>Description: <br/>
+                    <input name={"description"} type={"text"} className={"form-input"}/>
                 </label>
 
-                <label htmlFor={"russian_description"}>Description in russian: <br/>
-                    <input onInput={handleInputChange} name={"russian_description"} type={"text"} className={"form-input"}/>
+                <label>Description in russian: <br/>
+                    <input name={"russian_description"} type={"text"} className={"form-input"}/>
                 </label>
 
-                <label htmlFor={"text"}>Text: <br/>
-                    <input onInput={handleInputChange} name={"text"} type={"text"} className={"form-input"}/>
+                <label>Text: <br/>
+                    <input name={"text"} type={"text"} className={"form-input"}/>
                 </label>
 
-                <label >File: <br/>
-                    <input onChange={fileSelectedHandler} type="file" className={"form-input"}/>
+                <label>File: <br/>
+                    <input name={"file"} type="file" className={"form-input"}/>
                 </label>
 
-                <input value={"Send"} type={"submit"} />
+                <a href="http://188.124.37.185/"> <input value={"Send"} type={"submit"} /></a>
             </form>
         </main>
     );

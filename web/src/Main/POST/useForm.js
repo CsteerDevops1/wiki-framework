@@ -2,56 +2,65 @@ import {useState} from 'react';
 import DatabaseModel from "../scheme/DatabaseModel";
 import Attachment from '../scheme/Attachment';
 
+//const selectedFile = document.getElementById('input').files[0];
+
 function useForm(callback) {
  const [dbm, setDbm] = useState(new DatabaseModel());
   const handleSubmit = (event) => {
     if (event) {
         event.preventDefault();
-
+        if(event.target.name.value){dbm["name"] = event.target.name.value;}
+        dbm["russian_name"] = event.target.russian_name.value;
+        dbm["description"] = event.target.description.value;
+        dbm["russian_description"] = event.target.russian_description.value;
+        dbm["text"] = event.target.text.value;
         dbm["tags"] = [];
         dbm["synonyms"] = [];
         dbm["relations"] = []; 
-        let globName = "188.124.37.185";
-        let apiUrl = "/api/wiki";
-        console.log(JSON.stringify(dbm));
-        fetch("http://" + globName + ":5000" + apiUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dbm) // body data type must match "Content-Type" header
-        }).then((data) => {console.log(data)});
+
+        //here async file upload starts
+        dbm["attachments"] = [];
+
+        const file = document.querySelector('input[type=file]').files[0];
+        const reader = new FileReader();
+        reader.addEventListener("load", function () {
+          // here encoding to base64 happens
+          // we need to wait until file is ready and THEN we send data
+          dbm.addAttachment(new Attachment(file.type, reader.result.replace(/data.*base64,/, "")));
+          SendData();
+        }, false);
+       
+        if (file) {
+         reader.readAsDataURL(file);
+        } else {
+          SendData();
+        }
 
     }
   }
-  const handleInputChange = (event) => {
-    event.persist();
-    dbm[event.target.name] = event.target.value;
-    setDbm(dbm);
-  }
 
-  const fileSelectedHandler = (event) => {
-      dbm["attachments"] = [];
-      console.log(event.target)
-      console.log(event.target.files[0])
-      console.log(event.target.files[0].type)
 
-      const file = document.querySelector('input[type=file]').files[0];
-      const reader = new FileReader();
-      
-      reader.addEventListener("load", function () {
-         // here encoding to base64 happens
-         console.log(reader.result)
-        dbm.addAttachment(new Attachment(file.type, reader.result.replace(/data.*base64,/, "")));
-        }, false);
-      
-      if (file) {
-        reader.readAsDataURL(file);
-      }
-  }
+  function SendData(){
+    //just sends whatever is in dbm item
+    let globName = "188.124.37.185";
+    let apiUrl = "/api/wiki";
+
+    fetch("http://" + globName + ":5000" + apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dbm) // body data type must match "Content-Type" header
+    }).then((data) => {
+      console.log(data.status);
+      if([200,201,202,203,204,205].includes(data.status)){
+      alert("Data sent successfully!");} 
+      else if([400,401,402,403,404,405].includes(data.status)){
+      alert("Client error!");} 
+      else if([500,501,502,503,504,505].includes(data.status)){
+      alert("Server error!");}
+  })}
 
   return {
     handleSubmit,
-    handleInputChange,
-    fileSelectedHandler,
     dbm
   };
 }
