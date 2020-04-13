@@ -46,3 +46,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Terraform
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
