@@ -4,8 +4,7 @@ import './PostPage.css';
 import useForm from './useForm';
 
 function PostPage() {
-    const {handleInputChange, handleSubmit, fileSelectedHandler} = useForm();
-
+    const {handleSubmit} = useForm();
     return (
         <main>
             <h1>Upload your object to database</h1>
@@ -35,7 +34,7 @@ function PostPage() {
                     <input name={"file"} type="file" className={"form-input"}/>
                 </label>
 
-                <a href="http://188.124.37.185/"> <input value={"Send"} type={"submit"} /></a>
+                <input value={"Send"} type={"submit"} />
             </form>
         </main>
     );

@@ -1,12 +1,13 @@
 import {useState} from 'react';
 import DatabaseModel from "../scheme/DatabaseModel";
 import Attachment from '../scheme/Attachment';
-
-//const selectedFile = document.getElementById('input').files[0];
+import { useHistory } from "react-router-dom";
 
 function useForm(callback) {
  const [dbm, setDbm] = useState(new DatabaseModel());
-  const handleSubmit = (event) => {
+ let history = useHistory();
+
+ const handleSubmit = (event) => {
     if (event) {
         event.preventDefault();
         if(event.target.name.value){dbm["name"] = event.target.name.value;}
@@ -35,10 +36,8 @@ function useForm(callback) {
         } else {
           SendData();
         }
-
     }
   }
-
 
   function SendData(){
     //just sends whatever is in dbm item
@@ -57,11 +56,11 @@ function useForm(callback) {
       alert("Client error!");} 
       else if([500,501,502,503,504,505].includes(data.status)){
       alert("Server error!");}
+      history.push('/get');
   })}
 
   return {
-    handleSubmit,
-    dbm
+    handleSubmit
   };
 }
 
