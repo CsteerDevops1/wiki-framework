@@ -51,12 +51,13 @@ function useForm(callback) {
     }).then((data) => {
       console.log(data.status);
       if([200,201,202,203,204,205].includes(data.status)){
-      alert("Data sent successfully!");} 
+      alert("Data sent successfully!");
+      history.push('/get');} 
       else if([400,401,402,403,404,405].includes(data.status)){
       alert("Client error!");} 
       else if([500,501,502,503,504,505].includes(data.status)){
       alert("Server error!");}
-      history.push('/get');
+      
   })}
 
   return {
