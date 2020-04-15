@@ -1,0 +1,230 @@
+[
+    {
+        "name": "One",
+        "russian_name": "",
+        "description": "The number 1",
+        "russian_description": "",
+        "tags": [
+            "number"
+        ],
+        "text": "",
+        "synonyms": [
+            "First"
+        ],
+        "relations": [
+            
+        ],
+        "attachments": [
+            {
+                "content_type": "image/png",
+                "content_data": "images/one.png"
+            }
+        ]
+    },
+    {
+        "name": "Two",
+        "russian_name": "",
+        "description": "The number 2",
+        "russian_description": "",
+        "tags": [
+            "number"
+        ],
+        "text": "",
+        "synonyms": [
+            "Second"
+        ],
+        "relations": [
+            
+        ],
+        "attachments": [
+            {
+                "content_type": "image/png",
+                "content_data": "images/two.png"
+            }
+        ]
+    },
+    {
+        "name": "Three",
+        "russian_name": "",
+        "description": "The number 3",
+        "russian_description": "",
+        "tags": [
+            "number"
+        ],
+        "text": "",
+        "creation_date": true,
+        "synonyms": [
+            "Third"
+        ],
+        "relations": [
+            
+        ],
+        "attachments": [
+            {
+                "content_type": "image/png",
+                "content_data": "images/three.png"
+            }
+        ]
+    },
+    {
+        "name": "Four",
+        "russian_name": "",
+        "description": "The number 4",
+        "russian_description": "",
+        "tags": [
+            "number"
+        ],
+        "text": "",
+        "creation_date": true,
+        "synonyms": [
+            "Fourth"
+        ],
+        "relations": [
+            
+        ],
+        "attachments": [
+            {
+                "content_type": "image/png",
+                "content_data": "images/four.png"
+            }
+        ]
+    },
+    {
+        "name": "Five",
+        "russian_name": "",
+        "description": "The number 5",
+        "russian_description": "",
+        "tags": [
+            "number"
+        ],
+        "text": "",
+        "creation_date": true,
+        "synonyms": [
+            "Fifth"
+        ],
+        "relations": [
+            
+        ],
+        "attachments": [
+            {
+                "content_type": "image/png",
+                "content_data": "images/five.png"
+            }
+        ]
+    },
+    {
+        "name": "Six",
+        "russian_name": "",
+        "description": "The number 6",
+        "russian_description": "",
+        "tags": [
+            "number"
+        ],
+        "text": "",
+        "creation_date": true,
+        "synonyms": [
+            "Sixth"
+        ],
+        "relations": [
+            
+        ],
+        "attachments": [
+            {
+                "content_type": "image/png",
+                "content_data": "images/six.png"
+            }
+        ]
+    },
+    {
+        "name": "Seven",
+        "russian_name": "",
+        "description": "The number 7",
+        "russian_description": "",
+        "tags": [
+            "number"
+        ],
+        "text": "",
+        "creation_date": true,
+        "synonyms": [
+            "Seventh"
+        ],
+        "relations": [
+            
+        ],
+        "attachments": [
+            {
+                "content_type": "image/png",
+                "content_data": "images/seven.png"
+            }
+        ]
+    },
+    {
+        "name": "Eight",
+        "russian_name": "",
+        "description": "The number 8",
+        "russian_description": "",
+        "tags": [
+            "number"
+        ],
+        "text": "",
+        "creation_date": true,
+        "synonyms": [
+            "Eighth"
+        ],
+        "relations": [
+            
+        ],
+        "attachments": [
+            {
+                "content_type": "image/png",
+                "content_data": "images/eight.png"
+            }
+        ]
+    },
+    {
+        "name": "Nine",
+        "russian_name": "",
+        "description": "The number 9",
+        "russian_description": "",
+        "tags": [
+            "number"
+        ],
+        "text": "",
+        "creation_date": true,
+        "synonyms": [
+            "Nineth"
+        ],
+        "relations": [
+            
+        ],
+        "attachments": [
+            {
+                "content_type": "image/png",
+                "content_data": "images/nine.png"
+            }
+        ]
+    },
+    {
+        "name": "Zero",
+        "russian_name": "",
+        "description": "The number 0",
+        "russian_description": "",
+        "tags": [
+            "number"
+        ],
+        "text": "",
+        "creation_date": true,
+        "synonyms": [
+            "O"
+        ],
+        "relations": [
+            
+        ],
+        "attachments": [
+            {
+                "content_type": "image/png",
+                "content_data": "images/zero.png"
+            }
+        ]
+    }
+]

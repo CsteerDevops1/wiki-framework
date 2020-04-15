@@ -1,0 +1,149 @@
+[
+    {
+        "name": "Hatchback",
+        "russian_name": "",
+        "description": "A hatchback is a car type with a rear door that opens upwards. They typically feature a four-door configuration, excluding the rear door. However, two-door hatchbacks are not uncommon.",
+        "russian_description": "",
+        "tags": [
+            "car"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/cartypes-hatchback.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Sedan",
+        "russian_name": "",
+        "description": "Out of the different types of cars, a sedan (US) or a saloon (UK) is traditionally defined as a car with four doors and a typical boot/ trunk. A slightly technical detail is that it usually features a 3-box configuration with each of the boxes categorically used for the engine, passenger, and cargo. Sedans have several sub-types such as notchback, fastback, compact, and sub-compact. It may be interesting to note that cars such as the older generation models of the Skoda Octavia are often incorrectly referred to as notchbacks.",
+        "russian_description": "",
+        "tags": [
+            "car"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/cartypes-sedan.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Multi-purpose vehicle",
+        "russian_name": "",
+        "description": "A multi-purpose vehicle (MPV) or multi-utility vehicle (MUV) are commonly known as 'people carriers'. They are designed to offer enhanced space and comfort for passengers with two or three rows of seating and large doors. The third row on MPVs/ MUVs can generally be reconfigured.",
+        "russian_description": "",
+        "tags": [
+            "car"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/cartypes-mpv.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Sports utility vehicle",
+        "russian_name": "",
+        "description": "Conventionally, a sports utility vehicle (SUV) is a big car built on a body-on-frame chassis, sports increased ground clearance and offers off-roading capabilities to a certain extent. With that said, the aforementioned definition of an SUV has blurred over time and often includes both off-roaders and soft-roaders.",
+        "russian_description": "",
+        "tags": [
+            "car"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/cartypes-suv.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Crossover",
+        "russian_name": "",
+        "description": "A simple, and common, definition of a crossover would be that it is a vehicle that combines the features of an SUV and a hatchback. Crossover vehicles offer soft-roading capabilities and are constructed like a car - they use unibody construction instead of the body-on-frame platform used in SUVs.",
+        "russian_description": "",
+        "tags": [
+            "car"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/cartypes-crossover.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Coupe",
+        "russian_name": "",
+        "description": "A coupe is classically defined as a closed two-door car with a fixed roof. Considered sporty by nature, it generally gets just 2 seats or with a smaller-than-average rear. The typical definition of a coupe has evolved over time and differs across manufacturers and now is also ascribed to cars with four doors and coupe-like proportions, chiefly for their sporty appeal instead of number of doors.",
+        "russian_description": "",
+        "tags": [
+            "car"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/cartypes-coupe.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Convertible",
+        "russian_name": "",
+        "description": "A convertible, a.k.a. a cabriolet or roadster, is a car with a roof structure that can be 'converted' to allow open-air or enclosed driving. They feature either a retractable hardtop roof or soft folding top.",
+        "russian_description": "",
+        "tags": [
+            "car"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/cartypes-convertible.jpg"
+            }
+        ]
+    }
+]

@@ -1,0 +1,464 @@
+[
+    {
+        "name": "Bison",
+        "russian_name": "",
+        "description": "Though it was the 129th most searched animal in 2014, the bison made the list of top 10 trending animals for the year. The American bison was almost hunted to extinction in the 1800�s but has since recovered, largely due to the commercial raising of bison for their meat.",
+        "russian_description": "",
+        "tags": [
+            "animal"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/animal-bison.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Dolphin",
+        "russian_name": "",
+        "description": "Highly intelligent animals, dolphins are also very social – they will help sick or injured members of their pod come to the surface for air and can even switch between pods.",
+        "russian_description": "",
+        "tags": [
+            "animal"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/animal-dolphin.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Eagle",
+        "russian_name": "",
+        "description": "Though Americans are most familiar with the bald eagle, there are about 60 species of eagle in the world, mostly in Eurasia and Africa with 44 species. North America only has two resident eagle species; the Bald Eagle and the Golden Eagle.",
+        "russian_description": "",
+        "tags": [
+            "animal"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/animal-eagle.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Pony",
+        "russian_name": "",
+        "description": "A pony is a small horse but, contrary to popular thought, is not a baby or young horse. These horses likely developed their shorter legs, thicker manes, and smaller statures due to living on the fringes of livable horse habitat.",
+        "russian_description": "",
+        "tags": [
+            "animal"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/animal-pony.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Ape",
+        "russian_name": "",
+        "description": "The easiest way to differentiate an ape from a monkey is to look at its backside: apes have no tails. The great ape branch of the family in Africa is mostly threatened today due to the Ebola virus.",
+        "russian_description": "",
+        "tags": [
+            "animal"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/animal-ape.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Lobster",
+        "russian_name": "",
+        "description": "At the far end of the top 20 most popular animals on Google, the lobster can live up to 70 years old. Unlike us humans, lobsters don’t slow down or become weaker with age; they likely even become more fertile as they grow older.",
+        "russian_description": "",
+        "tags": [
+            "animal"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/animal-lobster.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Monkey",
+        "russian_name": "",
+        "description": "Monkeys are distinguishable from other primates by their tails and dry noses. Capuchin monkeys are sometimes trained as service animals to help with feeding and personal care for quadriplegics and other people with mobility impairments.",
+        "russian_description": "",
+        "tags": [
+            "animal"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/animal-monkey.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Cow",
+        "russian_name": "",
+        "description": "Sacred to Hindus, the cow is one of the most common types of livestock in the world. Bulls and other cattle are commonly thought to be angered by the colour red, however cattle are red-green colour-blind and can’t distinguish the colour. The rustling of a matador’s cape leads bulls to charge.",
+        "russian_description": "",
+        "tags": [
+            "animal"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/animal-cow.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Deer",
+        "russian_name": "",
+        "description": "Native to all continents except Australia and Antarctica, the deer is widespread except in Africa where there is only one indigenous species: the Barbary stag. Other than the Chinese water deer, all male deer (and both sexes of reindeer) have antlers.",
+        "russian_description": "",
+        "tags": [
+            "animal"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/animal-deer.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Duck",
+        "russian_name": "",
+        "description": "The feathered birds inhabiting much of our waterways, ducks are, in most cases, monogamous but only for a year – after the young are grown the couple often splits. The word duck originates from the Old English word *dūce meaning “diver”.",
+        "russian_description": "",
+        "tags": [
+            "animal"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/animal-duck.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Rabbit",
+        "russian_name": "",
+        "description": "The rabbit is especially a popularly searched animal on Google in North America since over half of the global rabbit population lives on the continent. Rabbits are different from hares which are larger, have longer ears, and are born hairy and with good eyesight.",
+        "russian_description": "",
+        "tags": [
+            "animal"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/animal-rabbit.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Spider",
+        "russian_name": "",
+        "description": "Turn away now if you have arachnophobia; there are over 43,000 species of spider known today and, out of all these spiders, we only know of one which is herbivorous.",
+        "russian_description": "",
+        "tags": [
+            "animal"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/animal-spider.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Gray Wolf",
+        "russian_name": "",
+        "description": "The gray wolf is different from other Canis members largely due to its more outgoing and expressive demeanor. The dog and gray wolf came from a similar ancestor about 15,000 years ago in Europe. The gray wolf is properly popular on Google: it’s one of the most well-researched animals in the world with one of the highest amounts of literature written about it.",
+        "russian_description": "",
+        "tags": [
+            "animal"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/animal-graywolf.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Turkey",
+        "russian_name": "",
+        "description": "A common sight on American and Canadian Thanksgiving tables, the turkey bird was actually named after the country. The Turk people have inhabited present-day Turkey since the 1300s and it was through this area that the guinea fowl was imported from East Africa to Europe. Europeans landing in the New World incorrectly identified the bird we today know as the turkey with the word Europeans referred to the guinea fowl as: the turkey cock.",
+        "russian_description": "",
+        "tags": [
+            "animal"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/animal-turkey.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Lion",
+        "russian_name": "",
+        "description": "Until about 10,000 years ago, the lion was a much more popular animal around the world – after humans, the lion was the most widespread large land mammal in the world.",
+        "russian_description": "",
+        "tags": [
+            "animal"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/animal-lion.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Pig",
+        "russian_name": "",
+        "description": "The top trending animal in 2014, the pig is also a highly intelligent and social animal and increasingly becoming a more common house pet. When raised for their meat, pigs make up 38% of worldwide meat production.",
+        "russian_description": "",
+        "tags": [
+            "animal"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/animal-pig.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Snake",
+        "russian_name": "",
+        "description": "Snakes are often seen as creatures to fear – maybe this comes from their presence on every continent except Antarctica and a few notable exceptions of Ireland, New Zealand, and some other islands. Beyond being quite a useful animal, the snake has loads of interesting facts associated with it, such as its generally only having one working lung.",
+        "russian_description": "",
+        "tags": [
+            "animal"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/animal-snake.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Shark",
+        "russian_name": "",
+        "description": "Despite being billed as one of the most terrifying creatures on the planet, the shark is a predator but is responsible for considerably few human deaths – only 4.3 on average annually. More dangerous animals include cows and horses which each kill 20 people in the U.S. alone every year.",
+        "russian_description": "",
+        "tags": [
+            "animal"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/animal-shark.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Bear",
+        "russian_name": "",
+        "description": "Out of the eight species of bear, six are omnivorous; otherwise, the panda bear almost exclusively eats bamboo and the polar bear almost exclusively eats meat.",
+        "russian_description": "",
+        "tags": [
+            "animal"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/animal-bear.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Horse",
+        "russian_name": "",
+        "description": "Most horses are domesticated and even the horses people refer to as wild are actually feral: their ancestors were domesticated by humans at some point and since escaped and lived in the wild. The only true wild horse is the Przewalski’s horse, a rare and endangered species recently reintroduced to the Mongolian steppes.",
+        "russian_description": "",
+        "tags": [
+            "animal"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/animal-horse.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Cat",
+        "russian_name": "",
+        "description": "Cats, also called domestic cats (Felis catus), are small, carnivorous (meat-eating) mammals, of the family Felidae. Domestic cats are often called house cats when kept as indoor pets. Cats have been domesticated (tamed) for nearly 10,000 years.[3] They are one of the most popular pets in the world. Their origin is probably the African Wildcat Felis silvestris lybica.",
+        "russian_description": "",
+        "tags": [
+            "animal"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/animal-cat.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Dog",
+        "russian_name": "",
+        "description": "Dog – domestic mammal of the family Canidae (order Carnivora). It is a subspecies of the gray wolf and is related to foxes and jackals. The dog is one of the two most ubiquitous and most popular domestic animals in the world (the cat is the other). For more than 12,000 years it has lived with humans as a hunting companion, protector, object of scorn or adoration, and friend.",
+        "russian_description": "",
+        "tags": [
+            "animal"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/animal-dog.jpg"
+            }
+        ]
+    }
+]
