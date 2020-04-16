@@ -9,3 +9,9 @@
     padding: 0 5px;
     margin: 5px;
 }
+
+.modelElement h2 a{
+    color: var(--color-1);
+    text-decoration: none;
+    cursor: pointer;
+}
