@@ -3,7 +3,7 @@
   {
     "title": "DB content item",
     "description": "A representation of each db element.",
-    "required": ["name", "russian_name", "description", "russian_description", "synonyms", "tags", "text", "relations"],
+    "required": ["name", "russian_name", "description", "russian_description", "synonyms", "tags", "relations"],
     "bsonType": "object",
     "properties": {
       "_id": {
@@ -49,7 +49,7 @@
       },
       "text": {
         "type": "string",
-        "description": "Text."
+        "description": "Additional text data."
       },
       "creation_date":{
         "bsonType": "date",
