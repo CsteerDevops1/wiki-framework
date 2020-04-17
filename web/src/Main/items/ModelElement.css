@@ -15,3 +15,11 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+.modelElement h2{
+    border-bottom: 2px solid var(--color-1);
+}
+
+.modelElement img, .modelElement video, .modelElement audio {
+    max-width: 100%;
+}
