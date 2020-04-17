@@ -41,13 +41,14 @@ function useForm(id) {
             dbm["synonyms"] = [];
             dbm["relations"] = [];
             dbm["attachments"] = [];
-
             let globName = "188.124.37.185";
-            let apiUrl = "/api/wiki";
+            let apiUrl = `/api/wiki?_id=${dbm["_id"]}`;
+            let sendObject = Object.assign({}, dbm);
+            delete sendObject["_id"];
             fetch("http://" + globName + ":5000" + apiUrl, {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(dbm) // body data type must match "Content-Type" header
+                body: JSON.stringify(sendObject) // body data type must match "Content-Type" header
             }).then((data) => {
                 console.log(data)
             });

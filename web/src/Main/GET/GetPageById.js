@@ -41,7 +41,11 @@ function GetPageById() {
                     "name",
                     "russian_description",
                     "description",
-                    "media"
+                    "media",
+                    "relations",
+                    "tags",
+                    "text",
+                    "creationDate"
                 ]}
 
                 isButtonVisible={true}
