@@ -37,7 +37,7 @@ function useForm(callback) {
           SendData();
         }
     }
-  }
+  };
 
   function SendData(){
     //just sends whatever is in dbm item

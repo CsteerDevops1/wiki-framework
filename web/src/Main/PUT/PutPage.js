@@ -17,7 +17,7 @@ function PutPage() {
         <main>
             <h1>Edit object in a DB with ID: {id}</h1>
             <form onSubmit={handleSubmit}>
-                <label htmlFor={"name"}>Name: {dbm.name} <br/>
+                <label htmlFor={"name"}>Name: <br/>
                     <input onChange={handleInputChange} value={dbm.name} name={"name"} type={"text"} className={"form-input"}/>
                 </label>
 

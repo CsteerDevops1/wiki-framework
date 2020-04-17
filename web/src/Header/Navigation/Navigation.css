@@ -1,5 +1,6 @@
 nav {
-    width: 25%;
+    width: 15%;
+    margin-right: 2%;
 }
 
 @media screen and (max-width: 1400px) {
