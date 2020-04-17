@@ -9,7 +9,8 @@
         ],
         "text": "",
         "synonyms": [
-            ""
+            "seat",
+            "throne"
         ],
         "relations": [
         ],
@@ -51,7 +52,10 @@
         ],
         "text": "",
         "synonyms": [
-            ""
+            "sofa",
+            "settee",
+            "futon",
+            "chesterfield"
         ],
         "relations": [
         ],
@@ -135,7 +139,8 @@
         ],
         "text": "",
         "synonyms": [
-            ""
+            "Workspace",
+            "Workstation"
         ],
         "relations": [
         ],
@@ -156,7 +161,8 @@
         ],
         "text": "",
         "synonyms": [
-            ""
+            "Wash-hand stand",
+            "Washbasin"
         ],
         "relations": [
         ],
@@ -177,7 +183,7 @@
         ],
         "text": "",
         "synonyms": [
-            ""
+            "Table"
         ],
         "relations": [
         ],
@@ -185,6 +191,99 @@
             {
                 "content_type": "image/jpg",
                 "content_data": "images/furnitures-desk.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Bookcase",
+        "russian_name": "",
+        "description": "A bookcase, or bookshelf, is a piece of furniture with horizontal shelves, often in a cabinet, used to store books or other printed materials. Bookcases are used in private homes, public and university libraries, offices and bookstores. Bookcases range from small, low models the height of a table to high models reaching up to ceiling height. Shelves may be fixed or adjustable to different positions in the case. In rooms entirely devoted to the storage of books, such as libraries, they may be permanently fixed to the walls and/or floor.",
+        "russian_description": "",
+        "tags": [
+            "furniture"
+        ],
+        "text": "",
+        "synonyms": [
+            "Bookshelf"
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/furnitures-bookcase.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Closet",
+        "russian_name": "",
+        "description": "A closet (especially in North American usage) is an enclosed space used for storage, particularly that of clothes. ",
+        "russian_description": "",
+        "tags": [
+            "furniture"
+        ],
+        "text": "",
+        "synonyms": [
+            "Wardrobe",
+            "Cupboard"
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/furnitures-closet.jpg"
+            },
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/furnitures-wardrobe.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Cupboard",
+        "russian_name": "",
+        "description": "The term cupboard was originally used to describe an open-shelved side table for displaying dishware, more specifically plates, cups and saucers. These open cupboards typically had between one and three display tiers, and at the time, a drawer or multiple drawers fitted to them. The word cupboard gradually came to mean a closed piece of furniture.",
+        "russian_description": "",
+        "tags": [
+            "furniture"
+        ],
+        "text": "",
+        "synonyms": [
+            "Closet"
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/furnitures-cupboard1.jpg"
+            },
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/furnitures-cupboard2.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Chest",
+        "russian_name": "",
+        "description": "A chest (also called coffer or kist) is a form of furniture typically of a rectangular structure with four walls and a removable lid, for storage. The interior space may be subdivided. The early uses of an antique chest or coffer included storage of fine cloth, weapons, foods and valuable items. It is a box with a hinged lid that can safeguard your personal items. Some chests are equipped with locking mechanisms or a metal band that a lock can be secured on. In Webster’s Dictionary 1988 version, a chest is defined as a ",
+        "russian_description": "",
+        "tags": [
+            "furniture"
+        ],
+        "text": "",
+        "synonyms": [
+            "dresser"
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/furnitures-chest.jpg"
             }
         ]
     }
