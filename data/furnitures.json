@@ -1,0 +1,191 @@
+[
+    {
+        "name": "Chair",
+        "russian_name": "",
+        "description": "One of the basic pieces of furniture, a chair is a type of seat. Its primary features are two pieces of a durable material, attached as back and seat to one another at a 90° or slightly greater angle, with usually the four corners of the horizontal seat attached in turn to four legs—or other parts of the seat's underside attached to three legs or to a shaft about which a four-arm turnstile on rollers can turn—strong enough to support the weight of a person who sits on the seat (usually wide and broad enough to hold the lower body from the buttocks almost to the knees) and leans against the vertical back (usually high and wide enough to support the back to the shoulder blades). The legs are typically high enough for the seated person's thighs and knees to form a 90° or lesser angle. Used in a number of rooms in homes (e.g. in living rooms, dining rooms, and dens), in schools and offices (with desks), and in various other workplaces, chairs may be made of wood, metal, or synthetic materials, and either the seat alone or the entire chair may be padded or upholstered in various colors and fabrics.",
+        "russian_description": "",
+        "tags": [
+            "furniture"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/furnitures-chair.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Bench",
+        "russian_name": "",
+        "description": "A bench is a long seat on which multiple people may sit at the same time. Benches are typically made of wood, but may also be made of metal, stone, or synthetic materials. Many benches have arm and back rests; some have no back rest and can be sat on from either side. In American public areas, benches are often donated by persons or associations, which may then be indicated on it, e.g. by a small plaque. Benches are used both outdoors and indoors.",
+        "russian_description": "",
+        "tags": [
+            "furniture"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/furnitures-bench.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Couch",
+        "russian_name": "",
+        "description": "A couch, also known as a sofa, settee, futon, or chesterfield is a piece of furniture for seating two or three people in the form of a bench, with armrests, which is partially or entirely upholstered, and often fitted with springs and tailored cushions. Although a couch is used primarily for seating, it may be used for sleeping. In homes, couches are normally found in the family room, living room, den, or the lounge. They are sometimes also found in non-residential settings such as hotels, lobbies of commercial offices, waiting rooms, and bars.",
+        "russian_description": "",
+        "tags": [
+            "furniture"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/furnitures-couch.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Bed",
+        "russian_name": "",
+        "description": "A bed is a piece of furniture which is used as a place to sleep or relax. Most modern beds consist of a soft, cushioned mattress on a bed frame, the mattress resting either on a solid base, often wood slats, or a sprung base. Many beds include a box spring inner-sprung base, which is a large mattress-sized box containing wood and springs that provide additional support and suspension for the mattress. Beds are available in many sizes, ranging from infant-sized bassinets and cribs, to small beds for a single person or adult, to large queen and king-size beds designed for two people. While most beds are single mattresses on a fixed frame, there are other varieties, such as the murphy bed, which folds into a wall, the sofa bed, which folds out of a sofa, and the bunk bed, which provides two mattresses on two tiers as well as a ladder to get to the upper tier. Temporary beds include the inflatable air mattress and the folding camp cot. Some beds contain neither a padded mattress nor a bed frame, such as the hammock. Some beds are made especially for animals.",
+        "russian_description": "",
+        "tags": [
+            "furniture"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/furnitures-bed.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Hammock",
+        "russian_name": "",
+        "description": "A hammock (from Spanish hamaca, borrowed from Taíno and Arawak hamaka) is a sling made of fabric, rope, or netting, suspended between two or more points, used for swinging, sleeping, or resting. It normally consists of one or more cloth panels, or a woven network of twine or thin rope stretched with ropes between two firm anchor points such as trees or posts. Hammocks were developed by native inhabitants of the Caribbean, Central America, and South America for sleeping, as well as the English. Later, they were used aboard ships by sailors to enable comfort and maximize available space, and by explorers or soldiers travelling in wooded regions. Eventually, in the 1920s, parents throughout North America used fabric hammocks to contain babies just learning to crawl. Today they are popular around the world for relaxation; they are also used as a lightweight bed on camping trips. The hammock is often seen as a symbol of summer, leisure, relaxation and simple, easy living.",
+        "russian_description": "",
+        "tags": [
+            "furniture"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/furnitures-hammock.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Table",
+        "russian_name": "",
+        "description": "A table is an item of furniture with a flat top and one or more legs, used as a surface for working at, eating from or on which to place things. Some common types of table are the dining room table, which is used for seated persons to eat meals; the coffee table, which is a low table used in living rooms to display items or serve refreshments; and the bedside table, which is used to place an alarm clock and a lamp. There are also a range of specialized types of tables, such as drafting tables, used for doing architectural drawings, and sewing tables.",
+        "russian_description": "",
+        "tags": [
+            "furniture"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/furnitures-table.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Workbench",
+        "russian_name": "",
+        "description": "A workbench is a sturdy table at which manual work is done. They range from simple flat surfaces to very complex designs that may be considered tools in themselves. Workbenches vary in size from tiny jewellers benches to the huge benches used by staircase makers. Almost all workbenches are rectangular in shape, often using the surface, corners and edges as flat/square and dimension standards.",
+        "russian_description": "",
+        "tags": [
+            "furniture"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/furnitures-workbench.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Washstand",
+        "russian_name": "",
+        "description": "A washstand or basin stand is a piece of furniture consisting of a small table or cabinet, usually supported on three or four legs, and most commonly made of mahogany, walnut, or rosewood, and made for holding a wash basin and water pitcher. The smaller varieties were used for rose-water ablutions, or for hair-powdering. The larger ones, which possessed receptacles for soap-dishes, were the predecessors of the modern bathroom wash basin, or sink. Both varieties, often of very elegant form, were in extensive use throughout a large part of the 18th century and early-19th century, eventually disappearing with the advent of modern indoor plumbing.",
+        "russian_description": "",
+        "tags": [
+            "furniture"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/furnitures-washstand.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Desk",
+        "russian_name": "",
+        "description": "A desk or bureau is a piece of furniture with a flat table-style work surface used in a school, office, home or the like for academic, professional or domestic activities such as reading, writing, or using equipment such as a computer. Desks often have one or more drawers, compartments, or pigeonholes to store items such as office supplies and papers. Desks are usually made of wood or metal, although materials such as glass are sometimes seen. Some desks have the form of a table, although usually only one side of a desk is suitable to sit at (there are some exceptions, such as a partners desk), unlike most usual tables. Some desks do not have the form of a table, for instance, an armoire desk is a desk built within a large wardrobe-like cabinet, and a portable desk is light enough to be placed on a person's lap. Since many people lean on a desk while using it, a desk must be sturdy. In most cases, people sit at a desk, either on a separate chair or a built-in chair (e.g., in some school desks). Some people use standing desks to be able to stand while using them.",
+        "russian_description": "",
+        "tags": [
+            "furniture"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/furnitures-desk.jpg"
+            }
+        ]
+    }
+]

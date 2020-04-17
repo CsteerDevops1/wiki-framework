@@ -1,0 +1,191 @@
+[
+    {
+        "name": "Mercury",
+        "russian_name": "",
+        "description": "The planet closest to the Sun is named after Mercurius, a Roman god. Being a messenger god, Mercurius moves around quickly, so his name was a good fit for this planet because it travels the shortest amount of time around the Sun. Because it is so close to the Sun, Mercury is a really hot planet. During the day, the temperature can go up to 840 °F (450 °C). However, at night, the planet cools down quickly, and the temperature drops to – 290 °F (-180°C). Mercury has a huge iron core, and a very thin atmosphere (a mixture of gases around a planet). It can sometimes be seen from Earth.",
+        "russian_description": "",
+        "tags": [
+            "planet"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/planet-mercury.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Venus",
+        "russian_name": "",
+        "description": "Venus is the Roman goddess of love. The second planet in our solar system was considered to be the brightest object in the sky and one of the most beautiful sights, and this is why this goddess was chosen for its name. This is a rocky planet with very thick clouds which prevent us from seeing its surface. Certain radars have detected multiple volcanoes on Venus. One such volcano is Maat Mons. This 5.6 mile (9km)-tall volcano is constantly surrounded by lava, hot liquid rock, due to its regular activity. Venus can sometimes be even warmer than Mercury.",
+        "russian_description": "",
+        "tags": [
+            "planet"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/planet-venus.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Earth",
+        "russian_name": "",
+        "description": "Our planet Earth is the only planet which was not named after a god or a goddess. In Latin, our planet is known as Terra, meaning ",
+        "russian_description": "",
+        "tags": [
+            "planet"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/planet-earth.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Mars",
+        "russian_name": "",
+        "description": "Mars is known as the Red Planet. What makes it so bright red is rust, a reddish-brown substance that forms on iron, is in its soil. However, when it came to naming the planet, people associated the red color with blood and war, which is why borrowed its name from the Roman god of war. Water on Mars has been frozen into rocks, so there is a suspicion there could be primitive life forms on this planet. We also know that strong winds, which cover the entire planet in dust, frequently occur on Mars.",
+        "russian_description": "",
+        "tags": [
+            "planet"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/planet-mars.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Jupiter",
+        "russian_name": "",
+        "description": "Jupiter is the largest planet in our solar system. It is 11 times wider than Earth. For this reason, both the Greeks and the Romans named it after their supreme gods. In Greek, this planet was known as Zeus, while the Romans called it Jupiter. This planet has many moons. Four largest ones were discovered by Galileo Galilei, an Italian astronomer, in 1610. The smallest of them, called Europa, is covered in ice, so scientists believe this satellite may support some life forms.",
+        "russian_description": "",
+        "tags": [
+            "planet"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/planet-jupiter.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Saturn",
+        "russian_name": "",
+        "description": "In Roman mythology, Saturn is a version of the Greek God Cronos, Zeus' father and god of agriculture. This planet has a large number of satellites (53 of them). Most of them were named after Titans, brothers and sisters of Saturn in Greek mythology. The largest moon, called Titan is even bigger than Mercury. This planet is recognizable by its system of seven shining rings which circle the equator, the line which is half-distance between two poles. They look solid, but in fact they are scattered pieces of rock and ice.",
+        "russian_description": "",
+        "tags": [
+            "planet"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/planet-saturn.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Uranus",
+        "russian_name": "",
+        "description": "The sixth planet, Uranus, was discovered in 1781 by a British astronomer Willian Herschel. Upon this event, Uranus became the first planet to be discovered with a telescope, a device which makes faraway objects look closer and larger. Herschel wanted to name the planet after King George III, who was then the ruling monarch of the British Empire. Nevertheless, in the same year, the planet was named Uranus, after the Greek god of the sky, and the father of Saturn. Uranus has 27 moons.",
+        "russian_description": "",
+        "tags": [
+            "planet"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/planet-uranus.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Neptune",
+        "russian_name": "",
+        "description": "Johann Gale, a German astronomer, was the first to observe the eighth planet in 1846. The international astronomical community decided to give this planet a Roman name after the god of the sea. At that time, it was believed that Neptune was the furthest planet in the solar system, watching over the ",
+        "russian_description": "",
+        "tags": [
+            "planet"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/planet-neptune.jpg"
+            }
+        ]
+    },
+    {
+        "name": "Pluto",
+        "russian_name": "",
+        "description": "Pluto is the god of the underworld, living in a dark and cold place. Being so far away from the Sun, this dwarf planet is supposed to be very dark as well. Temperatures are as low as -369 F (-223 C), and it takes Pluto 247.7 years to travel around the Sun. Pluto was the last planet to be discovered. In 1930, it was spotted by a US astronomer Clyde Tombaugh. In recent years, there has been a disagreement about Pluto's status, which is why it was declassified. Because it is small and different from other planets, it is considered to be one of the five ",
+        "russian_description": "",
+        "tags": [
+            "planet"
+        ],
+        "text": "",
+        "synonyms": [
+            ""
+        ],
+        "relations": [
+        ],
+        "attachments": [
+            {
+                "content_type": "image/jpg",
+                "content_data": "images/planet-pluto.jpg"
+            }
+        ]
+    }
+]
