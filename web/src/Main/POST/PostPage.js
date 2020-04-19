@@ -4,7 +4,7 @@ import './PostPage.css';
 import useForm from './useForm';
 
 function PostPage() {
-    const {handleSubmit} = useForm();
+    const {handleSubmit, handleFileSelect, preview} = useForm();
     return (
         <main>
             <h1>Upload your object to database</h1>
@@ -31,8 +31,12 @@ function PostPage() {
                 </label>
 
                 <label>File: <br/>
-                    <input name={"file"} type="file" className={"form-input"}/>
+                    <input name={"file"} onChange={handleFileSelect} type="file" className={"form-input"}/>
                 </label>
+
+                {preview.map(im => (
+                     <img src={ im } width="300" height="300"/>
+                ))}
 
                 <input value={"Send"} type={"submit"} />
             </form>
