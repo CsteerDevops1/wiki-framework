@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react';
 import '../Main.css';
 import DatabaseModel from "../scheme/DatabaseModel";
 import ModelElement from "../items/ModelElement";
-
-
-function getObjects(response) {
+ 
+ 
+export function getObjects(response) {
     if (Number(response.length) !== 0) {
         let dbObjects = [];
         response.forEach((element) => {
@@ -15,7 +15,7 @@ function getObjects(response) {
         return [];
     }
 }
-
+ 
 function GetPage() {
     const [models, setModels] = useState(null);
     useEffect(() => {
@@ -29,10 +29,12 @@ function GetPage() {
                 .then(data => setModels(data));
         }
     }, [models]);
-
-
+ 
+ 
     return (
         <main>
+            <h1>All objects</h1>
+            <a href={"/post"} className={"link-btn"}>Create new</a>
             <ul>
                 {(models != null) ? models.map((item, key) => <li key={item._id}>
                         <ModelElement
@@ -42,16 +44,16 @@ function GetPage() {
                                 "description",
                                 "media"
                             ]}
-
+ 
                             isButtonVisible={false}
                             model={item}/>
                     </li>
                 ) : "Nothing found!"}
             </ul>
-
-
+ 
+ 
         </main>
     );
 }
-
+ 
 export default GetPage;
