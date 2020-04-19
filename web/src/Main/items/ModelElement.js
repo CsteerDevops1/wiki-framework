@@ -1,6 +1,22 @@
 import React from 'react';
 import './ModelElement.css';
 
+const deleteObject = (id) => {
+    let globName = "188.124.37.185";
+    let apiUrl = `/api/wiki?_id=${id}`;
+
+    if (window.confirm("Вы уверены, что хотите удалить этот объект?")){
+        fetch("http://" + globName + ":5000" + apiUrl, {method: 'DELETE'})
+            .then((data) => {
+                if (data.status === 200){
+                    alert("Объект успешно удален!");
+                    window.location.href = '/get';
+                }
+            });
+    }
+};
+
+
 function ModelElement(props) {
     return (
         <div className={"modelElement"}>
@@ -69,9 +85,9 @@ function ModelElement(props) {
                 ) :
                 (<p>No files attached</p>)}
 
-            { (props.isButtonVisible) ? (
+            { (props.isButtonVisible && props.model["_id"] !== undefined) ? (
                 <p>
-                    <i className={"material-icons icon-btn icon-btn__color-4"}>delete</i>
+                    <i onClick={() => deleteObject(props.model["_id"])} className={"material-icons icon-btn icon-btn__color-4"}>delete</i>
                     <a href={"/put/" + props.model._id}><i className={"material-icons icon-btn icon-btn__color-1"}>edit</i></a>
                 </p>) : ""
             }

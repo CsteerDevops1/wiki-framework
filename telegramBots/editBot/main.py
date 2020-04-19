@@ -57,7 +57,7 @@ async def find_from_search_bot(message: types.Message, state: FSMContext):
     res = botutils.get_from_wiki(name=name, ret_fields=["name"])["name"]
     await EditProcess.name.set()
     async with state.proxy() as data:
-        data['names'] = {word['name'] : word['_id'] for word in res}
+        data['names'] = {word['_id'] : word['name'] for word in res}
     await message.answer("Which word you want to change?", reply_markup=botutils.get_replymarkup_names(res))
 
 
@@ -82,16 +82,23 @@ async def find_by_name(message: types.Message, state: FSMContext):
         return
     await EditProcess.name.set()
     async with state.proxy() as data:
-        data['names'] = {word['name'] : word['_id'] for word in res}
-    await message.answer("Which word you want to change?", reply_markup=botutils.get_replymarkup_names(res))
+        data['names'] = {word['_id'] : word['name'] for word in res}
+    await message.answer("Which word you want to change? There are last 5 symbols of id in brackets.", reply_markup=botutils.get_replymarkup_names(res))
 
 
 # TODO: keep ids in data['names'], to fix error with same names
 @dp.message_handler(state=EditProcess.name)
 async def process_name(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
-        data["_id"] = data['names'][message.text]
+        name, _id = re.match("(.*) \((.+)\)", message.text).groups()
+        for word_id, word_name in data['names'].items():
+            if word_name == name and str(word_id)[-5:] == _id:
+                data["_id"] = word_id
+                data["word_info"] = botutils.get_from_wiki(id=word_id)["_id"]
+                word_info = data["word_info"]
+                break
     await EditProcess._id.set()
+    await message.answer(botutils.format_page_info(word_info))
     await message.answer("Are you sure want to edit this one?", reply_markup=botutils.get_replymarkup_yesno())
 
 
@@ -101,9 +108,9 @@ async def process_id(message: types.Message, state: FSMContext):
         if message.text == 'Yes':
             await EditProcess.old_field.set()
             logging.debug(f"User {message.from_user.id} is edititng {data['_id']}")
-            word_info = botutils.get_from_wiki(id=data['_id'])["_id"]
+            word_info = data["word_info"]
             del word_info["_id"]
-            await message.answer("What field you wish to change?", reply_markup=botutils.get_replymarkup_fields(word_info))
+            await message.answer("What field you wish to change? (or create a new one)", reply_markup=botutils.get_replymarkup_fields(word_info))
         elif message.text == 'No':
             await state.finish()
             await message.answer('Ok', reply_markup=types.ReplyKeyboardRemove())
@@ -114,15 +121,19 @@ async def process_field(message: types.Message, state: FSMContext):
     global MEDIA_CONTENT_FIELDS
     async with state.proxy() as data:
         data["old_field"] = message.text
-    repl = types.ReplyKeyboardRemove()
+        old_value = data["word_info"].get(message.text, "None")
+    repl = botutils.get_replymarkup_cancel()
+    await message.answer(f"Old value of '{message.text}' : ")
     if message.text in MEDIA_CONTENT_FIELDS:
+        await botutils.reply_attachments(message, old_value)
         await EditProcess.new_field_media.set()
         async with state.proxy() as data:
             data["new_field_media"] = []
         repl = botutils.get_replymarkup_finish()
     else:
+        await message.answer(old_value)
         await EditProcess.new_field_text.set()
-    await message.answer(f"You have chosen to edit field '{message.text}'. Send new value for this.", reply_markup=repl)
+    await message.answer(f"Send new value for this.", reply_markup=repl)
 
 
 @dp.message_handler(state=EditProcess.new_field_media, content_types=SUPPORTED_MEDIA_TYPES)
@@ -166,9 +177,9 @@ async def get_new_field_value(message: types.Message, state: FSMContext):
     res = botutils.update_in_wiki(_id, {old_field : new_val})
     await state.finish()
     if res == 1:
-        await message.answer(f"You have succesfully updated field '{old_field}'.")
+        await message.answer(f"You have succesfully updated field '{old_field}'.", reply_markup=types.ReplyKeyboardRemove())
     else:
-        await message.answer(f"Something went wrong, field is not updated.")
+        await message.answer(f"Something went wrong, field is not updated.", reply_markup=types.ReplyKeyboardRemove())
 
 
 @dp.message_handler()

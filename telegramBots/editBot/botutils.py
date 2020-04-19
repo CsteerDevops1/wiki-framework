@@ -7,11 +7,17 @@ from config import WIKI_API, WIKI_API_AUTOSUGGET, SUPPORTED_MEDIA_TYPES
 import io
 from collections.abc import Sequence, Iterable
 import filetype
+import pprint
+import re
 
 
 def bytes_to_str(bstr):
     '''convert any content to string representation'''
     return base64.b64encode(bstr).decode('utf-8')
+
+def bytes_from_str(ustr):
+    '''convert content back to bytes from string representation'''
+    return base64.b64decode(ustr.encode('utf-8'))
 
 def split_every(n, iterable):
     i = iter(iterable)
@@ -19,6 +25,39 @@ def split_every(n, iterable):
     while piece:
         yield piece
         piece = list(islice(i, n))
+
+def form_input_file(src: str):
+    tmp = io.BytesIO()
+    tmp.write(bytes_from_str(src))
+    tmp.seek(0)
+    return tmp
+
+async def reply_attachments(message: types.Message, attachments: list):
+    if attachments is None:
+        return
+    for item in attachments:
+        try:
+            if re.match(r'image\/.*', item['content_type'], flags=re.IGNORECASE):
+                photo_d = form_input_file(item['content_data'])
+                await message.answer_photo(photo_d)
+            elif re.match(r'audio\/.*', item['content_type'], flags=re.IGNORECASE):
+                video_d = form_input_file(item['content_data'])
+                await message.answer_audio(video_d)
+            elif re.match(r'video\/.*', item['content_type'], flags=re.IGNORECASE):
+                video_d = form_input_file(item['content_data'])
+                await message.answer_video(video_d)
+            elif re.match(r'application\/.*', item['content_type'], flags=re.IGNORECASE):
+                #TODO: need name of file
+                file_d = form_input_file(item['content_data'])
+                await message.answer_document(file_d)
+        except Exception as e:
+            logging.error(f'Error uploading file: {e}')
+
+def format_page_info(word : dict) -> str:
+    for key in word:
+        if type(word[key]) == type("") and len(word[key]) > 50:
+            word[key] = word[key][:50] + "..."
+    return pprint.pformat(word, depth=2, compact=True).strip("{}")
 
 def get_from_wiki(id=None, name=None, ret_fields : list = None):
     '''if ret_fields is None returns all the fields'''
@@ -88,7 +127,7 @@ async def download_media_from_msg(message: types.Message) -> dict:
 def get_replymarkup_names(names):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
     for name in names:
-        markup.add(name["name"])
+        markup.add(name["name"] + f" ({name['_id'][-5:]})")
     markup.add("Cancel")
     return markup
 
@@ -108,5 +147,10 @@ def get_replymarkup_fields(word):
 def get_replymarkup_finish():
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
     markup.add("Finish")
+    markup.add("Cancel")
+    return markup
+
+def get_replymarkup_cancel():
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
     markup.add("Cancel")
     return markup

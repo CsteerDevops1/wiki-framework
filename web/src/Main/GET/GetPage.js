@@ -33,8 +33,6 @@ function GetPage() {
 
     return (
         <main>
-            <h1>All objects</h1>
-            <a href={"/post"} className={"link-btn"}>Create new</a>
             <ul>
                 {(models != null) ? models.map((item, key) => <li key={item._id}>
                         <ModelElement
