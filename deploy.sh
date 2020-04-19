@@ -72,9 +72,9 @@ fi
 
 echo "Launching docker-compose"
 
-touch ./telegramBots/userBot/.env
-touch ./telegramBots/initBot/.env
-touch ./telegramBots/editBot/.env
+touch $PROJECT_DIR/telegramBots/userBot/.env
+touch $PROJECT_DIR/telegramBots/initBot/.env
+touch $PROJECT_DIR/telegramBots/editBot/.env
 
 # used to config user for mongodb
 export UID=${UID}
