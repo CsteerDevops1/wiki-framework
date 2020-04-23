@@ -108,6 +108,7 @@ async def process_id(message: types.Message, state: FSMContext):
         if message.text == 'Yes':
             await EditProcess.old_field.set()
             logging.debug(f"User {message.from_user.id} is edititng {data['_id']}")
+            data["word_info"] = botutils.get_from_wiki(id=data["_id"])["_id"]
             word_info = data["word_info"]
             del word_info["_id"]
             await message.answer("What field you wish to change? (or create a new one)", reply_markup=botutils.get_replymarkup_fields(word_info))
@@ -158,12 +159,13 @@ async def finish_adding_media(message: types.Message, state: FSMContext):
         new_attachments = data.get("new_field_media", [])
         old_field = data["old_field"]
     res = botutils.update_in_wiki(_id, {old_field : new_attachments})
-    await state.finish()
-    await message.answer(f"Send to API {len(new_attachments)} items.", reply_markup=types.ReplyKeyboardRemove())
+    await message.answer(f"Send to API {len(new_attachments)} items.", reply_markup=botutils.get_replymarkup_yesno())
     if res == 1:
         await message.answer(f"You have succesfully updated field '{old_field}'.")
     else:
         await message.answer(f"Something went wrong, field is not updated.")
+    await message.answer(f"Do you want to change another one?")
+    await EditProcess._id.set()
 
 
 @dp.message_handler(state=EditProcess.new_field_text, content_types=["text"])
@@ -177,11 +179,12 @@ async def get_new_field_value(message: types.Message, state: FSMContext):
     else:
         new_val = message.text
     res = botutils.update_in_wiki(_id, {old_field : new_val})
-    await state.finish()
     if res == 1:
-        await message.answer(f"You have succesfully updated field '{old_field}'.", reply_markup=types.ReplyKeyboardRemove())
+        await message.answer(f"You have succesfully updated field '{old_field}'.", reply_markup=botutils.get_replymarkup_yesno())
     else:
-        await message.answer(f"Something went wrong, field is not updated.", reply_markup=types.ReplyKeyboardRemove())
+        await message.answer(f"Something went wrong, field is not updated.", reply_markup=botutils.get_replymarkup_yesno())
+    await message.answer(f"Do you want to change another one?")
+    await EditProcess._id.set()
 
 
 @dp.message_handler()
