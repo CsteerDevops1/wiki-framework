@@ -122,6 +122,8 @@ async def process_field(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data["old_field"] = message.text
         old_value = data["word_info"].get(message.text, "None")
+        if old_value == "" or old_value == "None":
+            old_value = "Field is empty"
     repl = botutils.get_replymarkup_cancel()
     await message.answer(f"Old value of '{message.text}' : ")
     if message.text in MEDIA_CONTENT_FIELDS:
