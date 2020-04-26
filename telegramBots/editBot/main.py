@@ -30,6 +30,12 @@ class EditProcess(StatesGroup):
     new_field_media = State() # user is entering new media data for field
 
 
+class CreateProcess(StatesGroup):
+    fields_choosing = State() # user is entering fields for new object
+    fields_set_value = State() # wait until user sends new value
+    confiramtion = State() # wait for user to accept
+
+
 @dp.message_handler(state='*', commands='cancel')
 @dp.message_handler(Text(equals='cancel', ignore_case=True), state='*')
 async def cancel_handler(message: types.Message, state: FSMContext):
@@ -48,6 +54,73 @@ async def cancel_handler(message: types.Message, state: FSMContext):
 @dp.message_handler(commands=["start", "info"])
 async def start(message: types.Message):
     await message.answer('Enter id or name of object you want to edit. Format : "[name | id] object"')
+
+
+@dp.message_handler(commands=["create"])
+async def create_new_obj(message: types.Message, state: FSMContext):
+    await CreateProcess.fields_choosing.set()
+    async with state.proxy() as data:
+        data["new_obj_data"] = {}
+        botutils.set_default_values(data["new_obj_data"])
+        await message.answer('Current new object is :')
+        await message.answer(botutils.format_page_info(data["new_obj_data"]))
+    await message.answer('Choose field and send value for this field. Type "Done" to finish.', reply_markup=botutils.get_replymarkup_fields(REQUIRED_WIKI_FIELDS))
+
+
+@dp.message_handler(lambda msg : msg.text.lower() != "done", state=CreateProcess.fields_choosing)
+async def process_new_fields(message: types.Message, state: FSMContext):
+    global ARRAY_FIELDS, MEDIA_CONTENT_FIELDS
+    field = message.text
+    async with state.proxy() as data:
+        data["creating_field"] = field
+    await message.answer(f"Send value for field '{field}'", reply_markup=botutils.get_replymarkup_cancel())
+    if field in ARRAY_FIELDS:
+        await message.answer(f"This field is supposed to be an array, send text values separated with ','")
+    elif field in MEDIA_CONTENT_FIELDS:
+        await message.answer(f"This field is supposed to keep media content")
+    await CreateProcess.fields_set_value.set()
+
+
+@dp.message_handler(state=CreateProcess.fields_set_value, content_types=SUPPORTED_MEDIA_TYPES + ["text"])
+async def process_new_fields(message: types.Message, state: FSMContext):
+    global ARRAY_FIELDS, MEDIA_CONTENT_FIELDS
+    async with state.proxy() as data:
+        field = data["creating_field"]
+        if field in ARRAY_FIELDS:
+            data["new_obj_data"][field] = [x.strip() for x in message.text.strip().lstrip("[").rstrip("]").split(",")]
+        elif field in MEDIA_CONTENT_FIELDS:
+            content = await botutils.download_media_from_msg(message)
+            if content is None:
+                await message.answer("Wrong value")
+                return
+            data["new_obj_data"][field].append(content)
+        else:
+            data["new_obj_data"][field] = message.text
+        await message.answer('Current new object is :')
+        await message.answer(botutils.format_page_info(data["new_obj_data"]))
+        await CreateProcess.fields_choosing.set()
+        await message.answer('Choose field and send value for this field. Type "Done" to finish.', reply_markup=botutils.get_replymarkup_fields(REQUIRED_WIKI_FIELDS))
+        
+
+@dp.message_handler(Text(equals='Done', ignore_case=True), state=CreateProcess.fields_choosing)
+async def confirm_new_obj(message: types.Message, state: FSMContext):
+    await CreateProcess.confiramtion.set()
+    await message.answer("Are you sure want to create this one?", reply_markup=botutils.get_replymarkup_yesno())
+
+
+@dp.message_handler(state=CreateProcess.confiramtion)
+async def save_new_obj(message: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        if message.text == 'Yes':
+            logging.debug(f"User {message.from_user.id} creating new obj")
+            new_obj = data["new_obj_data"]
+            if botutils.post_to_wiki(new_obj) is not None:
+                await message.answer('New object was added to database', reply_markup=types.ReplyKeyboardRemove())
+            else:
+                await message.answer('Error occured while adding to database', reply_markup=types.ReplyKeyboardRemove())
+        elif message.text == 'No':
+            await state.finish()
+            await message.answer('Ok', reply_markup=types.ReplyKeyboardRemove())
 
 
 # TODO: edit to hanndle inline bot, not the html_text
@@ -89,7 +162,10 @@ async def find_by_name(message: types.Message, state: FSMContext):
 @dp.message_handler(state=EditProcess.name)
 async def process_name(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
-        name, _id = re.match("(.*) \((.+)\)", message.text).groups()
+        matches = re.match("(.*) \((.+)\)", message.text)
+        if matches is None:
+            return
+        name, _id = matches.groups()
         for word_id, word_name in data['names'].items():
             if word_name == name and str(word_id)[-5:] == _id:
                 data["_id"] = word_id
