@@ -135,7 +135,7 @@ async def download_media_from_msg(message: types.Message) -> dict:
 def set_default_values(data: dict):
     ''' 
     set values to defautls in dict
-    keys : ["name", "russian_name", "description", "russian_description", "synonyms", "tags", "relations", "attachments"]
+    keys : ["name", "russian_name", "description", "russian_description", "synonyms", "tags", "relations", "attachments", "text"]
     '''
     data["name"] = ""
     data["russian_name"] = ""
@@ -143,6 +143,7 @@ def set_default_values(data: dict):
     data["russian_description"] = ""
     data["synonyms"] = []
     data["tags"] = []
+    data["text"] = ""
     data["relations"] = []
     data["attachments"] = []
     
