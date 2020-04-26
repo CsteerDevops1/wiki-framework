@@ -3,7 +3,7 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher import FSMContext
-from config import TG_TOKEN, PROXY_AUTH, PROXY_URL, SUPPORTED_MEDIA_TYPES
+from config import TG_TOKEN, PROXY_AUTH, PROXY_URL, SUPPORTED_MEDIA_TYPES, REQUIRED_WIKI_FIELDS
 import botutils
 import re
 import logging
@@ -61,9 +61,9 @@ async def find_from_search_bot(message: types.Message, state: FSMContext):
     await message.answer("Which word you want to change?", reply_markup=botutils.get_replymarkup_names(res))
 
 
-@dp.message_handler(state='*', regexp='^[i|I][d|D]\s*:?\s*([0-9a-z]{24})')
+@dp.message_handler(state='*', regexp='^/?[i|I][d|D]\s*:?\s*([0-9a-z]{24})')
 async def find_by_id(message: types.Message, state: FSMContext):
-    _id = re.match("^[i|I][d|D]\s*:?\s*([0-9a-z]{24})", message.text).group(1)
+    _id = re.match("^/?[i|I][d|D]\s*:?\s*([0-9a-z]{24})", message.text).group(1)
     res = botutils.get_from_wiki(id=_id, ret_fields=["name"])["_id"]
     if res:
         async with state.proxy() as idp:
@@ -73,9 +73,9 @@ async def find_by_id(message: types.Message, state: FSMContext):
         await message.answer("Are you sure want to edit this one?", reply_markup=botutils.get_replymarkup_yesno())
 
 
-@dp.message_handler(state='*', regexp='^[n|N]ame\s*:?\s*(.+)')
+@dp.message_handler(state='*', regexp='^/?[n|N]ame\s*:?\s*(.+)')
 async def find_by_name(message: types.Message, state: FSMContext):
-    name = re.match("^[n|N]ame\s*:?\s*(.+)", message.text).group(1)
+    name = re.match("^/?[n|N]ame\s*:?\s*(.+)", message.text).group(1)
     res = botutils.get_from_wiki(name=name, ret_fields=["name"])["name"]
     if len(res) == 0:
         await message.answer(f"Nothing found for {name}")
@@ -86,7 +86,6 @@ async def find_by_name(message: types.Message, state: FSMContext):
     await message.answer("Which word you want to change? There are last 5 symbols of id in brackets.", reply_markup=botutils.get_replymarkup_names(res))
 
 
-# TODO: keep ids in data['names'], to fix error with same names
 @dp.message_handler(state=EditProcess.name)
 async def process_name(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
