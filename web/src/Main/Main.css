@@ -46,4 +46,6 @@ main ul li {
 .icon-btn__color-4{
     background: var(--color-4);
 }
-
+.link {
+    color: blue;
+  }
