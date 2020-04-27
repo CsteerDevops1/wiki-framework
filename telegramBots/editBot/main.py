@@ -120,6 +120,7 @@ async def save_new_obj(message: types.Message, state: FSMContext):
                 await message.answer('New object was added to database', reply_markup=types.ReplyKeyboardRemove())
             else:
                 await message.answer('Error occured while adding to database', reply_markup=types.ReplyKeyboardRemove())
+            await state.finish()
         elif message.text == 'No':
             await state.finish()
             await message.answer('Ok', reply_markup=types.ReplyKeyboardRemove())
