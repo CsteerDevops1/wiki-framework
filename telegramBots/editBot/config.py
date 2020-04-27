@@ -17,6 +17,7 @@ API_PORT = os.getenv('API_PORT')
 WIKI_API = f"http://{API_HOST}:{API_PORT}/api/wiki"
 WIKI_API_AUTOSUGGET = f"http://{API_HOST}:{API_PORT}/api/wiki/autosuggest"
 SUPPORTED_MEDIA_TYPES = ["photo", "voice", "audio", "video", "document"]
+REQUIRED_WIKI_FIELDS = ["name", "russian_name", "description", "russian_description", "synonyms", "tags", "relations", "attachments", "text"]
 
 if PROXY_URL != None:
     PROXY_AUTH = aiohttp.BasicAuth(login=PROXY_LOGIN, password=PROXY_PASSWORD)

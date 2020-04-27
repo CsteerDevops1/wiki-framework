@@ -83,6 +83,15 @@ def update_in_wiki(id, data):
     res = requests.put(WIKI_API, params={"_id" : id}, json=data)
     return res.json()
 
+def post_to_wiki(data: dict):
+    '''returns None on fail'''
+    res = requests.post(WIKI_API, json=data, 
+                    headers={'Content-Type': 'application/json', "accept": "application/json"})
+    if res.status_code != 201:
+        return None
+    else:
+        return res.json()
+
 async def download_media_from_msg(message: types.Message) -> dict:
     '''
        Returns downloaded content in format :
@@ -125,6 +134,21 @@ async def download_media_from_msg(message: types.Message) -> dict:
 def delete_wiki_obj(_id : str) -> int:
     res = requests.delete(WIKI_API, params={"_id" : _id})
     return res.json()
+
+def set_default_values(data: dict):
+    ''' 
+    set values to defautls in dict
+    keys : ["name", "russian_name", "description", "russian_description", "synonyms", "tags", "relations", "attachments", "text"]
+    '''
+    data["name"] = ""
+    data["russian_name"] = ""
+    data["description"] = ""
+    data["russian_description"] = ""
+    data["synonyms"] = []
+    data["tags"] = []
+    data["text"] = ""
+    data["relations"] = []
+    data["attachments"] = []
 
 # -------------------- MARKUPS ---------------------------------------------
 
