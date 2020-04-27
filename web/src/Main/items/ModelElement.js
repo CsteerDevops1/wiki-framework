@@ -68,17 +68,17 @@ function ModelElement(props) {
             {(props.model.attachments.length > 0 && props.visibleFields.includes("media")) ? (
                     <div>
                         {props.model.attachments.map((item, key) => {
-                            if (item.content_type === "image/jpg" || item.content_type === "image/jpeg" || item.content_type === "image/png") {
-                                return <img key={key} src={"data:image/png;base64," + item.content_data} alt={"Graphic!"}/>
-                            } else if (item.content_type === "audio/mp4") {
+                            if (/image.*/.test(item.content_type)) {
+                                return <img key={key} src={"data:" + item.content_type + ";base64," + item.content_data} alt={"Graphic!"}/>
+                            } else if (/audio.*/.test(item.content_type)) {
                                 return <audio width={"100%"} key={key} controls
-                                              src={"data:audio/mp4;base64," + item.content_data}/>
-                            } else if (item.content_type === "video/mp4") {
+                                              src={"data:" + item.content_type + ";base64," + item.content_data}/>
+                            } else if (/video.*/.test(item.content_type)) {
                                 return <video width={"100%"} key={key} controls>
-                                    <source type={"video/mp4"} src={"data:video/mp4;base64," + item.content_data}/>
+                                    <source type={item.content_type} src={"data:" + item.content_type + ";base64," + item.content_data}/>
                                 </video>
                             } else {
-                                return <br key={key}/>
+                                return <embed height={"700"} width={"700"} key={key} src = {"data:" + item.content_type + ";base64," + item.content_data}/>
                             }
                         })}
                     </div>

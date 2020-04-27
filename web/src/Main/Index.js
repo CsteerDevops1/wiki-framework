@@ -36,7 +36,13 @@ function Index() {
   return (
       <main>
         <h1>Hello! This is wiki home page. <br/></h1>
-        <div>From here you can  <Link to="/get">view all</Link> wiki elements, <Link to="/post">create</Link> a new element or <Link to="/put">edit</Link> existing one.</div>
+        <div>From here you can  <Link class="link" to="/get">view all</Link> wiki elements, <Link class="link" to="/post">create</Link> a new element or <Link class="link" to="/put">edit</Link> existing one.</div>
+        <div>Our bots:</div>
+          <ul>
+              <li><a class="link" href="https://t.me/cs_wiki_edit_bot">Edit bot</a></li>
+              <li><a class="link" href="https://t.me/cs_wiki_media_bot">Media bot</a></li>
+              <li><a class="link" href="https://t.me/cs_wiki_search_bot">Search bot</a></li>
+          </ul>
           <ul>
               {(models != null) && models.map(item => <li key={item._id}>
                       <ModelElement

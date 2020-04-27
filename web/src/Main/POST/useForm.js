@@ -1,11 +1,11 @@
-import {useState} from 'react';
+import React, {useState} from 'react';
 import DatabaseModel from "../scheme/DatabaseModel";
 import Attachment from '../scheme/Attachment';
 import { useHistory } from "react-router-dom";
+import ReactDOM from "react-dom";
 
 function useForm(callback) {
- const [dbm, setDbm] = useState(new DatabaseModel());
- const [preview, setPreview] = useState([])
+ const [dbm] = useState(new DatabaseModel());
  let history = useHistory();
  dbm["attachments"] = [];
 
@@ -43,14 +43,23 @@ function useForm(callback) {
   };
     
   const handleFileSelect = (event) => {
-    setPreview([... preview, URL.createObjectURL(event.target.files[0])]);
-    const file = document.querySelector('input[type=file]').files[0];
+    const file =  event.target.files[0];
+    if(/image.*/.test(file.type)){
+      ReactDOM.render(<img alt="" src = { URL.createObjectURL(file) } width="300" height="300"/>, document.getElementById("preview").appendChild(document.createElement('div')));
+    } else if(/audio.*/.test(file.type)){
+      ReactDOM.render(<audio controls src={URL.createObjectURL(file)} width="300" height="300"/>, document.getElementById("preview").appendChild(document.createElement('div')))
+    } else if (/video.*/.test(file.type)){
+      ReactDOM.render(<video controls src={URL.createObjectURL(file)} width="300" height="300"/>, document.getElementById("preview").appendChild(document.createElement('div')))
+    } else {
+      ReactDOM.render(<embed src = {URL.createObjectURL(file) } width="300" height="300"/>, document.getElementById("preview").appendChild(document.createElement('div')))
+    }
+
     const reader = new FileReader();
     reader.addEventListener("load", function () {
           // here encoding to base64 happens
           // we need to wait until file is ready and THEN we send data
           dbm.addAttachment(new Attachment(file.type, reader.result.replace(/data.*base64,/, "")));
-          console.log(file.name);
+          console.log("file added");
     }, false);
        
     if (file) {
@@ -60,8 +69,7 @@ function useForm(callback) {
   
   return {
     handleSubmit,
-    handleFileSelect,
-    preview
+    handleFileSelect
   };
 }
 
