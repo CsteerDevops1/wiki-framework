@@ -25,6 +25,8 @@ MEDIA_CONTENT_FIELDS = ["attachments"]
 class EditProcess(StatesGroup):
     _id = State() # user have chosen the id
     name = State() # user entered name, must ensure to set correct id
+    edit_or_delete = State() # user chosoe whether to edit or delete obj
+    delete_confirmation = State() # user approves deleting
     old_field = State() # user have chosen field to edit
     new_field_text = State() # user entered new text data for field
     new_field_media = State() # user is entering new media data for field
@@ -181,15 +183,39 @@ async def process_name(message: types.Message, state: FSMContext):
 async def process_id(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         if message.text == 'Yes':
-            await EditProcess.old_field.set()
-            logging.debug(f"User {message.from_user.id} is edititng {data['_id']}")
-            data["word_info"] = botutils.get_from_wiki(id=data["_id"])["_id"]
-            word_info = data["word_info"]
-            del word_info["_id"]
-            await message.answer("What field you wish to change? (or create a new one)", reply_markup=botutils.get_replymarkup_fields(word_info))
+            await EditProcess.edit_or_delete.set()
+            await message.answer('Do you want to edit or delete object?', reply_markup=botutils.get_replymarkup_edit_delete())
         elif message.text == 'No':
             await state.finish()
             await message.answer('Ok', reply_markup=types.ReplyKeyboardRemove())
+
+
+@dp.message_handler(state=EditProcess.edit_or_delete)
+async def edit_or_delete(message: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        data["word_info"] = botutils.get_from_wiki(id=data["_id"])["_id"]
+        word_info = data["word_info"]
+        if message.text == 'Edit':
+            logging.debug(f"User {message.from_user.id} is edititng {data['_id']}")
+            del word_info["_id"]
+            await EditProcess.old_field.set()
+            await message.answer("What field you wish to change? (or create a new one)", reply_markup=botutils.get_replymarkup_fields(word_info))
+        elif message.text == 'Delete':
+            await EditProcess.delete_confirmation.set()
+            await message.answer('Are you sure want to delete this object?', reply_markup=botutils.get_replymarkup_yesno())
+
+
+@dp.message_handler(state=EditProcess.delete_confirmation)
+async def delete_obj(message: types.Message, state: FSMContext):
+    if message.text == 'Yes':
+        async with state.proxy() as data:
+            _id = data["word_info"]["_id"]
+        res = botutils.delete_wiki_obj(_id)
+        await message.answer(f'{res} objects were deleted.', reply_markup=types.ReplyKeyboardRemove())
+        await state.finish()
+    elif message.text == 'No':
+        await state.finish()
+        await message.answer('Ok', reply_markup=types.ReplyKeyboardRemove())
 
 
 @dp.message_handler(state=EditProcess.old_field)
