@@ -122,6 +122,10 @@ async def download_media_from_msg(message: types.Message) -> dict:
     }
     return item
 
+def delete_wiki_obj(_id : str) -> int:
+    res = requests.delete(WIKI_API, params={"_id" : _id})
+    return res.json()
+
 # -------------------- MARKUPS ---------------------------------------------
 
 def get_replymarkup_names(names):
@@ -152,5 +156,11 @@ def get_replymarkup_finish():
 
 def get_replymarkup_cancel():
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
+    markup.add("Cancel")
+    return markup
+
+def get_replymarkup_edit_delete():
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
+    markup.add("Edit", "Delete")
     markup.add("Cancel")
     return markup
