@@ -51,7 +51,7 @@ function useForm(callback) {
     } else if (/video.*/.test(file.type)){
       ReactDOM.render(<video controls src={URL.createObjectURL(file)} width="300" height="300"/>, document.getElementById("preview").appendChild(document.createElement('div')))
     } else {
-      ReactDOM.render(<embed src = {URL.createObjectURL(file) } width="300" height="300"/>, document.getElementById("preview").appendChild(document.createElement('div')))
+      ReactDOM.render(<a href={URL.createObjectURL(file)} >{file.name}</a>, document.getElementById("preview").appendChild(document.createElement('div')))
     }
 
     const reader = new FileReader();

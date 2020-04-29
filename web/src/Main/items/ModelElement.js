@@ -15,7 +15,15 @@ const deleteObject = (id) => {
             });
     }
 };
-
+//зато работает
+function dataURLtoFile(dataurl, filename) {
+                                    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+                                        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+                                    while(n--){
+                                        u8arr[n] = bstr.charCodeAt(n);
+                                    }
+                                    return new File([u8arr], filename, {type:mime});
+                                }
 
 function ModelElement(props) {
     return (
@@ -78,7 +86,7 @@ function ModelElement(props) {
                                     <source type={item.content_type} src={"data:" + item.content_type + ";base64," + item.content_data}/>
                                 </video>
                             } else {
-                                return <embed height={"700"} width={"700"} key={key} src = {"data:" + item.content_type + ";base64," + item.content_data}/>
+                                return <a key={key} href={URL.createObjectURL(dataURLtoFile("data:" + item.content_type + ";base64," + item.content_data, 'file'))} >file</a>
                             }
                         })}
                     </div>
