@@ -3,3 +3,6 @@ python-dotenv==0.11.0
 flask-restx==0.1.1
 Flask==1.1
 regex==2020.2.20
+flask-admin==1.5.6
+wtforms==2.3.1
+flask-basicauth==0.2.0
