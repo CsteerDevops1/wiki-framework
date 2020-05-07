@@ -25,17 +25,17 @@ MEDIA_CONTENT_FIELDS = ["attachments"]
 class EditProcess(StatesGroup):
     _id = State() # user have chosen the id
     name = State() # user entered name, must ensure to set correct id
-    edit_or_delete = State() # user chosoe whether to edit or delete obj
-    delete_confirmation = State() # user approves deleting
-    old_field = State() # user have chosen field to edit
+    edit_or_delete = State() # user choose whether to edit or delete obj
+    delete_confirmation = State() # user approved deleting
+    old_field = State() # user selected field for editing
     new_field_text = State() # user entered new text data for field
     new_field_media = State() # user is entering new media data for field
 
 
 class CreateProcess(StatesGroup):
     fields_choosing = State() # user is entering fields for new object
-    fields_set_value = State() # wait until user sends new value
-    confiramtion = State() # wait for user to accept
+    fields_set_value = State() # waiting for the user to submit a new value
+    confiramtion = State() # waiting for user to accept
 
 
 @dp.message_handler(state='*', commands='cancel')
@@ -66,7 +66,7 @@ async def create_new_obj(message: types.Message, state: FSMContext):
         botutils.set_default_values(data["new_obj_data"])
         await message.answer('Current new object is :')
         await message.answer(botutils.format_page_info(data["new_obj_data"]))
-    await message.answer('Choose field and send value for this field. Type "Done" to finish.', reply_markup=botutils.get_replymarkup_fields(REQUIRED_WIKI_FIELDS))
+    await message.answer('Select a field and send value for this field. Type "Done" to finish.', reply_markup=botutils.get_replymarkup_fields(REQUIRED_WIKI_FIELDS))
 
 
 @dp.message_handler(lambda msg : msg.text.lower() != "done", state=CreateProcess.fields_choosing)
@@ -101,13 +101,13 @@ async def process_new_fields(message: types.Message, state: FSMContext):
         await message.answer('Current new object is :')
         await message.answer(botutils.format_page_info(data["new_obj_data"]))
         await CreateProcess.fields_choosing.set()
-        await message.answer('Choose field and send value for this field. Type "Done" to finish.', reply_markup=botutils.get_replymarkup_fields(REQUIRED_WIKI_FIELDS))
+        await message.answer('Select a field and send value for this field. Type "Done" to finish.', reply_markup=botutils.get_replymarkup_fields(REQUIRED_WIKI_FIELDS))
         
 
 @dp.message_handler(Text(equals='Done', ignore_case=True), state=CreateProcess.fields_choosing)
 async def confirm_new_obj(message: types.Message, state: FSMContext):
     await CreateProcess.confiramtion.set()
-    await message.answer("Are you sure want to create this one?", reply_markup=botutils.get_replymarkup_yesno())
+    await message.answer("Are you sure you want to create this one?", reply_markup=botutils.get_replymarkup_yesno())
 
 
 @dp.message_handler(state=CreateProcess.confiramtion)
@@ -117,9 +117,9 @@ async def save_new_obj(message: types.Message, state: FSMContext):
             logging.debug(f"User {message.from_user.id} creating new obj")
             new_obj = data["new_obj_data"]
             if botutils.post_to_wiki(new_obj) is not None:
-                await message.answer('New object was added to database', reply_markup=types.ReplyKeyboardRemove())
+                await message.answer('A new object has been added to the database', reply_markup=types.ReplyKeyboardRemove())
             else:
-                await message.answer('Error occured while adding to database', reply_markup=types.ReplyKeyboardRemove())
+                await message.answer('An error occurred while adding to the database', reply_markup=types.ReplyKeyboardRemove())
             await state.finish()
         elif message.text == 'No':
             await state.finish()
@@ -134,7 +134,7 @@ async def find_from_search_bot(message: types.Message, state: FSMContext):
     await EditProcess.name.set()
     async with state.proxy() as data:
         data['names'] = {word['_id'] : word['name'] for word in res}
-    await message.answer("Which word you want to change?", reply_markup=botutils.get_replymarkup_names(res))
+    await message.answer("Which word do you want to change?", reply_markup=botutils.get_replymarkup_names(res))
 
 
 @dp.message_handler(state='*', regexp='^/?[i|I][d|D]\s*:?\s*([0-9a-z]{24})')
@@ -146,7 +146,7 @@ async def find_by_id(message: types.Message, state: FSMContext):
             idp["_id"] = res["_id"]
         await EditProcess._id.set()
         await message.answer(f"Found : {res['name']}")
-        await message.answer("Are you sure want to edit this one?", reply_markup=botutils.get_replymarkup_yesno())
+        await message.answer("Are you sure you want to edit this one?", reply_markup=botutils.get_replymarkup_yesno())
 
 
 @dp.message_handler(state='*', regexp='^/?[n|N]ame\s*:?\s*(.+)')
@@ -159,7 +159,7 @@ async def find_by_name(message: types.Message, state: FSMContext):
     await EditProcess.name.set()
     async with state.proxy() as data:
         data['names'] = {word['_id'] : word['name'] for word in res}
-    await message.answer("Which word you want to change? There are last 5 symbols of id in brackets.", reply_markup=botutils.get_replymarkup_names(res))
+    await message.answer("Which word do you want to change? There are last 5 symbols of id in brackets.", reply_markup=botutils.get_replymarkup_names(res))
 
 
 @dp.message_handler(state=EditProcess.name)
@@ -177,7 +177,7 @@ async def process_name(message: types.Message, state: FSMContext):
                 break
     await EditProcess._id.set()
     await message.answer(botutils.format_page_info(word_info))
-    await message.answer("Are you sure want to edit this one?", reply_markup=botutils.get_replymarkup_yesno())
+    await message.answer("Are you sure you want to edit this one?", reply_markup=botutils.get_replymarkup_yesno())
 
 
 @dp.message_handler(state=EditProcess._id)
@@ -200,10 +200,10 @@ async def edit_or_delete(message: types.Message, state: FSMContext):
             logging.debug(f"User {message.from_user.id} is edititng {data['_id']}")
             del word_info["_id"]
             await EditProcess.old_field.set()
-            await message.answer("What field you wish to change? (or create a new one)", reply_markup=botutils.get_replymarkup_fields(word_info))
+            await message.answer("What field do you want to change? (or create a new one)", reply_markup=botutils.get_replymarkup_fields(word_info))
         elif message.text == 'Delete':
             await EditProcess.delete_confirmation.set()
-            await message.answer('Are you sure want to delete this object?', reply_markup=botutils.get_replymarkup_yesno())
+            await message.answer('Are you sure you want to delete this object?', reply_markup=botutils.get_replymarkup_yesno())
 
 
 @dp.message_handler(state=EditProcess.delete_confirmation)
@@ -238,7 +238,7 @@ async def process_field(message: types.Message, state: FSMContext):
     else:
         await message.answer(old_value)
         await EditProcess.new_field_text.set()
-    await message.answer(f"Send new value for this.", reply_markup=repl)
+    await message.answer(f"Send new value for this field.", reply_markup=repl)
 
 
 @dp.message_handler(state=EditProcess.new_field_media, content_types=SUPPORTED_MEDIA_TYPES)
@@ -265,7 +265,7 @@ async def finish_adding_media(message: types.Message, state: FSMContext):
     if res == 1:
         await message.answer(f"You have succesfully updated field '{old_field}'.")
     else:
-        await message.answer(f"Something went wrong, field is not updated.")
+        await message.answer(f"Something went wrong, the field was not updated.")
     await message.answer(f"Do you want to change another one?")
     await EditProcess._id.set()
 
@@ -282,9 +282,9 @@ async def get_new_field_value(message: types.Message, state: FSMContext):
         new_val = message.text
     res = botutils.update_in_wiki(_id, {old_field : new_val})
     if res == 1:
-        await message.answer(f"You have succesfully updated field '{old_field}'.", reply_markup=botutils.get_replymarkup_yesno())
+        await message.answer(f"You have succesfully updated the field '{old_field}'.", reply_markup=botutils.get_replymarkup_yesno())
     else:
-        await message.answer(f"Something went wrong, field is not updated.", reply_markup=botutils.get_replymarkup_yesno())
+        await message.answer(f"Something went wrong, the field is not updated.", reply_markup=botutils.get_replymarkup_yesno())
     await message.answer(f"Do you want to change another one?")
     await EditProcess._id.set()
 
