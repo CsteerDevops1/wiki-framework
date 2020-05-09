@@ -14,4 +14,4 @@ EXPOSE 5000-5000
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-ENTRYPOINT ["python","app.py"]
+ENTRYPOINT ["python","api_app.py"]

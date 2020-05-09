@@ -1,6 +1,6 @@
 import os
-import db_api
-from db_api import WikiPageDAO, SCHEMA_PATH
+import api_dao
+from api_dao import WikiPageDAO, SCHEMA_PATH
 from autosuggest import get_possible_typos
 import flask
 from flask import Flask, request
@@ -83,7 +83,7 @@ class WikiPage(Resource):
     @api.expect(schema_model)
     @api.response(200, 'Success')
     def put(self):
-        new_data = db_api.set_modification(dict(api.payload))
+        new_data = api_dao.set_modification(dict(api.payload))
         filter = dict(request.args)
         updated = DAO.update(new_data, filter)
         return updated, 200
