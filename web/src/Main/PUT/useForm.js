@@ -25,7 +25,7 @@ function useForm(id) {
 
     const handleLoad = (id) => {
         if (!dbm._id) {
-            let apiUrl = "https://188.124.37.185/api/wiki?_id=" + id;
+            let apiUrl = "https://wf.csteer.pro/api/wiki?_id=" + id;
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(response => getObjects(response))
@@ -41,7 +41,7 @@ function useForm(id) {
             dbm["synonyms"] = [];
             dbm["relations"] = [];
             dbm["attachments"] = [];
-            let globName = "188.124.37.185";
+            let globName = "wf.csteer.pro";
             let apiUrl = `/api/wiki?_id=${dbm["_id"]}`;
             let sendObject = Object.assign({}, dbm);
             delete sendObject["_id"];

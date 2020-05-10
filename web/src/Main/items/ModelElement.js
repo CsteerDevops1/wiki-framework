@@ -2,7 +2,7 @@ import React from 'react';
 import './ModelElement.css';
 
 const deleteObject = (id) => {
-    let globName = "188.124.37.185";
+    let globName = "wf.csteer.pro";
     let apiUrl = `/api/wiki?_id=${id}`;
 
     if (window.confirm("Вы уверены, что хотите удалить этот объект?")){

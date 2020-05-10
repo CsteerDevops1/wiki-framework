@@ -21,7 +21,7 @@ function GetPage() {
     useEffect(() => {
         if (!models) {
             // let globName = window.location.hostname;
-            let globName = "188.124.37.185";
+            let globName = "wf.csteer.pro";
             let apiUrl = "/api/wiki";
             fetch("https://" + globName + apiUrl)
                 .then(response => response.json())

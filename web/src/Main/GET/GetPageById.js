@@ -24,7 +24,7 @@ function GetPageById() {
     useEffect(() => {
         if (!model && id !== undefined) {
             // let globName = window.location.hostname;
-            let globName = "188.124.37.185";
+            let globName = "wf.csteer.pro";
             let apiUrl = `/api/wiki?_id=${id}`;
             fetch("https://" + globName + apiUrl)
                 .then(response => response.json())
