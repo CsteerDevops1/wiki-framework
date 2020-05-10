@@ -15,6 +15,8 @@ services:
     ports:
       - "5000:5000"
     container_name: "flask_api"
+    env_file:
+      - ./coreService/.env
     environment:
       MONGO_URI: "mongodb://mongo:27017"
     depends_on:
