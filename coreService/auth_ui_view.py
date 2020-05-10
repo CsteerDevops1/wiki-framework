@@ -96,7 +96,6 @@ class RoleView(ProtectedModelView):
     def edit_form(self, obj):
         form = ProtectedModelView.edit_form(self, obj)
         AUTH_DAO.set_user_role(form.role.data, form.user_id.data)
-        form.user_id.choices = AUTH_DAO.get_noroles_user_choices()
         return form
 
     def create_form(self, obj=None):
