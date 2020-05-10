@@ -8,6 +8,8 @@ from flask_restx import Api, Resource, fields, reqparse, abort
 from dotenv import load_dotenv
 import json
 from datetime import datetime
+from token_protection import TokenProtection
+from auth_dao import WikiAuthDAO
 
 
 # ---------------------------- SETUP SECTION ------------------------------------------------------------------------
@@ -20,6 +22,7 @@ app.config['ENV'] = os.getenv('FLASK_ENV')
 api = Api(app, version='1.0', title='Wiki page API', description='REST API to mongodb', doc="/api/wiki/doc/")
 api = api.namespace("Wiki page", description='Stored content for wiki project', path="/") # swagger ui representation
 DAO = WikiPageDAO() # a data access object which provides interface to database
+auth_protect = TokenProtection(WikiAuthDAO())
 
 
 with open(SCHEMA_PATH, 'r') as schema_file:
@@ -43,7 +46,8 @@ query_params = {'_id' : "Object id",
                 'creation_date': 'The date of creation object in ISO format.',
                 'description': 'English description of word, better use it with regex on.',
                 'regex': 'Boolean, determines whether to use regular expressions in search query,\
-                        can be True or False, default False. Search is case insensitive. Wrong patterns are ignored.'}
+                        can be True or False, default False. Search is case insensitive. Wrong patterns are ignored.',\
+                'access_token': 'User\'s access token, This param is required for PUT, DELETE, POST methods.'}
 
 def str_to_bool(s : str) -> bool:
     '''cast string representation to bool type'''
@@ -66,6 +70,8 @@ class WikiPage(Resource):
         else:
             projection = None
         filter = dict(request.args)
+        if "access_token" in filter:
+            del filter["access_token"]
 
         # set regex search flag
         regex_flag = filter.get("regex", False)
@@ -82,18 +88,22 @@ class WikiPage(Resource):
                           only SETTING NEW VALUES. Returns amount of updated objects.")
     @api.expect(schema_model)
     @api.response(200, 'Success')
+    @auth_protect.protect(action="edit")
     def put(self):
         new_data = api_dao.set_modification(dict(api.payload))
         filter = dict(request.args)
+        del filter["access_token"]
         updated = DAO.update(new_data, filter)
         return updated, 200
 
 
-    @api.doc(description="Data in attachments should be encoded in base64, max document size in database is ~10.8Mb")
+    @api.doc(params={'access_token': 'User\'s access token, This param is required for PUT, DELETE, POST methods.'},\
+             description="Data in attachments should be encoded in base64, max document size in database is ~10.8Mb")
     @api.expect(schema_model, validate=True)
     @api.response(201, 'Success')
     @api.response(500, 'Document didn\'t created, internal error')
     @api.response(400, 'Document failed validation')
+    @auth_protect.protect(action="create")
     def post(self):
         data = dict(api.payload)
         resp = DAO.create(data)
@@ -105,8 +115,10 @@ class WikiPage(Resource):
     @api.doc(params=query_params,
              description="Query params are used for filter. Returns amount of deleted objects.")
     @api.response(200, 'Success')
+    @auth_protect.protect(action="delete")
     def delete(self):
         filter = dict(request.args)
+        del filter["access_token"]
         deleted = DAO.delete(filter)
         return deleted, 200
 

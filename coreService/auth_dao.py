@@ -221,7 +221,7 @@ class WikiAuthDAO:
         user = user[0]
         roles = self.roles.get({"user_id" : user["_id"]})
         for role in roles:
-            if action in PERMISSIONS[role["role"]]:
+            if action in PERMISSIONS[role["role"].upper()]:
                 return True
         self.check_user_roles_ttl()
         return False
@@ -232,7 +232,7 @@ class WikiAuthDAO:
         '''
         roles = self.roles.get({"user_id" : user_id})
         for role in roles:
-            if action in PERMISSIONS[role["role"]]:
+            if action in PERMISSIONS[role["role"].upper()]:
                 return True
         self.check_user_roles_ttl()
         return False
