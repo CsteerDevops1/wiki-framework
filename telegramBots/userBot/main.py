@@ -213,9 +213,9 @@ async def test(callback_query: types.CallbackQuery):
 
 
 def main():
-    print('---- started ----', flush=True)
+    print('---- started ----')
     executor.start_polling(dp, skip_updates=True)    
-    print('---- exited ----', flush=True)
+    print('---- exited ----')
 
 
 if __name__ == "__main__":
