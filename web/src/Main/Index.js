@@ -23,7 +23,7 @@ function Index() {
         if (!models) {
             let globName = "188.124.37.185";
             let apiUrl = "/api/wiki";
-            fetch("http://" + globName + ":5000" + apiUrl)
+            fetch("https://" + globName + apiUrl)
                 .then(response => response.json())
                 .then(response => getObjects(response))
                 .then(data => {

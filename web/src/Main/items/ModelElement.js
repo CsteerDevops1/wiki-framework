@@ -6,7 +6,7 @@ const deleteObject = (id) => {
     let apiUrl = `/api/wiki?_id=${id}`;
 
     if (window.confirm("Вы уверены, что хотите удалить этот объект?")){
-        fetch("http://" + globName + ":5000" + apiUrl, {method: 'DELETE'})
+        fetch("https://" + globName + apiUrl, {method: 'DELETE'})
             .then((data) => {
                 if (data.status === 200){
                     alert("Объект успешно удален!");

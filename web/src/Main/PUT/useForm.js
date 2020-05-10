@@ -25,7 +25,7 @@ function useForm(id) {
 
     const handleLoad = (id) => {
         if (!dbm._id) {
-            let apiUrl = "http://188.124.37.185:5000/api/wiki?_id=" + id;
+            let apiUrl = "https://188.124.37.185/api/wiki?_id=" + id;
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(response => getObjects(response))
@@ -45,7 +45,7 @@ function useForm(id) {
             let apiUrl = `/api/wiki?_id=${dbm["_id"]}`;
             let sendObject = Object.assign({}, dbm);
             delete sendObject["_id"];
-            fetch("http://" + globName + ":5000" + apiUrl, {
+            fetch("https://" + globName + apiUrl, {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(sendObject) // body data type must match "Content-Type" header
