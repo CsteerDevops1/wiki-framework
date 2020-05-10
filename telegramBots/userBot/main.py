@@ -10,6 +10,7 @@ from aiogram.types import InlineQuery, \
 from aiogram.utils.exceptions import BadRequest
 from config import form_input_file, form_message_list, \
     reply_attachments, filter_attachments
+from middlewares import LogMiddleware
 
 load_dotenv()
 TOKEN    = os.getenv('USER_BOT_TOKEN')
@@ -33,6 +34,7 @@ else:
     bot = Bot(token=TOKEN)
 
 dp = Dispatcher(bot)
+dp.middleware.setup(LogMiddleware())
 
 
 
