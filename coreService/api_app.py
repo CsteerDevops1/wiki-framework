@@ -138,4 +138,5 @@ class Autosuggest(Resource):
             resp["corrected"] = DAO.get({"name" : fr"^{data}\b"}, projection, True)
         return resp
 
-app.run(HOST, PORT)
+if __name__ == "__main__":
+    app.run(HOST, PORT)

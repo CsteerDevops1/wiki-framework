@@ -71,7 +71,7 @@ class UserView(ProtectedModelView):
         return form
 
     def after_model_delete(self, model):
-        AUTH_DAO.roles.delete({"user_id": model["_id"]})
+        AUTH_DAO.roles.delete({"user_id": str(model["_id"])})
 
 
 class RoleForm(Form):
@@ -107,4 +107,4 @@ class RoleView(ProtectedModelView):
         return form
 
     def after_model_delete(self, model):
-        print(AUTH_DAO.remove_role(model["user_id"]))
+        print(AUTH_DAO.remove_role(str(model["user_id"])))

@@ -67,6 +67,9 @@ class CRUD:
         if "creation_date" in obj:
             if type(obj["creation_date"]) == type(""):
                 obj["creation_date"] = datetime.fromisoformat(obj["creation_date"])
+        for key, value in list(obj.items()):
+            if value is None:
+                del obj[key]
 
 
     def _serialize(self, obj : dict):
@@ -250,32 +253,32 @@ class WikiAuthDAO:
 if __name__ == "__main__":
     # dev tests
     dao = WikiAuthDAO()
-
+    # dao.roles.delete({"user_id": "5eb81f6009205238f0972bda"})
     # dao.users.delete({})
     # dao.roles.delete({})
-    uid = dao.create_user({"mail" : "test@mail.ru"})["_id"]
+    # uid = dao.create_user({"mail" : "test@mail.ru"})["_id"]
 
-    print(dao.get_noroles_user_choices())
-    dao.set_user_role("USER", uid)
-    print(dao.user_id_can(uid, "view"))
+    # print(dao.get_noroles_user_choices())
+    # dao.set_user_role("USER", uid)
+    # print(dao.user_id_can(uid, "view"))
 
-    dao.create_role("ADMIN", uid)
-    print(dao.users.get())
-    print(dao.roles.get())
-    print(dao.user_id_can(uid, "edit"))
-    sleep(180)
-    dao.check_user_roles_ttl()
-    print(dao.roles.get())
-    print(dao.users.get())
+    # dao.create_role("ADMIN", uid)
+    # print(dao.users.get())
+    # print(dao.roles.get())
+    # print(dao.user_id_can(uid, "edit"))
+    # sleep(180)
+    # dao.check_user_roles_ttl()
+    # print(dao.roles.get())
+    # print(dao.users.get())
 
-    print(dao.get_noroles_user_choices())
+    # print(dao.get_noroles_user_choices())
 
-    print(dao.user_id_can(uid, "edit"))
+    # print(dao.user_id_can(uid, "edit"))
 
-    dao.remove_role(uid)
-    dao.delete_user(uid)
+    # dao.remove_role(uid)
+    # dao.delete_user(uid)
 
-    print(dao.get_noroles_user_choices())
-    print(dao.users.get())
-    print(dao.roles.get())
+    # print(dao.get_noroles_user_choices())
+    # print(dao.users.get())
+    # print(dao.roles.get())
 
