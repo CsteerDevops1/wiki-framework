@@ -4,7 +4,7 @@ import os
 
 
 # Build default dictionary
-default_dictionary = create_dictionary("autosuggest/typos")
+default_dictionary = create_dictionary("wiki_api/autosuggest/typos")
 dictionary = default_dictionary
 
 

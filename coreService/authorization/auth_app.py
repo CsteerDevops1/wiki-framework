@@ -9,7 +9,7 @@ from auth_ui_view import BASIC_AUTH, UserView, RoleView, AUTH_DAO
 
 app = Flask(__name__)
 
-# doesn't override any env variables, just set them from .env file if they don't exist
+# doesn't override any env v ariables, just set them from .env file if they don't exist
 load_dotenv()
 
 app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'

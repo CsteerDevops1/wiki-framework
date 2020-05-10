@@ -1,4 +1,6 @@
 import os
+import sys
+sys.path.append("../coreService")
 import api_dao
 from api_dao import WikiPageDAO, SCHEMA_PATH
 from autosuggest import get_possible_typos
@@ -8,8 +10,8 @@ from flask_restx import Api, Resource, fields, reqparse, abort
 from dotenv import load_dotenv
 import json
 from datetime import datetime
+from authorization.auth_dao import WikiAuthDAO
 from token_protection import TokenProtection
-from auth_dao import WikiAuthDAO
 
 
 # ---------------------------- SETUP SECTION ------------------------------------------------------------------------

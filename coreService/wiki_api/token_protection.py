@@ -1,4 +1,6 @@
-from auth_dao import WikiAuthDAO
+import sys
+sys.path.append("../coreService")
+from authorization.auth_dao import WikiAuthDAO
 from flask import request
 
 
