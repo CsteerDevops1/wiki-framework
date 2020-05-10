@@ -1,16 +1,18 @@
-import os, re, json
+import os, re, json, hashlib, aiohttp
 from  typing import List, Dict, Tuple, Union
-import hashlib
 from requests import get
 from dotenv import load_dotenv
-import aiohttp
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import InlineQuery, \
     InputTextMessageContent, InlineQueryResultArticle 
-from aiogram.utils.exceptions import BadRequest
+
 from config import form_input_file, form_message_list, \
     reply_attachments, filter_attachments
 from middlewares import LogMiddleware
+from config import Lang
+import buttons
+from ApiConnection import ApiConnection
+from ObjectMessage import ObjectMessage
 
 load_dotenv()
 TOKEN    = os.getenv('USER_BOT_TOKEN')
@@ -35,6 +37,7 @@ else:
 
 dp = Dispatcher(bot)
 dp.middleware.setup(LogMiddleware())
+conn = ApiConnection(API_ADDRESS, API_PORT)
 
 
 
@@ -197,19 +200,57 @@ async def text_msg(message: types.Message):
         await message.answer(text, reply_markup=kb)
 
 
+@dp.callback_query_handler(lambda c: re.match(r'att:', c.data))
+async def get_attachment(callback_query: types.CallbackQuery):
+    await bot.answer_callback_query(callback_query.id)
+    _, _id, num = callback_query.data.split(':')
+    num = int(num)
+    await ObjectMessage(conn, _id).reply_attachment(num, callback_query.message)
+
+
+
+@dp.callback_query_handler(lambda c: re.match(r'lang:', c.data))
+async def update_msg_lang(callback_query: types.CallbackQuery):
+    await bot.answer_callback_query(callback_query.id)
+    prev_exp = callback_query.message.reply_markup.inline_keyboard[0][0].callback_data
+    prev_exp = True if 'less:' in prev_exp else False
+    new_lang, _id = callback_query.data.replace('lang:', '').split(':')
+    new_lang = Lang.ENG if new_lang == 'en' else Lang.RUS
+    await ObjectMessage(conn, _id, expanded=prev_exp, lang=new_lang).update_msg(callback_query.message)
+    
+    
+
+@dp.callback_query_handler(lambda c: re.match(r'(more)|(less):', c.data))
+async def update_msg_size(callback_query: types.CallbackQuery):
+    await bot.answer_callback_query(callback_query.id)
+    prev_lang = callback_query.message.reply_markup.inline_keyboard[0][1].callback_data
+    prev_lang = Lang.ENG if 'lang:ru' in prev_lang else Lang.RUS
+    _id = re.findall(r':(.*)', callback_query.data)
+    if len(_id) == 1:
+        _id = _id[0]
+        if re.match(r'more:.*', callback_query.data):
+            await ObjectMessage(conn, _id, expanded=True, lang=prev_lang).update_msg(callback_query.message)
+        if re.match(r'less:.*', callback_query.data):
+            await ObjectMessage(conn, _id, expanded=False, lang=prev_lang).update_msg(callback_query.message)
+    else:
+        await bot.send_message('Error occured')
+
+
+
 @dp.callback_query_handler(lambda c: re.match(r'id:', c.data))
-async def test(callback_query: types.CallbackQuery):
+async def get_object(callback_query: types.CallbackQuery):
     await bot.answer_callback_query(callback_query.id)
     _id = re.findall(r'id:(.*)', callback_query.data)
     if len(_id) == 1:
         _id = _id[0]
-        ret = get(API_ADDRESS, params={'_id': f'{_id}'})
-        answer = json.loads(ret.text)
-        answer, attachments = filter_attachments(answer[0])
-        text = f"*{answer['name']}*\n"
-        text += f"{answer['description']}"
-        await bot.send_message(callback_query.from_user.id, text, parse_mode='Markdown')
-        await reply_attachments(callback_query.message, attachments)
+        await ObjectMessage(conn, _id).answer_to(callback_query.message)
+        # ret = get(API_ADDRESS, params={'_id': f'{_id}'})
+        # answer = json.loads(ret.text)
+        # answer, attachments = filter_attachments(answer[0])
+        # text = f"*{answer['name']}*\n"
+        # text += f"{answer['description']}"
+        # await bot.send_message(callback_query.from_user.id, text, parse_mode='Markdown')
+        # await reply_attachments(callback_query.message, attachments)
     else:
         await bot.send_message('Error occured')
 

@@ -1,5 +1,6 @@
 import re
 import base64
+from enum import Enum
 from typing import List, Dict, Tuple, Union
 from aiogram import types
 from io import BytesIO
@@ -57,3 +58,14 @@ def filter_attachments(obj: Union[Dict, None]) -> Tuple:
         return (obj, attachments)
     else:
         return (obj, None)
+
+def escape(text: str) -> str:
+    '''Escape symbols for Markdown2 parse mode'''
+    ret = text
+    for ch in ['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!']:
+        ret = ret.replace(ch, f'\\{ch}')
+    return ret
+
+class Lang(Enum):
+    ENG = 0
+    RUS = 1
