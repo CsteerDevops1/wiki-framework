@@ -75,7 +75,7 @@ class UserView(ProtectedModelView):
 
 
 class RoleForm(Form):
-    role = StringField("role")
+    role = SelectField("role", widget=Select2Widget(), choices=[(x, x) for x in ROLES])
     user_id = SelectField('user_id', widget=Select2Widget(), validate_choice=False)
     creation_date = DateField(label="creation_date")
 
