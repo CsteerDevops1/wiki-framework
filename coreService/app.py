@@ -109,6 +109,8 @@ class WikiPage(Resource):
     @api.response(200, 'Success')
     def delete(self):
         filter = dict(request.args)
+        if len(filter.keys()) == 0:
+            return "Attempt to DELETE without params.", 400
         deleted = DAO.delete(filter)
         return deleted, 200
 
