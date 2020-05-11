@@ -59,6 +59,7 @@ class WikiPage(Resource):
              description="Query params are used for filter.")
     @api.param('X-Fields', _in="header", description="Header to specify returning fields in csv.")
     @api.response(200, 'Success')
+    @api.doc(params={'limit' : 'Maximum amount of objects to be returned'})
     def get(self):
         # extract all the given params in request
         if request.headers.get('X-Fields') is not None:
