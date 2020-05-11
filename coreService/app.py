@@ -38,6 +38,7 @@ def after_request(response):
 
 # parametres which you should use in filters
 query_params = {'_id' : "Object id",
+                'label' : 'Stable/Unstable label of stored object.',
                 'name': "Name of stored object.",
                 'russian_name': "Russian translation for name property.",
                 'creation_date': 'The date of creation object in ISO format.',
