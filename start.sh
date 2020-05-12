@@ -63,6 +63,14 @@ if [ "$MONGO_DATA_PATH" = "" ]; then
 	export MONGO_DATA_PATH="~/.volumes/mongo/data/db"
 fi
 
+# Setting hostname path for React
+if ! [ "$REACT_APP_HOSTNAME" = "" ]; then
+	cd $PROJECT_DIR
+	echo "REACT_APP_HOSTNAME=$REACT_APP_HOSTNAME" \
+		> web/.env
+	cd ../
+fi
+
 #-------------------- STARTING PROJECT --------------------
 
 # Creating DB directory

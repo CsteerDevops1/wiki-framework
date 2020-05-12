@@ -4,8 +4,6 @@ services:
   web:
     image: web_ui
     build: ./web/
-    environment:
-      - REACT_APP_HOSTNAME=${REACT_APP_HOSTNAME}
     container_name: "web_ui"
     ports:
       - "8080:80"
