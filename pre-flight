@@ -1,0 +1,68 @@
+#!/bin/bash
+
+#-------------------- VARIABLES --------------------
+
+GIT_REPOSITORY="https://github.com/CsteerDevops1/wiki-framework"
+GIT_BRANCH="develop"
+EDITORBOT_PATH=""
+SEARCHBOT_PATH=""
+PROJECT_DIR=$1
+
+#-------------------- CHECK OUT --------------------
+
+git --version &> /dev/null && TEST_G=1 || TEST_G=0
+docker ps &> /dev/null && TEST_D=1 || TEST_D=0
+docker-compose --version &> /dev/null && TEST_DC=1 || TEST_DC=0
+
+#-------------------- UPDATE APT --------------------
+
+if [ $TEST_G -eq 0 -o $TEST_D -eq 0 -o $TEST_DC -eq 0 ]; then
+	echo -n "Updating apt - "
+	sudo apt update &> /dev/null \
+		&& echo "OK" || echo "Failed"
+fi
+
+#-------------------- INSTALL GIT --------------------
+
+if [ $TEST_G -eq 0 ]; then
+	echo -n "Installing git - "
+	sudo apt install git -y &> /dev/null \
+		&& echo "OK" || echo "Failed"
+fi
+
+#-------------------- INSTALL DOCKER --------------------
+
+if [ $TEST_D -eq 0 ]; then
+	echo -n "Installing docker - "
+	sudo apt install docker.io -y &> /dev/null && \
+		sudo usermod -aG docker $USER \
+			&& echo "OK" || echo "Failed"
+fi
+
+#-------------------- INSTALL DOCKER-COMPOSE --------------------
+
+if [ $TEST_DC -eq 0 ]; then
+	echo -n "Installing docker-compose - "
+	sudo apt install docker-compose -y &> /dev/null \
+		&& echo "OK" || echo "Failed"
+fi
+
+#-------------------- CLONE GIT --------------------
+
+if [ "$PROJECT_DIR" = "" ]; then PROJECT_DIR="wiki-framework"; fi
+if ! [ `ls -A $PROJECT_DIR 2> /dev/null | wc -l` -eq 0 ]; then 
+	echo "Directory $PROJECT_DIR already exists and not empty."
+	echo "Please choose another or use deploy script to update project."
+	PROJECT_DIR_STATUS=0
+else
+	PROJECT_DIR_STATUS=1
+fi
+if [ $PROJECT_DIR_STATUS -eq 1 ]; then
+	echo -n "Clonning git into $PROJECT_DIR - "
+	git clone -b $GIT_BRANCH $GIT_REPOSITORY $PROJECT_DIR &> /dev/null \
+	&& echo "OK" || echo "Failed"
+fi
+
+#-------------------- MESSAGE --------------------
+
+echo "Please add environment variables to start project"
