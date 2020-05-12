@@ -29,7 +29,7 @@ services:
     user: "${MONGO_UID}:${MONGO_GID}"
     container_name: "mongodb_container"
     volumes:
-      - ~/.volumes/mongo/data/db/:/data/db/
+      - ${MONGO_DATA_PATH}:/data/db/
     ports:
       - "27017:27017"
   
@@ -46,8 +46,6 @@ services:
   tg_userbot:
     # restart: always
     image: "searchbot"
-    env_file:
-      - ./telegramBots/userBot/.env
     environment:
       - API_HOST=flask
       - API_PORT=5000
@@ -62,8 +60,6 @@ services:
   
   tg_editbot:
     image: "editorbot"
-    env_file:
-      - ./telegramBots/editBot/.env
     environment:
       - API_HOST=flask
       - API_PORT=5000

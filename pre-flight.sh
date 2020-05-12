@@ -4,7 +4,6 @@
 
 GIT_REPOSITORY="https://github.com/CsteerDevops1/wiki-framework"
 GIT_BRANCH="develop"
-PROJECT_DIR=$1 # if blank uses "wiki-framework"
 
 #-------------------- CHECKING DEPENDENCIES --------------------
 
@@ -47,55 +46,46 @@ if [ $TEST_DC -eq 0 ]; then
 fi
 
 #-------------------- CLONNING GIT --------------------
-GIT_STATUS=0
-if [ "$PROJECT_DIR" = "" ]; then PROJECT_DIR="wiki-framework"; fi
-if ! [ `ls -A $PROJECT_DIR 2> /dev/null | wc -l` -eq 0 ]; then 
-	cd $PROJECT_DIR
-	if [ "$(git remote get-url origin 2> /dev/null)" = "$GIT_REPOSITORY" ]; then
-		GIT_STATUS=1
-	else
-		echo "Directory $PROJECT_DIR already exists and not empty"
-		echo "Please choose another project directory"
-	fi
-	cd ../
-	PROJECT_DIR_STATUS=0
+
+if [ "$1" = "" ]; then 
+	PROJECT_DIR="wiki-framework"
 else
-	PROJECT_DIR_STATUS=1
-fi
-if [ $PROJECT_DIR_STATUS -eq 1 ]; then
-	echo -n "Clonning git into $PROJECT_DIR - "
-	git clone -b $GIT_BRANCH $GIT_REPOSITORY $PROJECT_DIR &> /dev/null \
-		&& echo "OK" && GIT_STATUS=1 || echo "Failed"
+	PROJECT_DIR=$1
 fi
 
-# Creating empty .env files for docker-compose
-# Using to not break existing condition
-#touch $PROJECT_DIR/telegramBots/userBot/.env
-#touch $PROJECT_DIR/telegramBots/editBot/.env
+if ! [ `ls -A $PROJECT_DIR 2> /dev/null | wc -l` -eq 0 ]; then 
+	cd $PROJECT_DIR
+	if ! [ "$(git remote get-url origin 2> /dev/null)" = "$GIT_REPOSITORY" ]; then
+		echo "Directory $PROJECT_DIR already exists and not empty"
+		echo "Please choose another project directory"
+		exit
+	fi
+	cd ../
+else
+	echo -n "Clonning git into $PROJECT_DIR - "
+	git clone -b $GIT_BRANCH $GIT_REPOSITORY $PROJECT_DIR &> /dev/null \
+		&& echo "OK" || echo "Failed"
+fi
 
 #-------------------- CHECKING ENVIRONMENT --------------------
 
-if [ $GIT_STATUS -eq 1 ]; then
-	for env_var in \
-		MONGO_UID \
-		MONGO_GID \
-		REACT_APP_HOSTNAME \
-		TRANSLATOR_API_KEY \
-		TG_USERBOT_TOKEN \
-		TG_EDITORBOT_TOKEN \
-		PROXY_URL \
-		PROXY_LOGIN \
-		PROXY_PASSWORD
-	do
-		if [ "${!env_var}" = "" ]; then 
-			ENV_VARS="$ENV_VARS\n$env_var"
-		fi
-	done
-	
-	if ! [ "$ENV_VARS" = "" ]; then
-		echo -n "Please add environment variables before start project:"
-		echo -e "$ENV_VARS"
-	else
-		echo "You are ready to start project!"
+for env_var in \
+	REACT_APP_HOSTNAME \
+	TRANSLATOR_API_KEY \
+	TG_USERBOT_TOKEN \
+	TG_EDITORBOT_TOKEN \
+	PROXY_URL \
+	PROXY_LOGIN \
+	PROXY_PASSWORD
+do
+	if [ "${!env_var}" = "" ]; then 
+		ENV_VARS="$ENV_VARS\n$env_var"
 	fi
+done
+
+if ! [ "$ENV_VARS" = "" ]; then
+	echo -n "Please add environment variables before start project:"
+	echo -e "$ENV_VARS"
+else
+	echo "You are ready to start project!"
 fi
