@@ -80,6 +80,9 @@ touch $PROJECT_DIR/telegramBots/editBot/.env
 export UID=${UID}
 export GID=${GID}
 
+# export HOSTNAME
+echo "REACT_APP_HOSTNAME=https://wf.csteer.pro" > $PROJECT_DIR/web/.env
+
 ./docker-compose -f $PROJECT_DIR/docker-compose.yml up --build -d
 # # don't use sudo if it's unnecessary
 # if ! groups | grep docker &> /dev/null; then

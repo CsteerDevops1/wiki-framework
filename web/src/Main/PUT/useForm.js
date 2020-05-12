@@ -1,6 +1,9 @@
 import {useState} from 'react';
 import DatabaseModel from "../scheme/DatabaseModel";
 
+require('dotenv').config();
+let hostName = process.env.REACT_APP_HOSTNAME;
+
 function getObjects(response) {
     if (Number(response.length) !== 0) {
         let dbObjects = [];
@@ -25,8 +28,8 @@ function useForm(id) {
 
     const handleLoad = (id) => {
         if (!dbm._id) {
-            let apiUrl = "https://wf.csteer.pro/api/wiki?_id=" + id;
-            fetch(apiUrl)
+            let apiPath = `/api/wiki?_id=${id}`;
+            fetch(hostName + apiPath)
                 .then(response => response.json())
                 .then(response => getObjects(response))
                 .then(data => setDbm(...data));
@@ -41,11 +44,11 @@ function useForm(id) {
             dbm["synonyms"] = [];
             dbm["relations"] = [];
             dbm["attachments"] = [];
-            let globName = "wf.csteer.pro";
-            let apiUrl = `/api/wiki?_id=${dbm["_id"]}`;
+            let apiPath = `/api/wiki?_id=${dbm["_id"]}`;
+
             let sendObject = Object.assign({}, dbm);
             delete sendObject["_id"];
-            fetch("https://" + globName + apiUrl, {
+            fetch(hostName + apiPath, {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(sendObject) // body data type must match "Content-Type" header
