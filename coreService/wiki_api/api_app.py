@@ -43,6 +43,7 @@ def after_request(response):
 
 # parametres which you should use in filters
 query_params = {'_id' : "Object id",
+                'label' : 'Stable/Unstable label of stored object.',
                 'name': "Name of stored object.",
                 'russian_name': "Russian translation for name property.",
                 'creation_date': 'The date of creation object in ISO format.',
@@ -65,6 +66,7 @@ class WikiPage(Resource):
              description="Query params are used for filter.")
     @api.param('X-Fields', _in="header", description="Header to specify returning fields in csv.")
     @api.response(200, 'Success')
+    @api.doc(params={'limit' : 'Maximum amount of objects to be returned'})
     def get(self):
         # extract all the given params in request
         if request.headers.get('X-Fields') is not None:
@@ -121,6 +123,8 @@ class WikiPage(Resource):
     def delete(self):
         filter = dict(request.args)
         del filter["access_token"]
+        if len(filter.keys()) == 0:
+            return "Attempt to DELETE without params.", 400
         deleted = DAO.delete(filter)
         return deleted, 200
 
