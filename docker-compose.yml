@@ -19,6 +19,9 @@ services:
     container_name: "flask_api"
     environment:
       MONGO_URI: "mongodb://mongo:27017"
+      BASIC_AUTH_USERNAME: ${BASIC_AUTH_USERNAME}
+      BASIC_AUTH_PASSWORD: ${BASIC_AUTH_PASSWORD}
+      SECRET_KEY: ${SECRET_KEY}
     depends_on:
       - mongo
   

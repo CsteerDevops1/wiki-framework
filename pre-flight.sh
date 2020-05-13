@@ -70,6 +70,9 @@ fi
 #-------------------- CHECKING ENVIRONMENT --------------------
 
 for env_var in \
+	BASIC_AUTH_USERNAME \
+	BASIC_AUTH_PASSWORD \
+	SECRET_KEY \
 	REACT_APP_HOSTNAME \
 	TRANSLATOR_API_KEY \
 	TG_USERBOT_TOKEN \
