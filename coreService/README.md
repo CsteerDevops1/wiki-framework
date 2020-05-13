@@ -1,6 +1,8 @@
 
 ## coreSerice
 
+RUN main.py from coreService folder, imports are VERY dumb
+
 Database and API validation are automatically set from schema.json file.
 Run `docker build -t flask . && docker run --name flask_api -d -p 5000:5000 flask` to start API, it needs MONGO_URI env variable to be set in .env. Of course it needs running mongo somewhere.
 
