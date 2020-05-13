@@ -4,11 +4,15 @@ import Attachment from '../scheme/Attachment';
 import { useHistory } from "react-router-dom";
 import ReactDOM from "react-dom";
 
+require('dotenv').config();
+let hostName = process.env.REACT_APP_HOSTNAME;
+let apiPath = "/api/wiki";
+
 function useForm(callback) {
  const [dbm] = useState(new DatabaseModel());
  let history = useHistory();
  dbm["attachments"] = [];
-
+ 
  const handleSubmit = (event) => {
     if (event) {
         event.preventDefault();
@@ -22,10 +26,7 @@ function useForm(callback) {
         dbm["relations"] = []; 
 
         //just sends whatever is in dbm item
-        let globName = "188.124.37.185";
-        let apiUrl = "/api/wiki";
-
-        fetch("http://" + globName + ":5000" + apiUrl, {
+        fetch(hostName + apiPath, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(dbm) // body data type must match "Content-Type" header

@@ -77,6 +77,11 @@
           }
         },
         "description": "Additional content associated with object."
+      },
+      "label": {
+        "type": "string",
+        "pattern" : "(Stable|Unstable)",
+        "description": "Stable/Unstable label of stored object."
       }
     }
   }

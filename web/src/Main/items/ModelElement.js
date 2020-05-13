@@ -1,12 +1,13 @@
 import React from 'react';
 import './ModelElement.css';
 
-const deleteObject = (id) => {
-    let globName = "188.124.37.185";
-    let apiUrl = `/api/wiki?_id=${id}`;
+require('dotenv').config();
+let hostName = process.env.REACT_APP_HOSTNAME;
 
+const deleteObject = (id) => {
     if (window.confirm("Вы уверены, что хотите удалить этот объект?")){
-        fetch("http://" + globName + ":5000" + apiUrl, {method: 'DELETE'})
+        let apiPath = `/api/wiki?_id=${id}`;
+        fetch(hostName + apiPath, {method: 'DELETE'})
             .then((data) => {
                 if (data.status === 200){
                     alert("Объект успешно удален!");

@@ -127,6 +127,10 @@ class WikiPageDAO:
         returns a list of documents
         '''
         self._deserialize(filter)
+        try:
+            limit = int(filter.pop('limit'))
+        except:
+            limit = 0
         if regex:
             for key in list(filter.keys()):
                 try: # use try in case of invalid regex pattern
@@ -134,7 +138,7 @@ class WikiPageDAO:
                 except:
                     print(f"Regex error with '{filter[key]}', can't compile")
                     del filter[key]
-        result = list(self.collection.find(filter, projection=projection))
+        result = list(self.collection.find(filter, projection=projection).limit(limit))
         # serialize db results
         for item in result:
             self._serialize(item)

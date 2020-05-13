@@ -5,6 +5,8 @@ import useForm from "../PUT/useForm";
 import DatabaseModel from "../scheme/DatabaseModel";
 import ModelElement from "../items/ModelElement";
 
+require('dotenv').config();
+let hostName = process.env.REACT_APP_HOSTNAME;
 
 function getObjects(response) {
     if (Number(response.length) !== 0) {
@@ -23,10 +25,9 @@ function GetPageById() {
     const [model, setModel] = useState(null);
     useEffect(() => {
         if (!model && id !== undefined) {
+            let apiPath = `/api/wiki?_id=${id}`;
             // let globName = window.location.hostname;
-            let globName = "188.124.37.185";
-            let apiUrl = `/api/wiki?_id=${id}`;
-            fetch("http://" + globName + ":5000" + apiUrl)
+            fetch(hostName + apiPath)
                 .then(response => response.json())
                 .then(response => getObjects(response))
                 .then(data => setModel(data[0]));
