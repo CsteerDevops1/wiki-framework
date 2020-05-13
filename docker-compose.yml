@@ -30,8 +30,6 @@ services:
     container_name: "mongodb_container"
     volumes:
       - ~/.volumes/mongo/data/db/:/data/db/
-    ports:
-      - "27017:27017"
   
   translator:
     image: "translator"
