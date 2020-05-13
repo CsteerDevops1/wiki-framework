@@ -1,10 +1,21 @@
-from flask import Flask, request
+from flask import Flask, request, url_for
 from flask_restx import Api, Resource
 from flask_admin import Admin
 from auth_dao import WikiAuthDAO, ROLES, generate_user_token, ROLE_TTL
 from dotenv import load_dotenv
 import os
 from auth_ui_view import BASIC_AUTH, UserView, RoleView, AUTH_DAO
+
+
+class CustomAPI(Api): # this method should be overrided to make it work behind reverse proxy
+    @property
+    def specs_url(self):
+        '''
+        The Swagger specifications absolute url (ie. `swagger.json`)
+
+        :rtype: str
+        '''
+        return url_for(self.endpoint('specs'), _external=False)
 
 
 app = Flask(__name__)
@@ -23,7 +34,7 @@ admin = Admin(app, name='Wiki Auth', template_mode='bootstrap3', url="/admin")
 admin.add_view(UserView(AUTH_DAO.users_collection))
 admin.add_view(RoleView(AUTH_DAO.roles_collection))
 
-api = Api(app, version='1.0', title='Wiki authorization API', doc="/doc")
+api = CustomAPI(app, version='1.0', title='Wiki authorization API', doc="/doc")
 api = api.namespace("Wiki auth", description="Send mail or tg_login in params. New user will be created/updated and returned.", path="/")
 
 

@@ -5,13 +5,24 @@ import api_dao
 from api_dao import WikiPageDAO, SCHEMA_PATH
 from autosuggest import get_possible_typos
 import flask
-from flask import Flask, request
+from flask import Flask, request, url_for
 from flask_restx import Api, Resource, fields, reqparse, abort
 from dotenv import load_dotenv
 import json
 from datetime import datetime
 from authorization.auth_dao import WikiAuthDAO
 from token_protection import TokenProtection
+
+
+class CustomAPI(Api): # this method should be overrided to make it work behind reverse proxy
+    @property
+    def specs_url(self):
+        '''
+        The Swagger specifications absolute url (ie. `swagger.json`)
+
+        :rtype: str
+        '''
+        return url_for(self.endpoint('specs'), _external=False)
 
 
 # ---------------------------- SETUP SECTION ------------------------------------------------------------------------
@@ -21,7 +32,7 @@ HOST = os.getenv('FLASK_HOST')
 PORT = os.getenv('FLASK_PORT')
 app = Flask(__name__)
 app.config['ENV'] = os.getenv('FLASK_ENV')
-api = Api(app, version='1.0', title='Wiki page API', description='REST API to mongodb', doc="/api/wiki/doc/")
+api = CustomAPI(app, version='1.0', title='Wiki page API', description='REST API to mongodb', doc="/api/wiki/doc/")
 api = api.namespace("Wiki page", description='Stored content for wiki project', path="/") # swagger ui representation
 DAO = WikiPageDAO() # a data access object which provides interface to database
 auth_protect = TokenProtection(WikiAuthDAO())
