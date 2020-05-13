@@ -13,7 +13,7 @@ load_dotenv()
 MONGO_URI = os.getenv("MONGO_URI")
 ROLES = ["ADMIN", "USER", "MODERATOR"] # possible values for role
 PERMISSIONS = {
-    "ADMIN" : ["create", "delete", "edit", "view"],
+    "ADMIN" : ["create", "delete", "edit", "view", "set_label"],
     "USER" : ["view"],
     "MODERATOR" : ["edit", "view"],
 }

@@ -95,8 +95,11 @@ class WikiPage(Resource):
     @auth_protect.protect(action="edit")
     def put(self):
         new_data = api_dao.set_modification(dict(api.payload))
+        if 'label' in api.payload:
+            del new_data["$set"]["label"] # you can't set label value via this resource
         filter = dict(request.args)
         del filter["access_token"]
+        filter["label"] = "Unstable" # you can only modify Unstable objects
         updated = DAO.update(new_data, filter)
         return updated, 200
 
@@ -110,6 +113,8 @@ class WikiPage(Resource):
     @auth_protect.protect(action="create")
     def post(self):
         data = dict(api.payload)
+        if 'label' not in data: # default label for new objects
+            data['label'] = "Unstable"
         resp = DAO.create(data)
         if resp is None:
             return "Document didn't created", 500
@@ -155,6 +160,27 @@ class Autosuggest(Resource):
         if str_to_bool(request.args.get("correct", None)):
             resp["corrected"] = DAO.get({"name" : fr"^{data}\b"}, projection, True)
         return resp
+
+
+label_filed = api.model('PageLabel', {
+    'label': fields.String,
+})
+
+@api.route('/api/wiki/page_label')
+class PageLabel(Resource):
+    @api.doc(params=query_params,
+             description="Query params are used for filter. This request is\
+                          only SETTING NEW VALUES. Returns amount of updated objects.")
+    @api.expect(label_filed, validate=True)
+    @api.response(200, 'Success')
+    @auth_protect.protect(action="set_label")
+    def put(self):
+        new_data = api_dao.set_modification({'label': api.payload['label']})
+        filter = dict(request.args)
+        del filter["access_token"]
+        updated = DAO.update(new_data, filter)
+        return updated, 200
+
 
 if __name__ == "__main__":
     app.run(HOST, PORT)
