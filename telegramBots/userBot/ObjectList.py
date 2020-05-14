@@ -10,12 +10,17 @@ from ObjectMessage import ObjectMessage
 
 class ObjectList():
     def __init__(self, connection: ApiConnection, 
-                    data: str, 
+                    data: str = '',
                     page: int = 0
                 ):
+        if data == '':
+            self.list_all = True
         self.data = data
         self.object_per_page = 10
-        self.items : List[Dict] = connection.get_suggestions(data)
+        if self.list_all:
+            self.items = connection.list_all()
+        else:
+            self.items : List[Dict] = connection.get_suggestions(data)
         self.connection = connection
         self.text = ""
         self.page = page
