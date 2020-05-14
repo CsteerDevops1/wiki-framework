@@ -37,7 +37,7 @@ else:
 
 dp = Dispatcher(bot)
 dp.middleware.setup(LogMiddleware())
-conn = ApiConnection(API_ADDRESS, API_PORT)
+conn = ApiConnection(API_HOST, API_PORT)
 
 
 
