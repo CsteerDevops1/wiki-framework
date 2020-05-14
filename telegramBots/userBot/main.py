@@ -105,7 +105,6 @@ async def help_msg(message: types.Message):
            "/find \\[ _word_ ]\n" \
            "/find\\_id \\[ \\_id ] if you want to search by id\n" \
            "/list\\_all to get all records"
-    # text = "Just"
     await message.answer(text, parse_mode='Markdown')
 
 

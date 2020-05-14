@@ -15,6 +15,8 @@ class ObjectList():
                 ):
         if data == '':
             self.list_all = True
+        else:
+            self.list_all = False
         self.data = data
         self.object_per_page = 10
         if self.list_all:
@@ -25,7 +27,6 @@ class ObjectList():
         self.text = ""
         self.page = page
         self.available_pages = range(len(self.items) // self.object_per_page + 1)
-        print('page', page, 'of', self.available_pages)
         self.np = page + 1 if (page+1 in self.available_pages) else page
         self.pp = page - 1 if (page-1 in self.available_pages) else page
         if len(self.items) > 1:
