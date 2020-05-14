@@ -38,3 +38,21 @@ class LinkToEditBot(types.InlineKeyboardButton):
         # link = f"tg://cs_wiki_edit_bot?start={_id}"
         link = f"https://t.me/cs_wiki_edit_bot?start={_id}"
         super().__init__(name, url=link)
+
+class NextPage(types.InlineKeyboardButton):
+    def __init__(self, data: str, page: int, name: str = "➡️"):
+        cd = f"sp:{data[0:32]}:{page}"
+        assert len(cd.encode()) < 64
+        super().__init__(name, callback_data=cd)
+
+class PrevPage(types.InlineKeyboardButton):
+    def __init__(self, data: str, page: int, name: str = "⬅️"):
+        cd = f"sp:{data[0:32]}:{page}"
+        assert len(cd.encode()) < 64
+        super().__init__(name, callback_data=cd)
+
+class ObjectBtn(types.InlineKeyboardButton):
+    def __init__(self, _id: str, name: str = "⬅️"):
+        cd = f"id:{_id}"
+        assert len(cd.encode()) < 64
+        super().__init__(name, callback_data=cd)

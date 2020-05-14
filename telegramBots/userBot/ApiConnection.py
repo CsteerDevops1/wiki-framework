@@ -13,3 +13,9 @@ class ApiConnection():
         ret = get(self.ADDRESS, params={'_id': _id}).text
         ret = json.loads(ret)[0]
         return ret
+
+    def get_suggestions(self, data: str) -> List[Dict]:
+        ret = []
+        ret = get(self.ADDRESS + '/autosuggest', params={'data': data, 'complete' : 'True'}, headers={'X-Fields': '_id, name'}).text
+        ret = json.loads(ret)['completed']
+        return ret
