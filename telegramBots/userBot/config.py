@@ -1,5 +1,6 @@
 import re
 import base64
+from enum import Enum
 from typing import List, Dict, Tuple, Union
 from aiogram import types
 from io import BytesIO
@@ -15,11 +16,11 @@ def bytes_from_str(ustr):
     '''convert content back to bytes from string representation'''
     return base64.b64decode(ustr.encode('utf-8'))
 
-def form_input_file(src: str) -> InputFile:
+def form_input_file(src: str, filename: str = "document") -> InputFile:
     tmp = BytesIO()
     tmp.write(bytes_from_str(src))
     tmp.seek(0)
-    return InputFile(tmp)
+    return InputFile(tmp, filename=filename)
 
 def form_message_list(answer: List[Dict]) -> Tuple:
     kb = types.InlineKeyboardMarkup(row_width=5)
@@ -32,19 +33,20 @@ async def reply_attachments(message: types.Message, attachments: List[Dict]):
     if attachments is None:
         return
     for item in attachments:
+        fn = 'document.' + item['content_type'].split('/')[1]
         try:
             if re.match(r'image\/.*', item['content_type'], flags=re.IGNORECASE):
-                photo_d = form_input_file(item['content_data'])
+                photo_d = form_input_file(item['content_data'], filename=fn)
                 await message.answer_photo(photo_d)
             if re.match(r'audio\/.*', item['content_type'], flags=re.IGNORECASE):
-                video_d = form_input_file(item['content_data'])
+                video_d = form_input_file(item['content_data'], filename=fn)
                 await message.answer_audio(video_d)
             if re.match(r'video\/.*', item['content_type'], flags=re.IGNORECASE):
-                video_d = form_input_file(item['content_data'])
+                video_d = form_input_file(item['content_data'], filename=fn)
                 await message.answer_video(video_d)
             if re.match(r'application\/.*', item['content_type'], flags=re.IGNORECASE):
                 #TODO: need name of file
-                file_d = form_input_file(item['content_data'])
+                file_d = form_input_file(item['content_data'], filename=fn)
                 await message.answer_document(file_d)
         except BadRequest as e:
             print('Error uploading file:', e, flush=True)
@@ -56,3 +58,14 @@ def filter_attachments(obj: Union[Dict, None]) -> Tuple:
         return (obj, attachments)
     else:
         return (obj, None)
+
+def escape(text: str) -> str:
+    '''Escape symbols for Markdown2 parse mode'''
+    ret = text
+    for ch in ['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!']:
+        ret = ret.replace(ch, f'\\{ch}')
+    return ret
+
+class Lang(Enum):
+    ENG = 0
+    RUS = 1

@@ -8,4 +8,4 @@ RUN pip install -r requirements.txt
 
 COPY . /usr/src/app
 
-ENTRYPOINT [ "python","main.py" ]
+ENTRYPOINT [ "python","-u","main.py" ]
