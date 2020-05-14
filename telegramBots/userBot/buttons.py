@@ -5,23 +5,33 @@ from aiogram import  types
 
 class More(types.InlineKeyboardButton):
     def __init__(self, _id: str):
-        super().__init__("⏬", callback_data=f"more:{_id}")
+        cd = f"more:{_id}"
+        assert len(cd.encode()) < 64
+        super().__init__("⏬", callback_data=cd)
 
 class Less(types.InlineKeyboardButton):
     def __init__(self, _id: str):
-        super().__init__("⏫", callback_data=f"less:{_id}")
+        cd = f"less:{_id}"
+        assert len(cd.encode()) < 64
+        super().__init__("⏫", callback_data=cd)
 
 class Lang_ru(types.InlineKeyboardButton):
     def __init__(self, _id: str):
-        super().__init__("🇷🇺", callback_data=f"lang:ru:{_id}")
+        cd = f"lang:ru:{_id}"
+        assert len(cd.encode()) < 64
+        super().__init__("🇷🇺", callback_data=cd)
 
 class Lang_en(types.InlineKeyboardButton):
     def __init__(self, _id: str):
-        super().__init__("🇬🇧", callback_data=f"lang:en:{_id}")
+        cd = f"lang:en:{_id}"
+        assert len(cd.encode()) < 64
+        super().__init__("🇬🇧", callback_data=cd)
 
 class Attachment(types.InlineKeyboardButton):
     def __init__(self, _id: str, num: int, name: str = "📎"):
-        super().__init__(name, callback_data=f"att:{_id}:{num}")
+        cd = f"att:{_id}:{num}"
+        assert len(cd.encode()) < 64
+        super().__init__(name, callback_data=cd)
 
 class LinkToEditBot(types.InlineKeyboardButton):
     def __init__(self, _id: str, name: str = "edit in @SomeBot"):
