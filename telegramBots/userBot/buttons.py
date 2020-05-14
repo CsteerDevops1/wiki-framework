@@ -34,7 +34,7 @@ class Attachment(types.InlineKeyboardButton):
         super().__init__(name, callback_data=cd)
 
 class LinkToEditBot(types.InlineKeyboardButton):
-    def __init__(self, _id: str, name: str = "edit in @SomeBot"):
+    def __init__(self, _id: str, name: str = "edit in @cs_wiki_edit_bot"):
         # link = f"tg://cs_wiki_edit_bot?start={_id}"
         link = f"https://t.me/cs_wiki_edit_bot?start={_id}"
         super().__init__(name, url=link)
