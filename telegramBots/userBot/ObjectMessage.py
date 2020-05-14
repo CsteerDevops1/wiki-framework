@@ -36,6 +36,7 @@ class ObjectMessage():
                     name=attachment['content_type'].split('/')[1]
                 )
             )
+        self.inline_kb.row(buttons.LinkToEditBot(_id))
     
     async def answer_to(self, message: types.Message):
         await message.answer(self.text, reply_markup=self.inline_kb)
