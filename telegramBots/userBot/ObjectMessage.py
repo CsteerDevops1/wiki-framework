@@ -24,8 +24,15 @@ class ObjectMessage():
             self.text += f"{self.data['russian_description']}\n\n"
         self.inline_kb = types.InlineKeyboardMarkup(row_width=5)
         if expanded:
+            self.text += f"id: {self.data['_id']}\n"
             if self.data['text'] != '':
                 self.text += f"Text: {self.data['text']}\n"
+            if len(self.data['relations']) != 0:
+                self.text += f"Relations: {','.join(self.data['relations'])}\n"
+            if len(self.data['synonyms']) != 0:
+                self.text += f"Synonyms: {','.join(self.data['synonyms'])}\n"
+            if len(self.data['tags']) != 0:
+                self.text += f"Tags: {','.join(['#'+x for x in self.data['tags']])}\n"
             self.text += f"Created: {self.data['creation_date']}\n"
         self.inline_kb.row(collapse_btn, lang_btn)
         for i, attachment in enumerate(self.data['attachments']):
