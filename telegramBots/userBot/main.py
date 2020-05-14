@@ -13,6 +13,7 @@ from config import Lang
 import buttons
 from ApiConnection import ApiConnection
 from ObjectMessage import ObjectMessage
+from ObjectList import ObjectList
 
 load_dotenv()
 TOKEN    = os.getenv('USER_BOT_TOKEN')
@@ -86,8 +87,7 @@ async def welcome_msg(message: types.Message):
     #TODO: add full description
     text = "Hello there\n\n" \
            "This bot can search in wiki database " \
-           "and return the result.\n" \
-           "Usage: /find \\[ _search querry_ ]\n"
+           "and return the result.\n"     
     await message.answer(text, parse_mode='Markdown')
 
 
@@ -101,9 +101,11 @@ async def help_msg(message: types.Message):
             list_all - Get list of all records
             get_json - Debug
     """
-    text = "Usage: /find \\[ _word_ ]\n" \
+    text = "Text me a search query or use following commands:\n" \
+           "/find \\[ _word_ ]\n" \
            "/find\\_id \\[ \\_id ] if you want to search by id\n" \
            "/list\\_all to get all records"
+    # text = "Just"
     await message.answer(text, parse_mode='Markdown')
 
 
@@ -113,29 +115,7 @@ async def find(message: types.Message):
         name = re.match(r'/find\s([\w -]+).*', message.text, flags=re.IGNORECASE).group(1)
     except:
         return
-    ret = get(AUTOSUGGEST_ADDERSS, params={'data': name, 'correct' : 'True'})
-    answer = json.loads(ret.text.encode("utf8"))['corrected']
-
-    if len(answer) == 0:
-        await message.answer('Nothing was found')
-        ret = get(AUTOSUGGEST_ADDERSS, params={'data': name, 'complete' : 'True'})
-        answer = json.loads(ret.text)['completed']
-        if len(answer) == 0:
-            return
-        else:
-            text, kb = form_message_list(answer)
-            text = 'Maybe you meant:\n' + text
-            await message.answer(text, reply_markup=kb)
-    elif len(answer) == 1:
-        answer, attachments = filter_attachments(answer[0])
-        text = f"*{answer['name']}*\n"
-        text += f"{answer['description']}"
-        await message.answer(text, parse_mode='Markdown')
-        if attachments != None:
-            await reply_attachments(message, attachments)
-    else:
-        text, kb = form_message_list(answer)
-        await message.answer(text, reply_markup=kb)
+    await ObjectList(conn, name).answer_to(message)
 
 
 @dp.message_handler(commands=['get_json'])
@@ -159,30 +139,15 @@ async def get_json(message: types.Message):
 @dp.message_handler(commands=['find_id'])
 async def find_id(message: types.Message):
     try:
-        name = re.match(r'/find_id\s([\w -]+).*', message.text, flags=re.IGNORECASE).group(1)
+        _id = re.match(r'/find_id\s([\w -]+).*', message.text, flags=re.IGNORECASE).group(1)
     except:
         return
-    ret = get(API_ADDRESS, params={'_id': name})
-    answer = json.loads(ret.text.encode("utf8"))
-    
-    if len(answer) == 0:
-        await message.answer('Nothing was found')
-    else:
-        answer, attachments = filter_attachments(answer[0])
-        prettified = json.dumps(answer, indent=2, ensure_ascii=False).encode('utf8').decode()
-        msg = f"*{answer['name'].capitalize()}*:\n"
-        msg += f"{answer['description']}"
-        await message.answer(f"{msg}", parse_mode='Markdown')
-        if attachments != None:
-            await reply_attachments(message, attachments)
+    await ObjectMessage(conn, _id).answer_to(message)
 
 
 @dp.message_handler(commands=['list_all'])
 async def list_all(message: types.Message):
-    ret = get(API_ADDRESS, headers={'X-Fields': '_id, name'})
-    answer: List[Dict] = json.loads(ret.text)
-    msg = '\n'.join([f"*{x['name']}*: `{x['_id']}`" for x in answer])
-    await message.answer(msg, parse_mode='Markdown')
+    await ObjectList(conn).answer_to(message)
 
 
 @dp.message_handler(content_types=types.ContentType.TEXT)
@@ -191,14 +156,16 @@ async def text_msg(message: types.Message):
     #TODO: set correct limit of search querry length
     if len(name) > 50:
         return
-    ret = get(AUTOSUGGEST_ADDERSS, params={'data': name, 'complete' : 'True'})
-    answer: List[Dict] = json.loads(ret.text)['completed']
-    if len(answer) == 0:
-        await message.answer('Sorry, nothing found')
-    else:
-        text, kb = form_message_list(answer)
-        await message.answer(text, reply_markup=kb)
+    await ObjectList(conn, name).answer_to(message)
 
+
+@dp.callback_query_handler(lambda c: re.match(r'sp:', c.data))
+async def swap_page(callback_query: types.CallbackQuery):
+    await bot.answer_callback_query(callback_query.id)
+    _, data, page = callback_query.data.split(':')
+    page = int(page)
+    await ObjectList(conn, data, page=page).update_msg(callback_query.message)
+    
 
 @dp.callback_query_handler(lambda c: re.match(r'att:', c.data))
 async def get_attachment(callback_query: types.CallbackQuery):
@@ -206,7 +173,6 @@ async def get_attachment(callback_query: types.CallbackQuery):
     _, _id, num = callback_query.data.split(':')
     num = int(num)
     await ObjectMessage(conn, _id).reply_attachment(num, callback_query.message)
-
 
 
 @dp.callback_query_handler(lambda c: re.match(r'lang:', c.data))
@@ -217,7 +183,6 @@ async def update_msg_lang(callback_query: types.CallbackQuery):
     new_lang, _id = callback_query.data.replace('lang:', '').split(':')
     new_lang = Lang.ENG if new_lang == 'en' else Lang.RUS
     await ObjectMessage(conn, _id, expanded=prev_exp, lang=new_lang).update_msg(callback_query.message)
-    
     
 
 @dp.callback_query_handler(lambda c: re.match(r'(more)|(less):', c.data))
@@ -236,7 +201,6 @@ async def update_msg_size(callback_query: types.CallbackQuery):
         await bot.send_message('Error occured')
 
 
-
 @dp.callback_query_handler(lambda c: re.match(r'id:', c.data))
 async def get_object(callback_query: types.CallbackQuery):
     await bot.answer_callback_query(callback_query.id)
@@ -244,13 +208,6 @@ async def get_object(callback_query: types.CallbackQuery):
     if len(_id) == 1:
         _id = _id[0]
         await ObjectMessage(conn, _id).answer_to(callback_query.message)
-        # ret = get(API_ADDRESS, params={'_id': f'{_id}'})
-        # answer = json.loads(ret.text)
-        # answer, attachments = filter_attachments(answer[0])
-        # text = f"*{answer['name']}*\n"
-        # text += f"{answer['description']}"
-        # await bot.send_message(callback_query.from_user.id, text, parse_mode='Markdown')
-        # await reply_attachments(callback_query.message, attachments)
     else:
         await bot.send_message('Error occured')
 
