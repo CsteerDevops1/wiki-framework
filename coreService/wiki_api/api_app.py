@@ -103,12 +103,15 @@ class WikiPage(Resource):
                           only SETTING NEW VALUES. Returns amount of updated objects.")
     @api.expect(schema_model)
     @api.response(200, 'Success')
+    @api.doc(params={'mod' : 'Mod which should be used in mongodb update query. Default is "$set"'})
     @auth_protect.protect(action="edit")
     def put(self):
-        new_data = api_dao.set_modification(dict(api.payload))
-        if 'label' in api.payload:
-            del new_data["$set"]["label"] # you can't set label value via this resource
-        filter = dict(request.args)
+        payload = dict(api.payload)
+        if 'label' in payload:
+            del payload["label"] # you can't set label value via this resource
+        filter = dict(request.args)  
+        mod = filter.pop('mod', '$set')
+        new_data = api_dao.set_modification(payload, mod)
         del filter["access_token"]
         filter["label"] = "Unstable" # you can only modify Unstable objects
         updated = DAO.update(new_data, filter)

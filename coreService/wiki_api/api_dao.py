@@ -52,13 +52,13 @@ def client_availabe(client) -> bool:
     return ans
 
 
-def set_modification(changes : dict) -> dict:
+def set_modification(changes : dict, modification : str = "$set") -> dict:
     '''
     changes : <key> : <values>
     changes - changes which should be applied on document
     returns modification dict for update function
     '''
-    return {"$set" : changes}
+    return {modification : changes}
 
 
 class WikiPageDAO:
@@ -161,7 +161,7 @@ class WikiPageDAO:
     def update(self, modification : dict, filter : dict) -> int:
         ''' returns amount of modificated documents '''
         self._deserialize(filter)
-        self._deserialize(modification["$set"])
+        self._deserialize(modification[list(modification.keys())[0]]) # modification dict should have one key on upper level
         result = self.collection.update_many(update=modification, filter=filter)
         return result.modified_count
 
