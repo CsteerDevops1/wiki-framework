@@ -16,6 +16,7 @@ API_HOST = os.getenv('API_HOST')
 API_PORT = os.getenv('API_PORT')
 WIKI_API = f"http://{API_HOST}:{API_PORT}/api/wiki"
 WIKI_API_AUTOSUGGET = f"http://{API_HOST}:{API_PORT}/api/wiki/autosuggest"
+WIKI_API_LOGIN = f"http://{API_HOST}:{API_PORT}/api/wiki/auth/login"
 SUPPORTED_MEDIA_TYPES = ["photo", "voice", "audio", "video", "document"]
 REQUIRED_WIKI_FIELDS = ["name", "russian_name", "description", "russian_description", "synonyms", "tags", "relations", "attachments", "text"]
 

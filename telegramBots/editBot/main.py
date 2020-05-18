@@ -55,8 +55,22 @@ async def cancel_handler(message: types.Message, state: FSMContext):
 
 @dp.message_handler(commands=["start", "info"])
 async def start(message: types.Message):
+    await message.answer('Use /login command')
     await message.answer('Enter id or name of object you want to edit. Format : "[name | id] object"')
 
+@dp.message_handler(commands=["login"], state='*')
+async def login(message: types.Message, state: FSMContext):
+    data = botutils.login(message.from_user.username)
+    try:
+        mail = data.get("mail", "None")
+        tg_login = data.get("tg_login", "None")
+        access_token = data.get("access_token", "-1")
+        role = data.get("role", "")
+        await message.answer(f'Logged in as {tg_login}.\nMail : {mail}.\nRole : {role}.')
+        async with state.proxy() as data:
+            data["access_token"] = access_token
+    except:
+        await message.answer('Login failed.')
 
 @dp.message_handler(commands=["create"])
 async def create_new_obj(message: types.Message, state: FSMContext):
@@ -116,10 +130,11 @@ async def save_new_obj(message: types.Message, state: FSMContext):
         if message.text == 'Yes':
             logging.debug(f"User {message.from_user.id} creating new obj")
             new_obj = data["new_obj_data"]
-            if botutils.post_to_wiki(new_obj) is not None:
-                await message.answer('A new object has been added to the database', reply_markup=types.ReplyKeyboardRemove())
+            access_token = data.get("access_token", "")
+            if botutils.post_to_wiki(new_obj, access_token) is not None:
+                await message.answer('A new object has been added to the database.', reply_markup=types.ReplyKeyboardRemove())
             else:
-                await message.answer('An error occurred while adding to the database', reply_markup=types.ReplyKeyboardRemove())
+                await message.answer('An error occurred while adding to the database. Try /login command.', reply_markup=types.ReplyKeyboardRemove())
             await state.finish()
         elif message.text == 'No':
             await state.finish()
@@ -211,7 +226,8 @@ async def delete_obj(message: types.Message, state: FSMContext):
     if message.text == 'Yes':
         async with state.proxy() as data:
             _id = data["word_info"]["_id"]
-        res = botutils.delete_wiki_obj(_id)
+            access_token = data.get("access_token", "")
+        res = botutils.delete_wiki_obj(_id, access_token)
         await message.answer(f'{res} objects were deleted.', reply_markup=types.ReplyKeyboardRemove())
         await state.finish()
     elif message.text == 'No':
@@ -260,12 +276,13 @@ async def finish_adding_media(message: types.Message, state: FSMContext):
         _id = data["_id"]
         new_attachments = data.get("new_field_media", [])
         old_field = data["old_field"]
-    res = botutils.update_in_wiki(_id, {old_field : new_attachments})
+        access_token = data.get("access_token", "")
+    res = botutils.update_in_wiki(_id, {old_field : new_attachments}, access_token)
     await message.answer(f"Send to API {len(new_attachments)} items.", reply_markup=botutils.get_replymarkup_yesno())
     if res == 1:
         await message.answer(f"You have succesfully updated field '{old_field}'.")
     else:
-        await message.answer(f"Something went wrong, the field was not updated.")
+        await message.answer(f"Something went wrong, the field was not updated. Try /login command.")
     await message.answer(f"Do you want to change another one?")
     await EditProcess._id.set()
 
@@ -276,15 +293,16 @@ async def get_new_field_value(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         _id = data["_id"]
         old_field = data["old_field"]
+        access_token = data.get("access_token", "")
     if old_field in ARRAY_FIELDS:
         new_val = [x.strip() for x in message.text.strip().lstrip("[").rstrip("]").split(",")]
     else:
         new_val = message.text
-    res = botutils.update_in_wiki(_id, {old_field : new_val})
+    res = botutils.update_in_wiki(_id, {old_field : new_val}, access_token)
     if res == 1:
         await message.answer(f"You have succesfully updated the field '{old_field}'.", reply_markup=botutils.get_replymarkup_yesno())
     else:
-        await message.answer(f"Something went wrong, the field is not updated.", reply_markup=botutils.get_replymarkup_yesno())
+        await message.answer(f"Something went wrong, the field is not updated. Try /login command.", reply_markup=botutils.get_replymarkup_yesno())
     await message.answer(f"Do you want to change another one?")
     await EditProcess._id.set()
 

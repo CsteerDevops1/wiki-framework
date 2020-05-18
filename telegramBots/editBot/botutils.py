@@ -3,7 +3,7 @@ from itertools import islice
 from aiogram import types
 import requests
 import logging
-from config import WIKI_API, WIKI_API_AUTOSUGGET, SUPPORTED_MEDIA_TYPES
+from config import WIKI_API, WIKI_API_AUTOSUGGET, SUPPORTED_MEDIA_TYPES, WIKI_API_LOGIN
 import io
 from collections.abc import Sequence, Iterable
 import filetype
@@ -31,6 +31,10 @@ def form_input_file(src: str):
     tmp.write(bytes_from_str(src))
     tmp.seek(0)
     return tmp
+
+def login(tg_login : str):
+    user_info = requests.get(WIKI_API_LOGIN, params={"tg_login" : tg_login})
+    return user_info.json()
 
 async def reply_attachments(message: types.Message, attachments: list):
     if attachments is None:
@@ -79,13 +83,14 @@ def get_from_wiki(id=None, name=None, ret_fields : list = None):
         "name" : _name.json()["corrected"] if name is not None else None
     }
 
-def update_in_wiki(id, data):
-    res = requests.put(WIKI_API, params={"_id" : id}, json=data)
+def update_in_wiki(id, data, access_token):
+    res = requests.put(WIKI_API, params={"_id" : id, "access_token" : access_token}, json=data)
     return res.json()
 
-def post_to_wiki(data: dict):
+def post_to_wiki(data: dict, access_token):
     '''returns None on fail'''
     res = requests.post(WIKI_API, json=data, 
+                    params={"access_token" : access_token},
                     headers={'Content-Type': 'application/json', "accept": "application/json"})
     if res.status_code != 201:
         return None
@@ -131,8 +136,8 @@ async def download_media_from_msg(message: types.Message) -> dict:
     }
     return item
 
-def delete_wiki_obj(_id : str) -> int:
-    res = requests.delete(WIKI_API, params={"_id" : _id})
+def delete_wiki_obj(_id : str, access_token) -> int:
+    res = requests.delete(WIKI_API, params={"_id" : _id, "access_token" : access_token})
     return res.json()
 
 def set_default_values(data: dict):
