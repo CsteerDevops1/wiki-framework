@@ -77,6 +77,7 @@ class WikiAuth(Resource):
             user = AUTH_DAO.create_user(filter)
             AUTH_DAO.create_role("USER", user["_id"]) # default role
             del user["_id"]
+            user["role"] = "USER" # update role field, because role was created after user
             return user, 200
         else: # return user info if exist
             user = user[0]
