@@ -26,7 +26,7 @@ function useForm(callback) {
         dbm["relations"] = []; 
 
         //just sends whatever is in dbm item
-        fetch(hostName + apiPath, {
+        fetch(hostName + apiPath + `?access_token=${sessionStorage.getItem('token')}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(dbm) // body data type must match "Content-Type" header

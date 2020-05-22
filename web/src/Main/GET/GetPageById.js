@@ -27,7 +27,7 @@ function GetPageById() {
         if (!model && id !== undefined) {
             let apiPath = `/api/wiki?_id=${id}`;
             // let globName = window.location.hostname;
-            fetch(hostName + apiPath)
+            fetch(hostName + apiPath + `&access_token=${sessionStorage.getItem('token')}`)
                 .then(response => response.json())
                 .then(response => getObjects(response))
                 .then(data => setModel(data[0]));

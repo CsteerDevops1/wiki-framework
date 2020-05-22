@@ -29,7 +29,7 @@ function useForm(id) {
     const handleLoad = (id) => {
         if (!dbm._id) {
             let apiPath = `/api/wiki?_id=${id}`;
-            fetch(hostName + apiPath)
+            fetch(hostName + apiPath + `&access_token=${sessionStorage.getItem('token')}`)
                 .then(response => response.json())
                 .then(response => getObjects(response))
                 .then(data => setDbm(...data));
@@ -48,7 +48,7 @@ function useForm(id) {
 
             let sendObject = Object.assign({}, dbm);
             delete sendObject["_id"];
-            fetch(hostName + apiPath, {
+            fetch(hostName + apiPath + `&access_token=${sessionStorage.getItem('token')}`, {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(sendObject) // body data type must match "Content-Type" header
