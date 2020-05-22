@@ -25,7 +25,7 @@ function GetPage() {
     useEffect(() => {
         if (!models) {
             // let globName = window.location.hostname;
-            fetch(hostName + apiPath)
+            fetch(hostName + apiPath + `?access_token=${sessionStorage.getItem('token')}`)
                 .then(response => response.json())
                 .then(response => getObjects(response))
                 .then(data => setModels(data));

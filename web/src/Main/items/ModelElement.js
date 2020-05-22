@@ -7,7 +7,7 @@ let hostName = process.env.REACT_APP_HOSTNAME;
 const deleteObject = (id) => {
     if (window.confirm("Вы уверены, что хотите удалить этот объект?")){
         let apiPath = `/api/wiki?_id=${id}`;
-        fetch(hostName + apiPath, {method: 'DELETE'})
+        fetch(hostName + apiPath + `&access_token=${sessionStorage.getItem('token')}`, {method: 'DELETE'})
             .then((data) => {
                 if (data.status === 200){
                     alert("Объект успешно удален!");
