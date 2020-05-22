@@ -37,6 +37,13 @@ admin.add_view(RoleView(AUTH_DAO.roles_collection))
 api = CustomAPI(app, version='1.0', title='Wiki authorization API', doc="/doc")
 api = api.namespace("Wiki auth", description="Send mail or tg_login in params. New user will be created/updated and returned.", path="/")
 
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+    return response
+
 
 @api.route('/login')
 class WikiAuth(Resource):
