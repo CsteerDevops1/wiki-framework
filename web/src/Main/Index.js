@@ -28,7 +28,7 @@ function Index() {
     const [models, setModels] = useState(null);
     useEffect(() => {
         if (!models) {
-            fetch(hostName + apiPath + `?access_token=${sessionStorage.getItem('token')}` + `&limit=10`)
+            fetch(hostName + apiPath + `?access_token=${sessionStorage.getItem('token')}&limit=10`)
                 .then(response => response.json())
                 .then(response => getObjects(response))
                 .then(data => {
