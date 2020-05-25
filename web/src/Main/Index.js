@@ -21,14 +21,14 @@ const randomArticles = (articles) => {
     }
  
     shuffleArray(array);
-    return array.splice(0, 10);
+    return array;
 }
 
 function Index() {
     const [models, setModels] = useState(null);
     useEffect(() => {
         if (!models) {
-            fetch(hostName + apiPath + `?access_token=${sessionStorage.getItem('token')}`)
+            fetch(hostName + apiPath + `?access_token=${sessionStorage.getItem('token')}` + `&limit=10`)
                 .then(response => response.json())
                 .then(response => getObjects(response))
                 .then(data => {
