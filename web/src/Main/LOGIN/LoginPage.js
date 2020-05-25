@@ -1,6 +1,5 @@
 import React from 'react';
 import '../Main.css';
-import { useHistory } from "react-router-dom";
 
 require('dotenv').config();
 let hostName = process.env.REACT_APP_HOSTNAME;
