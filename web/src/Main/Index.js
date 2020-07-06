@@ -8,7 +8,8 @@ require('dotenv').config();
 //getting hostname from web/.env
 let hostName = process.env.REACT_APP_HOSTNAME;
 let apiPath = "/api/wiki";
-console.log(process.env);
+sessionStorage.setItem('token', localStorage.getItem('token')); 
+console.log("token = " + sessionStorage.getItem('token'));
 
 const randomArticles = (articles) => {
     const array = [...articles];
@@ -20,14 +21,14 @@ const randomArticles = (articles) => {
     }
  
     shuffleArray(array);
-    return array.splice(0, 10);
+    return array;
 }
- 
+
 function Index() {
     const [models, setModels] = useState(null);
     useEffect(() => {
         if (!models) {
-            fetch(hostName + apiPath)
+            fetch(hostName + apiPath + `?access_token=${sessionStorage.getItem('token')}&limit=10`)
                 .then(response => response.json())
                 .then(response => getObjects(response))
                 .then(data => {
@@ -37,16 +38,23 @@ function Index() {
         }
     }, [models]);
  
+
+
   return (
       <main>
         <h1>Hello! This is wiki home page. <br/></h1>
-        <div>From here you can  <Link class="link" to="/get">view all</Link> wiki elements, <Link class="link" to="/post">create</Link> a new element or <Link class="link" to="/put">edit</Link> existing one.</div>
+        {((sessionStorage.getItem('token') === "null") || (sessionStorage.getItem('token') === null) ) &&
+            <h1><a className="link" href="/login">Log in</a></h1> 
+        }
+        <div>From here you can  <Link className="link" to="/get">view all</Link> wiki elements, <Link className="link" to="/post">create</Link> a new element or <Link className="link" to="/put">edit</Link> existing one.</div>
         <div>Our bots:</div>
           <ul>
-              <li><a class="link" href="https://t.me/cs_wiki_edit_bot">Edit bot</a></li>
-              <li><a class="link" href="https://t.me/cs_wiki_media_bot">Media bot</a></li>
-              <li><a class="link" href="https://t.me/cs_wiki_search_bot">Search bot</a></li>
+              <li><a className="link" href="https://t.me/cs_wiki_edit_bot">Edit bot</a></li>
+              <li><a className="link" href="https://t.me/cs_wiki_media_bot">Media bot</a></li>
+              <li><a className="link" href="https://t.me/cs_wiki_search_bot">Search bot</a></li>
+              
           </ul>
+
           <ul>
               {(models != null) && models.map(item => <li key={item._id}>
                       <ModelElement

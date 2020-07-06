@@ -12,6 +12,8 @@ import GetPage from "./Main/GET/GetPage";
 import GetPageById from "./Main/GET/GetPageById";
 import PostPage from "./Main/POST/PostPage";
 import PutPage from "./Main/PUT/PutPage";
+import LoginPage from "./Main/LOGIN/LoginPage"
+import SearchPage from "./Main/SEARCH/SearchPage"
 
 function App() {
     return (
@@ -36,6 +38,12 @@ function App() {
                     </Route>
                      <Route path="/put">
                         <PutPage/>
+                    </Route>
+                    <Route path="/login">
+                        <LoginPage/>
+                    </Route>
+                    <Route path="/search">
+                        <SearchPage/>
                     </Route>
                 </Switch>
             </Router>

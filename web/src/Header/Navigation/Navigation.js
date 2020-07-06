@@ -7,6 +7,7 @@ function Navigation() {
 
         <nav>
             <ul>
+                <li><Link to="/search">Search</Link></li>
                 <li><Link to="/get">View all</Link></li>
                 <li><Link to="/post">Create new</Link></li>
             </ul>
