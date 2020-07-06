@@ -1,0 +1,15 @@
+Background name field translator
+
+This use Yandex Translator for translating
+
+Working description:
+This is trying to get objects which have empty 'russian_name' field from API every 10 seconds
+If it get objects it try to translate 'name' field of each object with 1 second interval
+Also it translate 'description' field and put result in 'russian_description' field
+
+Start:
+Run it in background
+python3 app.py &
+
+Requirements:
+requests=2.23.0

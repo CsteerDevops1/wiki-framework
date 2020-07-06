@@ -1,0 +1,67 @@
+version: "3"
+services:
+  
+  web:
+    image: web_ui
+    build: ./web/
+    container_name: "web_ui"
+    ports:
+      - "8080:80"
+    depends_on:
+      - flask
+  
+  flask:
+    restart: always
+    image: "flask_api"
+    build: ./coreService/
+    ports:
+      - "5000:5000"
+    container_name: "flask_api"
+    env_file:
+      - ./coreService/.env
+    environment:
+      MONGO_URI: "mongodb://mongo:27017"
+    depends_on:
+      - mongo
+  
+  mongo:
+    image: "mongo"
+    user: "${UID}:${GID}"
+    container_name: "mongodb_container"
+    volumes:
+      - ~/.volumes/mongo/data/db/:/data/db/
+  
+  translator:
+    image: "translator"
+    build: ./translator  
+    environment:
+      - API_KEY=trnsl.1.1.20200309T121046Z.10fd25429d4264e1.1b1d8883b0e564975a110cb11b558d5d1e1aa68b
+      - API_ADDRESS=http://flask:5000/api/wiki
+    container_name: "translator"
+    depends_on:
+      - flask
+  
+  tg_userbot:
+    # restart: always
+    image: "searchbot"
+    env_file:
+      - ./telegramBots/userBot/.env
+    environment:
+      - API_HOST=flask
+      - API_PORT=5000
+    build: ./telegramBots/userBot/
+    container_name: "search_bot"
+    depends_on:
+      - flask
+  
+  tg_editbot:
+    image: "editorbot"
+    env_file:
+      - ./telegramBots/editBot/.env
+    environment:
+      - API_HOST=flask
+      - API_PORT=5000
+    build: ./telegramBots/editBot/
+    container_name: "editor_bot"
+    depends_on:
+      - flask

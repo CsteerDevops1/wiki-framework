@@ -1,0 +1,29 @@
+.modelElement{
+    padding: 10px 0;
+    border-bottom: 2px dashed var(--color-1);
+}
+
+.modelElement .tag{
+    background: var(--color-1);
+    color: var(--color-3);
+    padding: 0 5px;
+    margin: 5px;
+}
+
+.modelElement p {
+    padding-top: 7px;
+}
+
+.modelElement h2 a{
+    color: var(--color-1);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modelElement h2{
+    border-bottom: 2px solid var(--color-1);
+}
+
+.modelElement img, .modelElement video, .modelElement audio {
+    max-width: 100%;
+}
